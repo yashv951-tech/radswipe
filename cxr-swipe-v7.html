@@ -48,7 +48,7 @@ header{width:100%;max-width:480px;padding:12px 18px 6px;display:flex;align-items
 .logo span{color:var(--blue)}
 .header-right{display:flex;align-items:center;gap:8px}
 .score-pill{font-family:'Space Mono',monospace;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 12px;display:flex;align-items:center;gap:7px}
-.s-ok{color:var(--green)}.s-bad{color:var(--red)}.s-div{color:var(--border)}
+.s-ok{color:var(--green)}.s-bad{color:var(--red)}.s-div{color:var(--border)}.s-lbl{color:var(--muted);font-size:10px;line-height:1}
 .streak-badge{display:flex;align-items:center;gap:4px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;background:var(--gold-dim);border:1px solid rgba(245,158,11,.35);color:var(--gold);border-radius:20px;padding:4px 10px;transition:all .3s;opacity:0;transform:scale(.8)}
 .streak-badge.show{opacity:1;transform:scale(1)}
 .streak-badge.pulse{animation:sPulse .4s ease}
@@ -66,7 +66,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .prog-wrap{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:10px;overflow:hidden}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:2px;transition:width .4s ease}
 
-.card-stack{width:100%;position:relative;height:428px;touch-action:none}
+.card-stack{width:100%;position:relative;height:clamp(340px,52dvh,480px);touch-action:none}
 .ghost{position:absolute;inset:0;border-radius:20px;background:var(--card);border:1px solid var(--border)}
 .ghost-1{transform:scale(.93) translateY(10px);opacity:.45;z-index:1}
 .ghost-2{transform:scale(.86) translateY(20px);opacity:.22;z-index:0}
@@ -74,7 +74,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .swipe-card:active{cursor:grabbing}
 .swipe-card.hard-mode{border-color:rgba(239,68,68,.4);box-shadow:0 8px 40px rgba(239,68,68,.12)}
 
-.img-wrap{width:100%;height:272px;background:#020408;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.img-wrap{width:100%;height:clamp(200px,32dvh,300px);background:#020408;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .img-wrap img{width:100%;height:100%;object-fit:contain;display:none;filter:brightness(var(--wl-b)) contrast(var(--wl-c)) grayscale(1) invert(var(--wl-inv))}
 .shimmer{position:absolute;inset:0;background:linear-gradient(90deg,#0c0f18 25%,#181d2c 50%,#0c0f18 75%);background-size:200% 100%;animation:sh 1.4s infinite;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--muted);font-size:12px}
 .shimmer .pi{font-size:36px;animation:pulse 1.4s ease-in-out infinite}
@@ -84,8 +84,8 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .hard-stamp{position:absolute;top:10px;right:12px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--red);background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);padding:2px 7px;border-radius:4px;display:none}
 .hard-stamp.show{display:block}
 .src-credit{position:absolute;bottom:8px;right:10px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);background:rgba(0,0,0,.5);padding:2px 6px;border-radius:3px}
-.zoom-hint{position:absolute;bottom:8px;left:12px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.35);background:rgba(0,0,0,.5);padding:2px 7px;border-radius:4px;opacity:0;transition:opacity .5s;pointer-events:none}
-.zoom-hint.show{opacity:1}
+.zoom-hint{position:absolute;bottom:8px;left:12px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.35);background:rgba(0,0,0,.5);padding:2px 7px;border-radius:4px;opacity:0.35;transition:opacity .5s;pointer-events:none}
+.zoom-hint.show{opacity:0.75}
 .ind{position:absolute;top:50%;font-family:'Space Mono',monospace;font-size:22px;font-weight:700;padding:6px 12px;border-radius:8px;border:2.5px solid;letter-spacing:2px;opacity:0;transition:opacity .08s;pointer-events:none}
 .ind-n{left:14px;color:var(--green);border-color:var(--green);transform:translateY(-50%) rotate(-12deg)}
 .ind-a{right:14px;color:var(--red);border-color:var(--red);transform:translateY(-50%) rotate(12deg)}
@@ -103,8 +103,11 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .btn{flex:1;max-width:155px;height:52px;border:none;border-radius:14px;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:transform .15s,background .15s}
 .btn-n{background:rgba(34,197,94,.1);color:var(--green);border:1.5px solid rgba(34,197,94,.3)}
 .btn-a{background:rgba(239,68,68,.1);color:var(--red);border:1.5px solid rgba(239,68,68,.3)}
+.btn-n:hover{background:rgba(34,197,94,.18);border-color:rgba(34,197,94,.5)}
+.btn-a:hover{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.5)}
 .btn-n:active{transform:scale(.95);background:rgba(34,197,94,.2)}
 .btn-a:active{transform:scale(.95);background:rgba(239,68,68,.2)}
+.swipe-card:hover{border-color:rgba(96,165,250,.3);box-shadow:0 8px 48px rgba(96,165,250,.08)}
 .hint{margin-top:8px;font-size:10px;color:var(--muted);text-align:center;opacity:.6}
 .page-disclaimer{margin-top:6px;font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);text-align:center;opacity:.4;letter-spacing:.4px}
 
@@ -246,7 +249,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .legal-footer-link:hover{background:rgba(96,165,250,.2)}
 
 /* header info button */
-.hdr-info{width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color .2s,border-color .2s}
+.hdr-info{width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color .2s,border-color .2s}
 .hdr-info:hover{color:var(--blue);border-color:rgba(96,165,250,.4)}
 
 /* MILESTONE */
@@ -258,6 +261,9 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .milestone-title{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
 .milestone-sub{font-size:12px;color:var(--muted)}
 
+/* scroll-fade on bottom of sheets */
+.sheet::after,.picker-sheet::after{content:'';position:sticky;bottom:0;display:block;height:32px;background:linear-gradient(transparent,var(--surface));pointer-events:none;margin-top:-32px}
+
 .exit-l{animation:exitL .32s ease-in forwards}
 .exit-r{animation:exitR .32s ease-in forwards}
 @keyframes exitL{to{transform:translateX(-120%) rotate(-22deg);opacity:0}}
@@ -267,12 +273,39 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 
 /* ── PACS viewer controls ───────────────────────────────────────────── */
 .pacs-bar{position:absolute;bottom:0;left:0;right:0;padding:22px 9px 7px;background:linear-gradient(transparent,rgba(0,0,0,.75));display:flex;align-items:center;gap:5px;z-index:9}
-.pacs-btn{width:24px;height:24px;border-radius:5px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.5);font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .15s,color .15s,border-color .15s;padding:0;line-height:1}
+.pacs-btn{width:36px;height:36px;border-radius:5px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.5);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .15s,color .15s,border-color .15s;padding:0;line-height:1}
 .pacs-btn:active,.pacs-btn.on{background:rgba(96,165,250,.25);border-color:rgba(96,165,250,.5);color:var(--blue)}
 .pacs-lbl{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.35);flex-shrink:0;user-select:none;letter-spacing:.3px}
 .pacs-div{width:1px;height:14px;background:rgba(255,255,255,.1);flex-shrink:0;margin:0 2px}
-.pacs-slider{flex:1;min-width:0;height:3px;cursor:pointer;-webkit-appearance:none;appearance:none;background:rgba(255,255,255,.15);border-radius:2px;outline:none;accent-color:#60a5fa;touch-action:pan-x}
-.pacs-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#60a5fa;cursor:pointer;box-shadow:0 0 4px rgba(0,0,0,.6)}
+.pacs-slider{flex:1;min-width:0;height:4px;cursor:pointer;-webkit-appearance:none;appearance:none;background:rgba(255,255,255,.15);border-radius:2px;outline:none;accent-color:#60a5fa;touch-action:pan-x}
+.pacs-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#60a5fa;cursor:pointer;box-shadow:0 0 4px rgba(0,0,0,.6)}
+
+/* ── [DESKTOP-7] PACS on pointer devices ─── */
+@media (hover:hover){
+  .pacs-slider{height:5px}
+  .pacs-slider::-webkit-slider-thumb{width:16px;height:16px}
+}
+
+/* ── [PHONE-6] Picker overflow on short screens ─── */
+@media (max-height:700px){
+  .picker-img-wrap{height:96px}
+  .picker-opt{min-height:48px}
+}
+
+/* ── [DESKTOP-1/6/8] Responsive desktop layout ─── */
+@media (min-width:640px){
+  header,.diff-banner,main,.done,.contact-page,.legal-page{max-width:680px}
+  .card-stack{height:clamp(420px,60dvh,580px)}
+  .img-wrap{height:clamp(280px,40dvh,420px)}
+  .card-title{font-size:15px}
+  .expl{font-size:14px}
+  .findings-box li{font-size:13px}
+  .picker-opt{font-size:13px}
+  /* Centred modal instead of bottom-sheet on desktop */
+  .overlay,.picker-overlay{align-items:center;padding:0 16px}
+  .sheet,.picker-sheet{border-radius:20px;max-width:620px;width:100%;margin:0 auto}
+  .btn{height:56px;font-size:15px}
+}
 </style>
 </head>
 <body>
@@ -281,7 +314,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
   <div class="logo">Thora<span>Swipe</span></div>
   <div class="header-right">
     <div class="streak-badge" id="streak-badge">🔥 <span id="streak-num">0</span></div>
-    <div class="score-pill"><span class="s-ok" id="sc-ok">0</span><span class="s-div">|</span><span class="s-bad" id="sc-bad">0</span></div>
+    <div class="score-pill"><span class="s-ok" id="sc-ok">0</span><span class="s-lbl">✓</span><span class="s-div">|</span><span class="s-bad" id="sc-bad">0</span><span class="s-lbl">✗</span></div>
     <button class="hdr-info" onclick="showContact()" title="About & Contact">?</button>
   </div>
 </header>
@@ -308,9 +341,9 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
         <div class="pacs-bar" id="pacs-bar">
           <button class="pacs-btn" id="pacs-inv" title="Invert" onclick="toggleInvert()">⊡</button>
           <div class="pacs-div"></div>
-          <span class="pacs-lbl">B</span>
+          <span class="pacs-lbl">Br</span>
           <input class="pacs-slider" id="wl-b" type="range" min="50" max="200" value="100" oninput="updateWL()">
-          <span class="pacs-lbl">C</span>
+          <span class="pacs-lbl">Co</span>
           <input class="pacs-slider" id="wl-c" type="range" min="50" max="350" value="110" oninput="updateWL()">
           <div class="pacs-div"></div>
           <button class="pacs-btn" title="Reset W/L" onclick="resetWL()">↺</button>
@@ -329,7 +362,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     <button class="btn btn-n" onclick="decide('normal')">✓ Normal</button>
     <button class="btn btn-a" onclick="decide('abnormal')">Abnormal ✕</button>
   </div>
-  <div class="hint">← swipe left = Normal &nbsp;·&nbsp; Abnormal = swipe right →</div>
+  <div class="hint" id="hint" style="transition:opacity 0.5s">drag the card or use the buttons below</div>
   <p class="page-disclaimer">Educational use only — not a clinical diagnostic tool</p>
 </main>
 
@@ -513,9 +546,9 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     <div class="lightbox-pacs" onclick="event.stopPropagation()">
       <button class="pacs-btn" id="lb-pacs-inv" title="Invert" onclick="toggleInvertLb()">⊡</button>
       <div class="pacs-div"></div>
-      <span class="pacs-lbl">B</span>
+      <span class="pacs-lbl">Br</span>
       <input class="pacs-slider" id="lb-wl-b" type="range" min="50" max="200" value="100" oninput="updateWLFromLb()">
-      <span class="pacs-lbl">C</span>
+      <span class="pacs-lbl">Co</span>
       <input class="pacs-slider" id="lb-wl-c" type="range" min="50" max="350" value="110" oninput="updateWLFromLb()">
       <div class="pacs-div"></div>
       <button class="pacs-btn" title="Reset W/L" onclick="resetWL()">↺</button>
@@ -1036,7 +1069,7 @@ function openLightbox(src){
     lbSvg.style.display='none';lbSvg.innerHTML='';
     lbToggle.style.display='none';
   } else {
-    lbImg.src=document.getElementById('annot-img').src;lbLabel.textContent='TAP TO CLOSE';
+    lbImg.src=document.getElementById('annot-img').src;lbLabel.textContent=(tapWord+' to close').toUpperCase();
     cloneAnnotSvgIntoLb(document.getElementById('annot-svg'),lbSvg);
     lbToggle.style.display='block';
     lbToggle.textContent=annotVisible?'Hide labels':'Show labels';
@@ -1062,7 +1095,25 @@ function closeLightbox(){
   lbSvg.style.display='none';lbSvg.innerHTML='';
   document.body.style.overflow='';
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+// ── [DESKTOP-5] tap vs click language ──────────────────────────────────
+const tapWord=window.matchMedia('(hover:none)').matches?'tap':'click';
+document.getElementById('zoom-hint').textContent='🔍 '+tapWord+' to enlarge';
+document.querySelector('.picker-img-hint').textContent='🔍 '+tapWord+' to enlarge';
+document.querySelector('.annot-zoom-hint').textContent='🔍 '+tapWord+' to enlarge';
+
+// ── [DESKTOP-2] keyboard shortcuts ────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeLightbox();return;}
+  if(lightboxOpen||waiting)return;
+  if(e.key==='n'||e.key==='N'){decide('normal');return;}
+  if(e.key==='a'||e.key==='A'){decide('abnormal');return;}
+  if(e.key==='Enter'){
+    const revBtn=document.getElementById('picker-reveal-btn');
+    if(revBtn&&!revBtn.disabled&&revBtn.style.display!=='none'){revealFull();return;}
+    const ov=document.getElementById('overlay');
+    if(ov&&ov.classList.contains('open'))nextCase();
+  }
+});
 
 // ─── PACS WINDOW / LEVEL ────────────────────────────────────────────────
 function syncLbPacs(){
@@ -1177,6 +1228,8 @@ function updateStreakUI(){
 // ─── DECIDE ─────────────────────────────────────────────────────────
 function decide(choice){
   if(waiting)return;waiting=true;
+  // [PHONE-4] fade out swipe hint after first answer
+  const hintEl=document.getElementById('hint');if(hintEl)hintEl.style.opacity='0';
   const c=queue[idx];
   const ok=(choice==='normal')===c.isNormal;
   if(ok){scoreOk++;streak++;if(streak>bestStreak)bestStreak=streak;}
