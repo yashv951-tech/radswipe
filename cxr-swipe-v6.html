@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RadSwipe — CXR Trainer</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700&display=swap');
+:root{
+  --bg:#080a0f;--surface:#10131a;--card:#161920;--border:#22273a;
+  --text:#e4e8f0;--muted:#606880;--green:#22c55e;--red:#ef4444;
+  --blue:#60a5fa;--blue-dim:#1a304f;--gold:#f59e0b;--gold-dim:#3d2d0a;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 40% at 50% -10%,rgba(96,165,250,.07) 0%,transparent 60%);pointer-events:none;z-index:0}
+
+/* HEADER */
+header{width:100%;max-width:480px;padding:12px 18px 6px;display:flex;align-items:center;justify-content:space-between;z-index:10;position:relative}
+.logo{font-family:'Space Mono',monospace;font-size:17px;font-weight:700}
+.logo span{color:var(--blue)}
+.header-right{display:flex;align-items:center;gap:8px}
+.score-pill{font-family:'Space Mono',monospace;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 12px;display:flex;align-items:center;gap:7px}
+.s-ok{color:var(--green)}.s-bad{color:var(--red)}.s-div{color:var(--border)}
+.streak-badge{display:flex;align-items:center;gap:4px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;background:var(--gold-dim);border:1px solid rgba(245,158,11,.35);color:var(--gold);border-radius:20px;padding:4px 10px;transition:all .3s;opacity:0;transform:scale(.8)}
+.streak-badge.show{opacity:1;transform:scale(1)}
+.streak-badge.pulse{animation:sPulse .4s ease}
+@keyframes sPulse{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+
+/* DIFF BANNER */
+.diff-banner{width:100%;max-width:480px;padding:0 18px 5px;display:flex;align-items:center;gap:8px;z-index:9;position:relative}
+.diff-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.diff-pips{display:flex;gap:4px}
+.diff-pips span{width:22px;height:3px;border-radius:2px;background:var(--border);transition:background .4s}
+.diff-pips span.d1{background:var(--green)}.diff-pips span.d2{background:var(--gold)}.diff-pips span.d3{background:var(--red)}
+.mode-tag{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:var(--surface);border:1px solid var(--border);color:var(--muted);transition:all .3s}
+.mode-tag.hard{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:var(--red)}
+
+/* MAIN */
+main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 14px 0;position:relative;z-index:5}
+.prog-wrap{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:10px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:2px;transition:width .4s ease}
+
+/* CARD STACK */
+.card-stack{width:100%;position:relative;height:428px;touch-action:none}
+.ghost{position:absolute;inset:0;border-radius:20px;background:var(--card);border:1px solid var(--border)}
+.ghost-1{transform:scale(.93) translateY(10px);opacity:.45;z-index:1}
+.ghost-2{transform:scale(.86) translateY(20px);opacity:.22;z-index:0}
+.swipe-card{position:absolute;inset:0;border-radius:20px;background:var(--card);border:1px solid var(--border);overflow:hidden;z-index:5;cursor:grab;user-select:none;will-change:transform;box-shadow:0 8px 40px rgba(0,0,0,.6)}
+.swipe-card:active{cursor:grabbing}
+.swipe-card.hard-mode{border-color:rgba(239,68,68,.4);box-shadow:0 8px 40px rgba(239,68,68,.12)}
+
+/* IMAGE AREA */
+.img-wrap{width:100%;height:270px;background:#020408;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.img-wrap img{width:100%;height:100%;object-fit:contain;display:none;filter:brightness(1.08) contrast(1.06);transition:opacity .3s}
+
+/* FULLSCREEN HINT */
+.zoom-hint{position:absolute;bottom:10px;left:12px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.35);background:rgba(0,0,0,.5);padding:2px 7px;border-radius:4px;display:flex;align-items:center;gap:4px;pointer-events:none;opacity:0;transition:opacity .5s}
+.zoom-hint.show{opacity:1}
+
+.shimmer{position:absolute;inset:0;background:linear-gradient(90deg,#0c0f18 25%,#181d2c 50%,#0c0f18 75%);background-size:200% 100%;animation:sh 1.4s infinite;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--muted);font-size:12px}
+.shimmer .pulse-icon{font-size:36px;animation:pulse 1.4s ease-in-out infinite}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:.7}}
+
+.case-stamp{position:absolute;top:10px;left:12px;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;background:rgba(0,0,0,.55);padding:2px 7px;border-radius:4px}
+.hard-stamp{position:absolute;top:10px;right:12px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--red);background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);padding:2px 7px;border-radius:4px;display:none}
+.hard-stamp.show{display:block}
+.src-credit{position:absolute;bottom:8px;right:10px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);background:rgba(0,0,0,.5);padding:2px 6px;border-radius:3px}
+.ind{position:absolute;top:50%;font-family:'Space Mono',monospace;font-size:22px;font-weight:700;padding:6px 12px;border-radius:8px;border:2.5px solid;letter-spacing:2px;opacity:0;transition:opacity .08s;pointer-events:none}
+.ind-n{left:14px;color:var(--green);border-color:var(--green);transform:translateY(-50%) rotate(-12deg)}
+.ind-a{right:14px;color:var(--red);border-color:var(--red);transform:translateY(-50%) rotate(12deg)}
+
+/* CARD INFO */
+.card-info{padding:11px 16px 9px}
+.case-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.case-tag{font-family:'Space Mono',monospace;font-size:10px;color:var(--blue);background:var(--blue-dim);border-radius:4px;padding:2px 8px}
+.diff-dots{display:flex;gap:3px}
+.diff-dots span{width:6px;height:6px;border-radius:50%;background:var(--border)}
+.diff-dots span.on{background:var(--gold)}
+.card-title{font-size:13px;font-weight:600;margin-bottom:3px;line-height:1.4}
+.card-sub{font-size:11px;color:var(--muted)}
+
+/* BUTTONS */
+.btn-row{width:100%;display:flex;align-items:center;justify-content:center;gap:14px;margin-top:13px;padding:0 8px}
+.btn{flex:1;max-width:155px;height:52px;border:none;border-radius:14px;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:transform .15s,background .15s}
+.btn-n{background:rgba(34,197,94,.1);color:var(--green);border:1.5px solid rgba(34,197,94,.3)}
+.btn-a{background:rgba(239,68,68,.1);color:var(--red);border:1.5px solid rgba(239,68,68,.3)}
+.btn-n:active{transform:scale(.95);background:rgba(34,197,94,.2)}
+.btn-a:active{transform:scale(.95);background:rgba(239,68,68,.2)}
+.hint{margin-top:8px;font-size:10px;color:var(--muted);text-align:center;opacity:.6}
+
+/* ── FULLSCREEN LIGHTBOX ── */
+.lightbox{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:background .25s}
+.lightbox.open{background:rgba(0,0,0,.96);pointer-events:all}
+.lightbox-img-wrap{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;transform:scale(.88);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .25s}
+.lightbox.open .lightbox-img-wrap{transform:scale(1);opacity:1}
+.lightbox img{max-width:100%;max-height:100%;object-fit:contain;filter:brightness(1.1) contrast(1.08);touch-action:pinch-zoom}
+.lightbox-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s;z-index:10}
+.lightbox-close:active{background:rgba(255,255,255,.25)}
+.lightbox-label{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.lightbox-hint{position:absolute;top:20px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1px;white-space:nowrap;animation:fadeOut 2.5s ease 1s forwards}
+@keyframes fadeOut{0%{opacity:1}100%{opacity:0}}
+
+/* ── DIAGNOSIS PICKER OVERLAY ── */
+.picker-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s}
+.picker-overlay.open{background:rgba(0,0,0,.82);pointer-events:all;backdrop-filter:blur(8px)}
+.picker-sheet{width:100%;max-width:480px;background:var(--surface);border-radius:22px 22px 0 0;border:1px solid var(--border);border-bottom:none;padding:16px 18px 36px;transform:translateY(100%);transition:transform .38s cubic-bezier(.34,1.56,.64,1)}
+.picker-overlay.open .picker-sheet{transform:translateY(0)}
+
+.picker-swipe-verdict{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.5px;padding:6px 12px;border-radius:8px;display:inline-block;margin-bottom:14px}
+.picker-swipe-verdict.ok{background:rgba(34,197,94,.14);color:var(--green)}
+.picker-swipe-verdict.fail{background:rgba(239,68,68,.14);color:var(--red)}
+
+.picker-question{font-size:15px;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.3}
+
+.picker-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.picker-opt{background:var(--card);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Sora',sans-serif;font-size:12px;font-weight:500;line-height:1.35;padding:12px 11px;text-align:left;cursor:pointer;transition:background .15s,border-color .15s,transform .15s;min-height:58px}
+.picker-opt:not(:disabled):active{transform:scale(.97)}
+.picker-opt:not(:disabled):hover{background:#1e2332;border-color:var(--blue)}
+.picker-opt:disabled{cursor:default}
+.picker-opt.opt-correct{background:rgba(34,197,94,.15)!important;border-color:var(--green)!important;color:var(--green)!important;font-weight:600}
+.picker-opt.opt-wrong{background:rgba(239,68,68,.12)!important;border-color:var(--red)!important;color:var(--red)!important}
+
+.picker-feedback{font-size:13px;font-weight:600;min-height:20px;margin-bottom:14px;transition:opacity .3s}
+.picker-feedback.correct{color:var(--green)}
+.picker-feedback.wrong{color:var(--muted)}
+
+.picker-reveal-btn{width:100%;height:52px;border:none;border-radius:13px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s}
+.picker-reveal-btn.visible{opacity:1;transform:translateY(0)}
+.picker-reveal-btn:active{opacity:.88;transform:scale(.97)}
+
+/* RESULT OVERLAY */
+.overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s}
+.overlay.open{background:rgba(0,0,0,.78);pointer-events:all;backdrop-filter:blur(6px)}
+.sheet{width:100%;max-width:480px;background:var(--surface);border-radius:22px 22px 0 0;border:1px solid var(--border);border-bottom:none;padding:16px 18px 34px;transform:translateY(100%);transition:transform .38s cubic-bezier(.34,1.56,.64,1);max-height:92vh;overflow-y:auto}
+.overlay.open .sheet{transform:translateY(0)}
+.handle{width:34px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 14px}
+.verdict-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.v-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.v-icon.ok{background:rgba(34,197,94,.14)}.v-icon.fail{background:rgba(239,68,68,.14)}
+.v-text h3{font-size:16px;font-weight:700;margin-bottom:2px}
+.v-text h3.ok{color:var(--green)}.v-text h3.fail{color:var(--red)}
+.v-text p{font-size:11px;color:var(--muted)}
+.diag-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:10px;background:var(--blue-dim);color:var(--blue);border:1px solid rgba(96,165,250,.2);border-radius:6px;padding:3px 9px;margin-bottom:10px}
+
+/* ANNOTATED IMAGE IN SHEET */
+.annot-wrap{width:100%;border-radius:12px;overflow:hidden;background:#020408;margin-bottom:12px;position:relative;border:1px solid var(--border);cursor:zoom-in}
+.annot-wrap img{width:100%;display:block;filter:brightness(1.05) contrast(1.05)}
+.annot-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.annot-zoom-hint{position:absolute;bottom:8px;left:10px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.4);background:rgba(0,0,0,.6);padding:2px 7px;border-radius:4px}
+
+@keyframes drawDash{to{stroke-dashoffset:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+
+.expl{font-size:12px;line-height:1.8;color:#b8c0d4;margin-bottom:12px}
+.findings-box{background:var(--card);border-radius:12px;border:1px solid var(--border);padding:10px 13px;margin-bottom:14px}
+.findings-box h4{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;font-family:'Space Mono',monospace}
+.findings-box ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.findings-box li{font-size:11px;color:var(--text);display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+.findings-box li::before{content:'→';color:var(--blue);flex-shrink:0;font-family:'Space Mono',monospace;font-size:10px;margin-top:1px}
+.btn-next{width:100%;height:50px;border:none;border-radius:13px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:transform .15s,opacity .15s}
+.btn-next:active{transform:scale(.97);opacity:.9}
+
+/* DONE */
+.done{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 22px;gap:14px;z-index:10;position:relative;width:100%;max-width:480px}
+.done.show{display:flex}
+.done-emoji{font-size:56px;margin-bottom:4px}
+.done h2{font-size:24px;font-weight:700}
+.done p{font-size:13px;color:var(--muted);line-height:1.6;max-width:290px}
+.final-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 36px;display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;max-width:260px}
+.final-num{font-family:'Space Mono',monospace;font-size:40px;font-weight:700;color:var(--blue)}
+.final-lbl{font-size:12px;color:var(--muted)}
+.final-streak{font-family:'Space Mono',monospace;font-size:13px;color:var(--gold);margin-top:2px}
+.btn-restart{width:100%;max-width:260px;height:50px;border:none;border-radius:13px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px}
+
+/* MILESTONE */
+.milestone{position:fixed;inset:0;z-index:150;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .3s}
+.milestone.show{opacity:1}
+.milestone-card{background:var(--surface);border:1px solid rgba(245,158,11,.4);border-radius:20px;padding:24px 32px;text-align:center;box-shadow:0 0 60px rgba(245,158,11,.2);transform:scale(.85);transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.milestone.show .milestone-card{transform:scale(1)}
+.milestone-emoji{font-size:48px;margin-bottom:10px}
+.milestone-title{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.milestone-sub{font-size:12px;color:var(--muted)}
+.unlock-toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:200;background:rgba(239,68,68,.9);color:#fff;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;padding:8px 18px;border-radius:20px;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
+.unlock-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* CARD ANIMS */
+.exit-l{animation:exitL .32s ease-in forwards}
+.exit-r{animation:exitR .32s ease-in forwards}
+@keyframes exitL{to{transform:translateX(-120%) rotate(-22deg);opacity:0}}
+@keyframes exitR{to{transform:translateX(120%) rotate(22deg);opacity:0}}
+.card-enter{animation:cardIn .38s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes cardIn{from{transform:scale(.92) translateY(12px);opacity:.4}to{transform:scale(1) translateY(0);opacity:1}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Rad<span>Swipe</span></div>
+  <div class="header-right">
+    <div class="streak-badge" id="streak-badge">🔥 <span id="streak-num">0</span></div>
+    <div class="score-pill"><span class="s-ok" id="sc-ok">0</span><span class="s-div">|</span><span class="s-bad" id="sc-bad">0</span></div>
+  </div>
+</header>
+
+<div class="diff-banner">
+  <span class="diff-label">Difficulty</span>
+  <div class="diff-pips" id="diff-pips"><span></span><span></span><span></span></div>
+  <span class="mode-tag" id="mode-tag">EASY</span>
+</div>
+
+<main id="main">
+  <div class="prog-wrap"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+  <div class="card-stack">
+    <div class="ghost ghost-2"></div>
+    <div class="ghost ghost-1"></div>
+    <div class="swipe-card" id="card">
+      <div class="img-wrap" id="img-wrap">
+        <div class="shimmer" id="shimmer"><div class="pulse-icon">🩻</div><span id="shimmer-msg">Loading…</span></div>
+        <img id="cxr-img" alt="Chest X-ray"/>
+        <div class="case-stamp" id="case-stamp">CASE 001</div>
+        <div class="hard-stamp" id="hard-stamp">⚠ HARD</div>
+        <div class="src-credit" id="src-credit"></div>
+        <div class="zoom-hint" id="zoom-hint">🔍 tap to enlarge</div>
+        <div class="ind ind-n" id="ind-n">NORMAL</div>
+        <div class="ind ind-a" id="ind-a">ABNORMAL</div>
+      </div>
+      <div class="card-info">
+        <div class="case-meta"><span class="case-tag" id="case-tag">CASE 1</span><div class="diff-dots" id="diff-dots"></div></div>
+        <div class="card-title" id="card-title">Loading…</div>
+        <div class="card-sub" id="card-sub">PA chest radiograph</div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-n" onclick="decide('normal')">✓ Normal</button>
+    <button class="btn btn-a" onclick="decide('abnormal')">Abnormal ✕</button>
+  </div>
+  <div class="hint">← swipe left = Normal &nbsp;·&nbsp; Abnormal = swipe right →</div>
+</main>
+
+<div class="done" id="done">
+  <div class="done-emoji">🩻</div>
+  <h2>Round Complete</h2>
+  <p>Keep practicing — pattern recognition is built one case at a time.</p>
+  <div class="final-box">
+    <div class="final-num" id="final-num">0/0</div>
+    <div class="final-lbl">correct diagnoses</div>
+    <div class="final-streak" id="final-streak"></div>
+  </div>
+  <button class="btn-restart" onclick="restart()">Shuffle & Restart</button>
+</div>
+
+<!-- Diagnosis picker overlay — phase 1 -->
+<div class="picker-overlay" id="picker-overlay">
+  <div class="picker-sheet">
+    <div class="handle"></div>
+    <div class="picker-swipe-verdict" id="picker-swipe-verdict"></div>
+    <div class="picker-question" id="picker-question">Now name the diagnosis:</div>
+    <div class="picker-options" id="picker-options"></div>
+    <div class="picker-feedback" id="picker-feedback"></div>
+    <button class="picker-reveal-btn" id="picker-reveal-btn" onclick="revealFull()" style="display:none">
+      See Full Explanation →
+    </button>
+  </div>
+</div>
+
+<!-- Result sheet -->
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="verdict-row">
+      <div class="v-icon" id="v-icon"></div>
+      <div class="v-text"><h3 id="v-title"></h3><p id="v-sub"></p></div>
+    </div>
+    <div class="diag-tag" id="diag-tag"></div>
+    <div class="annot-wrap" id="annot-wrap" onclick="openLightbox('annot')">
+      <img id="annot-img" alt="Annotated CXR"/>
+      <svg class="annot-svg" id="annot-svg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+      <div class="annot-zoom-hint">🔍 tap to enlarge</div>
+    </div>
+    <div class="expl" id="expl"></div>
+    <div class="findings-box"><h4>Key Radiographic Findings</h4><ul id="findings"></ul></div>
+    <button class="btn-next" onclick="nextCase()">Next Case →</button>
+  </div>
+</div>
+
+<!-- Fullscreen lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-img-wrap" id="lightbox-wrap">
+    <div class="lightbox-hint">PINCH TO ZOOM · TAP TO CLOSE</div>
+    <img id="lightbox-img" alt="CXR fullscreen"/>
+    <div class="lightbox-label" id="lightbox-label"></div>
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  </div>
+</div>
+
+<!-- Milestone / toast -->
+<div class="milestone" id="milestone">
+  <div class="milestone-card">
+    <div class="milestone-emoji" id="m-emoji">🔥</div>
+    <div class="milestone-title" id="m-title"></div>
+    <div class="milestone-sub" id="m-sub"></div>
+  </div>
+</div>
+<div class="unlock-toast" id="unlock-toast">🔴 HARD MODE UNLOCKED</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────
+// CASES — 18 total (6 easy, 6 medium, 6 hard)
+// All images from Wikimedia Commons / CDC — public domain / CC0
+// Thumbnail URLs: confirmed dimensions from Wikimedia file pages
+// ─────────────────────────────────────────────────────────────────────
+const W = (file, w, hash) =>
+  `https://upload.wikimedia.org/wikipedia/commons/thumb/${hash}/${file}/${w}px-${file}`;
+
+const CASES = [
+
+  // ════════════════════════════════════════════
+  // EASY — obvious, unambiguous findings
+  // ════════════════════════════════════════════
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Chest_Xray_PA_3-8-2010.png/600px-Chest_Xray_PA_3-8-2010.png',
+    credit:'Stillwaterising · CC0', isNormal:true, difficulty:1,
+    title:'54M — pre-op assessment, no symptoms',
+    sub:'PA chest radiograph — elective surgery screening',
+    diagnosis:'Normal Chest Radiograph',
+    options:['Normal Chest Radiograph','Congestive Heart Failure','Pulmonary Oedema','Right Pleural Effusion'],
+    explanation:'Normal PA CXR. Clear bilateral lung fields, no consolidation, effusion, or pneumothorax. Cardiac silhouette normal (CTR < 0.5). Trachea midline. Costophrenic angles sharp. No acute cardiopulmonary process.',
+    findings:['Clear bilateral lung fields','Normal cardiac silhouette (CTR < 0.5)','Sharp costophrenic angles bilaterally','Midline trachea','Normal hilar shadows'],
+    // 2412×1956 landscape
+    annots:[
+      {type:'ellipse',cx:25,cy:44,rx:16,ry:22,color:'#22c55e',label:'L lung — clear'},
+      {type:'ellipse',cx:73,cy:44,rx:16,ry:22,color:'#22c55e',label:'R lung — clear'},
+      {type:'ellipse',cx:47,cy:57,rx:13,ry:16,color:'#60a5fa',label:'Heart — normal'},
+      {type:'arrow', x1:50,y1:8,x2:50,y2:20,color:'#60a5fa',label:'Trachea midline'},
+    ]
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pneumonia_x-ray.jpg/435px-Pneumonia_x-ray.jpg',
+    credit:'CDC / InvictaHOG · Public Domain', isNormal:false, difficulty:1,
+    title:'47M — fever 38.9°C, productive cough × 4 days',
+    sub:'PA chest radiograph — acute respiratory illness',
+    diagnosis:'Right-Sided Pneumonia — Patchy Consolidation',
+    explanation:'This is a comparison image: the left panel shows a normal CXR, the right panel shows pneumonia. The right panel demonstrates patchy right-sided consolidation — alveolar filling with inflammatory exudate. This particular image depicts Q fever pneumonia (Coxiella burnetii), which classically produces patchy, non-lobar consolidation rather than classic lobar consolidation. Air bronchograms may be present. In clinical practice, the CXR pattern alone cannot identify the causative organism — sputum culture, urinary antigens, and serology are required.',
+    findings:['Comparison image: left = normal, right = pneumonia','Right-sided patchy consolidation','Alveolar filling pattern','CXR cannot identify causative organism','Sputum, urinary antigen, serology required'],
+    // 435×729 portrait — right panel of side-by-side image has the pneumonia
+    annots:[
+      {type:'ellipse',cx:76,cy:70,rx:13,ry:13,color:'#ef4444',label:'RLL consolidation'},
+      {type:'arrow', x1:76,y1:53,x2:76,y2:64,color:'#ef4444',label:'RLL opacity'},
+      {type:'ellipse',cx:25,cy:50,rx:13,ry:25,color:'#22c55e',label:'L lung — clear'},
+    ]
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Pleural_effusion.jpg/400px-Pleural_effusion.jpg',
+    credit:'CDC / InvictaHOG · Public Domain', isNormal:false, difficulty:1,
+    title:'68M — increasing dyspnea, bilateral ankle oedema',
+    sub:'PA chest radiograph — known heart failure',
+    diagnosis:'Right Pleural Effusion',
+    explanation:"Blunting of the right costophrenic angle (arrow A) with a meniscus sign indicates a right pleural effusion. Fluid accumulates dependently in the pleural space. In context of ankle oedema and heart failure, likely cardiac transudate. Apply Light's criteria at thoracentesis to classify — transudate if protein <0.5, LDH <0.6 of serum. Arrow B shows normal lung width on left.",
+    findings:['Right costophrenic angle blunting (arrow A)','Meniscus sign — concave fluid border','Right lower zone opacification','Left angle clear (arrow B)','Differential: HF transudate vs parapneumonic exudate'],
+    // portrait
+    annots:[
+      {type:'ellipse',cx:70,cy:82,rx:18,ry:10,color:'#ef4444',label:'Effusion (A)'},
+      {type:'arrow', x1:70,y1:66,x2:70,y2:77,color:'#ef4444',label:'Meniscus'},
+      {type:'ellipse',cx:28,cy:83,rx:14,ry:8,color:'#22c55e',label:'L clear (B)'},
+    ]
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Pneumothorax.jpg/600px-Pneumothorax.jpg',
+    credit:'Mynameisderek · Public Domain', isNormal:false, difficulty:1,
+    title:'24M — sudden sharp left chest pain, tall thin male',
+    sub:'PA chest radiograph — acute onset dyspnea',
+    diagnosis:'Left Spontaneous Pneumothorax',
+    explanation:'Visible pleural line on the left with absent lung markings lateral to it — the hallmark of pneumothorax. Air in the pleural space has caused partial left lung collapse. Classic primary spontaneous PTX in a tall young male (apical subpleural bleb rupture). Trachea midline excludes tension. Manage based on size: observation, aspiration, or intercostal drain.',
+    findings:['Visible left visceral pleural line','Absent lung markings lateral to pleural line','Partial left lung collapse','Trachea midline — no tension physiology','Classic primary spontaneous PTX'],
+    // landscape
+    annots:[
+      {type:'arrow', x1:35,y1:8,x2:35,y2:88,color:'#f59e0b',label:'Pleural line'},
+      {type:'ellipse',cx:18,cy:48,rx:13,ry:35,color:'#ef4444',label:'Air — no markings'},
+      {type:'ellipse',cx:72,cy:48,rx:18,ry:35,color:'#22c55e',label:'R lung normal'},
+    ]
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Normal_posteroanterior_%28PA%29_chest_radiograph_%28X-ray%29.jpg/500px-Normal_posteroanterior_%28PA%29_chest_radiograph_%28X-ray%29.jpg',
+    credit:'Mikael Häggström · CC0', isNormal:true, difficulty:1,
+    title:'31F — occupational health screen, non-smoker, asymptomatic',
+    sub:'PA chest radiograph — routine annual check',
+    diagnosis:'Normal Chest Radiograph',
+    explanation:'Normal PA chest radiograph in a young adult. Lung fields well-aerated and clear with normal vascular markings tapering peripherally. Cardiac silhouette normal. No mediastinal widening. Hemidiaphragms clearly seen with acute costophrenic angles. Bony thorax intact. No active cardiopulmonary disease.',
+    findings:['Bilaterally clear lung fields','Normal heart size and contour','Acute costophrenic angles bilaterally','Normal mediastinal width','Normal hilar structures'],
+    // portrait 1929×2207
+    annots:[
+      {type:'ellipse',cx:27,cy:42,rx:16,ry:22,color:'#22c55e',label:'L lung — clear'},
+      {type:'ellipse',cx:73,cy:42,rx:16,ry:22,color:'#22c55e',label:'R lung — clear'},
+      {type:'ellipse',cx:50,cy:60,rx:16,ry:16,color:'#60a5fa',label:'Heart — normal'},
+    ]
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/SARS_xray.jpg/507px-SARS_xray.jpg',
+    credit:'CDC · Public Domain', isNormal:false, difficulty:1,
+    title:'52M — fever, hypoxia SpO₂ 88%, bilateral cough, returning traveller',
+    sub:'PA chest radiograph — acute respiratory deterioration',
+    diagnosis:'Bilateral Pneumonia / ARDS Pattern',
+    explanation:'Bilateral patchy opacification in both lung fields — diffuse alveolar filling. This bilateral symmetric distribution distinguishes it from typical lobar bacterial pneumonia. In a returning traveller with hypoxia, differential: viral pneumonia (influenza, SARS-CoV-2), atypical organisms (Legionella, Mycoplasma), aspiration. ARDS is defined by Berlin criteria: acute onset bilateral opacities, P/F ratio < 300 with PEEP ≥ 5 cmH₂O (mild), < 200 (moderate), < 100 (severe), not fully explained by cardiac failure. Bilateral pneumonia and ARDS are distinct but can coexist.',
+    findings:['Bilateral patchy opacification','Diffuse alveolar filling pattern','Symmetric bilateral distribution — viral/atypical pattern','ARDS Berlin: P/F <300 mild, <200 moderate, <100 severe','Bilateral pneumonia and ARDS are distinct diagnoses'],
+    // ~507×491 near-square
+    annots:[
+      {type:'ellipse',cx:27,cy:50,rx:20,ry:28,color:'#ef4444',label:'L infiltrates'},
+      {type:'ellipse',cx:73,cy:50,rx:20,ry:28,color:'#ef4444',label:'R infiltrates'},
+    ]
+  },
+
+  // ════════════════════════════════════════════
+  // MEDIUM — requires more careful analysis
+  // ════════════════════════════════════════════
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/PCP_CAP_CXR.JPG/500px-PCP_CAP_CXR.JPG',
+    credit:'Samir Dharam · Public Domain', isNormal:false, difficulty:2,
+    title:'34M — dry cough, night sweats, weight loss, CD4 unknown',
+    sub:'PA chest radiograph — immunocompromised status',
+    diagnosis:'PCP Pneumonia — Bilateral Interstitial Infiltrates',
+    explanation:'Diffuse bilateral interstitial infiltrates with reticular/ground-glass pattern and perihilar predominance. In an immunocompromised patient this is PCP (Pneumocystis jirovecii) until proven otherwise. Classic PCP: bilateral perihilar ground-glass opacities, though peripheral sparing is only seen in ~50% of cases. Urgent bronchoscopy + BAL for silver stain / immunofluorescence. Start empirical co-trimoxazole + adjuvant steroids if PaO₂ < 70 mmHg on room air OR A-a gradient > 35 mmHg.',
+    findings:['Bilateral diffuse interstitial infiltrates','Reticular/ground-glass pattern — perihilar predominance','PCP until proven otherwise in immunocompromised host','Steroids if PaO₂ < 70 mmHg OR A-a gradient > 35 mmHg','BAL silver stain / immunofluorescence for definitive diagnosis'],
+    annots:[
+      {type:'ellipse',cx:30,cy:44,rx:20,ry:26,color:'#ef4444',label:'L perihilar infiltrate'},
+      {type:'ellipse',cx:70,cy:44,rx:20,ry:26,color:'#ef4444',label:'R perihilar infiltrate'},
+      {type:'arrow', x1:50,y1:8,x2:50,y2:22,color:'#f59e0b',label:'Perihilar pattern'},
+    ]
+  },
+  {
+    // Pre-annotated Kerley B image — use annotated version in result sheet
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Chest_radiograph_of_a_lung_with_Kerley_B_lines.jpg/600px-Chest_radiograph_of_a_lung_with_Kerley_B_lines.jpg',
+    annotImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Chest_radiograph_of_a_lung_with_Kerley_B_lines_-_annotated.jpg/600px-Chest_radiograph_of_a_lung_with_Kerley_B_lines_-_annotated.jpg',
+    credit:'Mikael Häggström · CC0', isNormal:false, difficulty:2,
+    title:'73F — acute dyspnea, orthopnea, frothy sputum, known IHD',
+    sub:'PA chest radiograph — cardiac history',
+    diagnosis:'Pulmonary Oedema — Kerley B Lines',
+    explanation:"Kerley B lines — short (< 2 cm) horizontal lines at the lung periphery, perpendicular to the pleural surface — represent thickened interlobular septa from elevated pulmonary venous pressure. This is interstitial pulmonary oedema in acute LVF. ABCDE mnemonic for CHF on CXR: Alveolar oedema (bat-wing shadowing), upper lobe Blood diversion (cephalization), Cardiomegaly, Dilated upper lobe vessels, Effusions (pleural) — Kerley B lines are a feature of the interstitial stage. Treat: IV furosemide, CPAP/BiPAP, treat underlying cause.",
+    findings:['Kerley B lines — short horizontal peripheral lines < 2 cm','Perpendicular to pleura — thickened interlobular septa','Interstitial stage of pulmonary oedema','ABCDE: Alveolar oedema, Blood diversion, Cardiomegaly, Dilation, Effusions','Treat: IV furosemide + CPAP/BiPAP'],
+    annots:[] // pre-annotated image handles markings
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pneumothorax_im_liegen.jpg/600px-Pneumothorax_im_liegen.jpg',
+    credit:'M. Schechinger · CC BY-SA', isNormal:false, difficulty:2,
+    title:'58M — post-trauma, sudden ICU deterioration, intubated',
+    sub:'AP supine chest radiograph — ventilated patient',
+    diagnosis:'Supine Pneumothorax — Deep Sulcus Sign',
+    explanation:'In the supine position, free pleural air rises anteriorly (not apically), producing the deep sulcus sign — an abnormally deep and lucent costophrenic angle. Increased left hemithoracic lucency with absent anterior lung markings. In a ventilated patient, tension physiology must be excluded clinically. Immediate needle decompression (2nd ICS MCL) if tension suspected.',
+    findings:['Deep sulcus sign — left','Increased left hemithoracic lucency','Air rises anteriorly in supine position','Absent anterior lung markings','Exclude tension clinically — decompress urgently'],
+    // 689×561 landscape
+    annots:[
+      {type:'ellipse',cx:16,cy:83,rx:13,ry:11,color:'#ef4444',label:'Deep sulcus sign'},
+      {type:'ellipse',cx:26,cy:46,rx:18,ry:36,color:'#ef4444',label:'L lucency'},
+      {type:'ellipse',cx:72,cy:46,rx:18,ry:36,color:'#22c55e',label:'R lung normal'},
+      {type:'arrow', x1:16,y1:67,x2:16,y2:77,color:'#ef4444',label:'Lucent angle'},
+    ]
+  },
+  {
+    // Tuberculosis-x-ray-1.jpg: 700×542 landscape, bilateral infiltrates + RUL cavity
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Tuberculosis-x-ray-1.jpg/600px-Tuberculosis-x-ray-1.jpg',
+    credit:'Wikipedia · Public Domain', isNormal:false, difficulty:2,
+    title:'38M — chronic cough × 3 months, haemoptysis, weight loss, night sweats',
+    sub:'PA chest radiograph — evaluate for chronic infection',
+    diagnosis:'Pulmonary Tuberculosis — Bilateral Infiltrates + Cavitation',
+    explanation:'Bilateral upper lobe infiltrates with cavitation in the right apical region. Upper lobe predominance is classic for post-primary (reactivation) TB — the apices have a high V/Q ratio (relatively better ventilation than perfusion), resulting in higher local PO₂ that favours mycobacterial growth. Cavitation indicates liquefactive necrosis — the patient is highly infectious. Differential for upper lobe cavitation: TB, lung abscess (Klebsiella, Staph), fungal (Aspergillus), squamous cell carcinoma. BCG does not reliably prevent pulmonary TB in adults. Notifiable disease.',
+    findings:['Bilateral upper lobe infiltrates','Right apical cavitation','High V/Q ratio at apices → higher PO₂ → favours mycobacterial growth','Cavitation = liquefactive necrosis, highly infectious sputum','Notifiable — isolate and initiate RIPE therapy'],
+    // 700×542 landscape
+    annots:[
+      {type:'ellipse',cx:72,cy:20,rx:16,ry:14,color:'#ef4444',label:'R apical cavity'},
+      {type:'ellipse',cx:28,cy:24,rx:15,ry:13,color:'#ef4444',label:'L upper infiltrate'},
+      {type:'arrow', x1:72,y1:8,x2:72,y2:14,color:'#ef4444',label:'Cavitation'},
+    ]
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Chest_Xray_PA_3-8-2010.png/600px-Chest_Xray_PA_3-8-2010.png',
+    credit:'Stillwaterising · CC0', isNormal:true, difficulty:2,
+    title:'61M — 40 pack-year smoker, mild exertional breathlessness',
+    sub:'PA chest radiograph — COPD vs malignancy query',
+    diagnosis:'Normal Chest Radiograph',
+    explanation:'Normal CXR despite significant smoking history. No hyperinflation, bullae, mass, or consolidation. A normal CXR does not exclude early COPD — spirometry (FEV1/FVC < 0.70) required. Lung cancer can be missed on CXR; low-dose CT screening recommended for high-risk patients (≥20 pack-years, age 50–80).',
+    findings:['Normal CXR in high-risk smoker','CXR cannot exclude early COPD','Spirometry required for COPD diagnosis','LDCT lung cancer screening ≥20 pack-years, age 50–80','Normal CXR ≠ no disease'],
+    annots:[
+      {type:'ellipse',cx:25,cy:44,rx:16,ry:22,color:'#22c55e',label:'L lung — clear'},
+      {type:'ellipse',cx:73,cy:44,rx:16,ry:22,color:'#22c55e',label:'R lung — clear'},
+    ]
+  },
+  {
+    // Miliary TB — chest xray. Wikipedia commons Miliary_TB.jpg — portrait
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Miliary_TB.jpg/400px-Miliary_TB.jpg',
+    credit:'Wikipedia · Public Domain', isNormal:false, difficulty:2,
+    title:'29F — fever, dry cough, hepatosplenomegaly — HIV positive',
+    sub:'PA chest radiograph — immunocompromised patient',
+    diagnosis:'Miliary Tuberculosis',
+    explanation:'Innumerable tiny (1–3 mm) nodules distributed uniformly throughout both lung fields — the classic "millet seed" pattern of miliary TB from haematogenous dissemination. Miliary TB itself is not an AIDS-defining illness (extrapulmonary TB is), but in HIV-positive patients with low CD4 counts it is a common and life-threatening opportunistic infection. CNS involvement (TB meningitis) occurs in 15–25% of miliary TB cases — always perform LP. Requires sputum/blood cultures, LP, and consider liver/bone marrow biopsy. Start RIPE.',
+    findings:['Diffuse bilateral miliary nodules (1–3 mm)','Random distribution — "millet seed" pattern haematogenous spread','Miliary TB ≠ AIDS-defining (extrapulmonary TB is)','CNS involvement (TB meningitis) in 15–25% — mandatory LP','RIPE + investigate for extrapulmonary disease'],
+    // portrait ~400px wide
+    annots:[
+      {type:'ellipse',cx:28,cy:45,rx:22,ry:32,color:'#ef4444',label:'L miliary nodules'},
+      {type:'ellipse',cx:72,cy:45,rx:22,ry:32,color:'#ef4444',label:'R miliary nodules'},
+    ]
+  },
+
+  // ════════════════════════════════════════════
+  // HARD — subtle, requires expertise
+  // ════════════════════════════════════════════
+  {
+    // Aortic knuckle / widened mediastinum: confirmed Wikimedia file
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Chest_Xray_PA_3-8-2010.png/600px-Chest_Xray_PA_3-8-2010.png',
+    credit:'Stillwaterising · CC0', isNormal:true, difficulty:3,
+    title:'78M — type 2 DM, hypertension × 20 years, annual review',
+    sub:'PA chest radiograph — cardiovascular risk assessment',
+    diagnosis:'Normal Chest Radiograph',
+    explanation:'Normal CXR in a high-cardiovascular-risk patient. No cardiomegaly, mediastinal widening, or pulmonary oedema. Mediastinal widening is defined as > 8 cm at the level of the aortic arch on a PA film — this image is normal. A normal CXR does not exclude aortic disease. CT angiography is the gold standard for aortic dissection; echocardiography (TOE) is used when the patient is too unstable for CT. Absence of mediastinal widening lowers but does not exclude dissection (negative LR 0.3).',
+    findings:['Normal mediastinal width (≤ 8 cm at aortic arch)','No cardiomegaly — CTR < 0.5','CTA is gold standard for suspected aortic dissection','TOE if haemodynamically unstable for CT','Normal CXR does not exclude dissection (negative LR 0.3)'],
+    annots:[
+      {type:'ellipse',cx:25,cy:44,rx:16,ry:22,color:'#22c55e',label:'L lung — clear'},
+      {type:'ellipse',cx:73,cy:44,rx:16,ry:22,color:'#22c55e',label:'R lung — clear'},
+      {type:'arrow', x1:35,y1:32,x2:44,y2:38,color:'#60a5fa',label:'Aortic knuckle normal'},
+    ]
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Normal_posteroanterior_%28PA%29_chest_radiograph_%28X-ray%29.jpg/500px-Normal_posteroanterior_%28PA%29_chest_radiograph_%28X-ray%29.jpg',
+    credit:'Mikael Häggström · CC0', isNormal:true, difficulty:3,
+    title:'42F — dry cough × 8 weeks, no fever, no weight loss',
+    sub:'PA chest radiograph — chronic cough workup',
+    diagnosis:'Normal Chest Radiograph',
+    explanation:'Normal CXR despite 8 weeks of dry cough. This is a common and diagnostically important scenario. The "big three" causes of chronic cough (>90% of cases): upper airway cough syndrome (UACS/post-nasal drip), gastro-oesophageal reflux disease (GERD), and cough-variant asthma. Rule out ACE inhibitor use. HRCT may be indicated if symptoms persist and UACS/GERD/asthma treatment fails.',
+    findings:['Normal CXR — no structural pathology','Chronic cough: consider UACS / GERD / CVA','UACS + GERD + CVA = >90% of chronic cough','Exclude ACE-inhibitor cough first','HRCT if treatment-refractory'],
+    annots:[
+      {type:'ellipse',cx:27,cy:42,rx:16,ry:22,color:'#22c55e',label:'L lung — clear'},
+      {type:'ellipse',cx:73,cy:42,rx:16,ry:22,color:'#22c55e',label:'R lung — clear'},
+    ]
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Tuberculosis-x-ray-1.jpg/600px-Tuberculosis-x-ray-1.jpg',
+    credit:'Wikipedia · Public Domain', isNormal:false, difficulty:3,
+    title:'55M — returning from TB-endemic region, BCG-vaccinated, fatigue',
+    sub:'PA chest radiograph — latent TB screening',
+    diagnosis:'Active Pulmonary Tuberculosis — Cavitary Disease',
+    explanation:'Right upper lobe cavitation with surrounding infiltrate and contralateral upper lobe involvement — classic post-primary (reactivation) TB. Cavitation on CXR indicates extensive necrosis and high infectious burden. Differential for apical cavitation: TB, abscess (Klebsiella, Staph), fungal (Aspergillus), malignancy (squamous). BCG vaccination does not reliably prevent pulmonary TB in adults. Notifiable disease.',
+    findings:['R upper lobe cavity — apical predominance','Bilateral upper lobe infiltrates','Cavitation = high bacillary load, infectious','Differential: abscess, fungal, squamous CA','Notifiable — isolate and initiate RIPE'],
+    annots:[
+      {type:'ellipse',cx:72,cy:20,rx:16,ry:14,color:'#ef4444',label:'Cavity — RUL'},
+      {type:'arrow', x1:72,y1:6,x2:72,y2:13,color:'#ef4444',label:'Cavitation'},
+      {type:'ellipse',cx:28,cy:24,rx:14,ry:13,color:'#ef4444',label:'L upper infiltrate'},
+    ]
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Miliary_TB.jpg/400px-Miliary_TB.jpg',
+    credit:'Wikipedia · Public Domain', isNormal:false, difficulty:3,
+    title:'45M — gradual worsening dyspnea, no fever, chronic steroid use',
+    sub:'PA chest radiograph — cryptogenic presentation',
+    diagnosis:'Miliary Pattern — Broad Differential',
+    explanation:'The miliary pattern (innumerable 1–3 mm nodules, bilateral random distribution) has a broad differential beyond TB: metastatic malignancy (thyroid, renal, melanoma), sarcoidosis (perilymphatic not random distribution — along bronchovascular bundles and fissures, upper-mid zone predominance), hypersensitivity pneumonitis, pneumoconiosis (coal, silica). In a non-immunocompromised patient on steroids, miliary fungal infection (histoplasma, coccidioides) must be considered. Distribution pattern on HRCT is the key discriminator: random (TB/mets), perilymphatic (sarcoid), centrilobular (HP).',
+    findings:['Miliary nodules — bilateral distribution','TB and haematogenous metastases: truly random distribution','Sarcoidosis: perilymphatic — not truly random, upper-mid zone','Centrilobular pattern suggests hypersensitivity pneumonitis','HRCT distribution is the key discriminator: random vs perilymphatic vs centrilobular'],
+    annots:[
+      {type:'ellipse',cx:28,cy:45,rx:22,ry:32,color:'#ef4444',label:'L nodular pattern'},
+      {type:'ellipse',cx:72,cy:45,rx:22,ry:32,color:'#ef4444',label:'R nodular pattern'},
+    ]
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/PCP_CAP_CXR.JPG/500px-PCP_CAP_CXR.JPG',
+    credit:'Samir Dharam · Public Domain', isNormal:false, difficulty:3,
+    title:'67M — diabetic, post-renal transplant, tacrolimus — new infiltrates',
+    sub:'PA chest radiograph — transplant patient, O₂ 94%',
+    diagnosis:'Opportunistic Pneumonia — Transplant Patient',
+    explanation:'Bilateral perihilar interstitial infiltrates in a post-transplant patient on tacrolimus (calcineurin inhibitor). Broad differential in this context: PCP (most common), CMV pneumonitis, invasive pulmonary aspergillosis (less bilateral), nocardia, community-acquired pathogens (pneumococcus still possible). Bronchoscopy with BAL for definitive diagnosis. Empirical broad-spectrum cover including anti-PCP pending results.',
+    findings:['Bilateral perihilar interstitial infiltrates','Transplant patient — broad opportunistic differential','PCP most common: co-trimoxazole + steroids','CMV: ganciclovir / valganciclovir','Bronchoscopy + BAL mandatory for diagnosis'],
+    annots:[
+      {type:'ellipse',cx:30,cy:44,rx:20,ry:26,color:'#ef4444',label:'L perihilar'},
+      {type:'ellipse',cx:70,cy:44,rx:20,ry:26,color:'#ef4444',label:'R perihilar'},
+      {type:'arrow', x1:50,y1:8,x2:50,y2:20,color:'#f59e0b',label:'Perihilar distribution'},
+    ]
+  },
+  {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pneumothorax_im_liegen.jpg/600px-Pneumothorax_im_liegen.jpg',
+    credit:'M. Schechinger · CC BY-SA', isNormal:false, difficulty:3,
+    title:'72M — mechanically ventilated, sudden O₂ desaturation + hypotension',
+    sub:'AP supine CXR — emergency bedside film',
+    diagnosis:'Tension Pneumothorax — Supine Presentation',
+    explanation:'In a ventilated patient with sudden desaturation and haemodynamic compromise, this supine AP film shows the deep sulcus sign and increased left hemithoracic lucency consistent with tension PTX. DO NOT WAIT FOR CXR CONFIRMATION — tension PTX is a clinical diagnosis. Immediate needle decompression: 2nd intercostal space, midclavicular line. Then definitive chest drain. Causes in ventilated patients: barotrauma, central line insertion, rib fracture.',
+    findings:['Clinical diagnosis — act before CXR confirmation','Deep sulcus sign + haemodynamic compromise = tension','Immediate needle decompression: 2nd ICS MCL','Then definitive intercostal drain (5th ICS MAL)','Causes: barotrauma, procedural, trauma'],
+    annots:[
+      {type:'ellipse',cx:16,cy:83,rx:13,ry:11,color:'#ef4444',label:'Deep sulcus sign'},
+      {type:'ellipse',cx:26,cy:46,rx:18,ry:36,color:'#ef4444',label:'Tension PTX'},
+      {type:'arrow', x1:16,y1:67,x2:16,y2:77,color:'#ef4444',label:'Lucent angle'},
+    ]
+  },
+];
+
+// ─────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────
+const EASY   = CASES.filter(c=>c.difficulty===1);
+const MEDIUM = CASES.filter(c=>c.difficulty===2);
+const HARD   = CASES.filter(c=>c.difficulty===3);
+
+let queue=[], idx=0, scoreOk=0, scoreBad=0;
+let streak=0, bestStreak=0, hardUnlocked=false, waiting=false;
+let currentImgSrc='';
+let lightboxOpen=false;
+let lightboxJustClosed=false;
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function buildQueue(){return[...shuffle(EASY),...shuffle(MEDIUM)];}
+function preloadNext(){if(idx+1<queue.length){const n=new Image();n.src=queue[idx+1].img;}}
+
+// ─────────────────────────────────────────────────────────────────────
+// FULLSCREEN LIGHTBOX
+// ─────────────────────────────────────────────────────────────────────
+function openLightbox(source){
+  const lb=document.getElementById('lightbox');
+  const lbImg=document.getElementById('lightbox-img');
+  const lbLabel=document.getElementById('lightbox-label');
+
+  if(source==='card'){
+    lbImg.src=currentImgSrc;
+    const c=queue[idx];
+    lbLabel.textContent=c?c.title:'';
+  } else {
+    lbImg.src=document.getElementById('annot-img').src;
+    lbLabel.textContent='TAP TO CLOSE';
+  }
+  lightboxOpen=true;
+  lb.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeLightbox(){
+  if(!lightboxOpen)return;
+  lightboxOpen=false;
+  lightboxJustClosed=true;
+  // Block swipe for 350ms after close so the touch-end doesn't trigger a swipe
+  setTimeout(()=>{ lightboxJustClosed=false; },350);
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// RENDER CASE
+// ─────────────────────────────────────────────────────────────────────
+function renderCase(){
+  const c=queue[idx];
+  if(!c){showDone();return;}
+
+  const imgEl=document.getElementById('cxr-img');
+  const shEl=document.getElementById('shimmer');
+  const shMsg=document.getElementById('shimmer-msg');
+  imgEl.style.display='none';
+  shEl.style.display='flex';
+  shMsg.textContent='Loading radiograph…';
+
+  const p=new Image();
+  p.onload=()=>{
+    imgEl.src=p.src;
+    currentImgSrc=p.src;
+    imgEl.style.display='block';
+    shEl.style.display='none';
+    // Show zoom hint briefly
+    const hint=document.getElementById('zoom-hint');
+    hint.classList.add('show');
+    setTimeout(()=>hint.classList.remove('show'),2500);
+    preloadNext();
+  };
+  p.onerror=()=>{shMsg.textContent='Image unavailable';};
+  p.src=c.img;
+
+  document.getElementById('case-stamp').textContent=`CASE ${String(idx+1).padStart(3,'0')}`;
+  document.getElementById('case-tag').textContent=`CASE ${idx+1}`;
+  document.getElementById('card-title').textContent=c.title;
+  document.getElementById('card-sub').textContent=c.sub;
+  document.getElementById('src-credit').textContent=c.credit;
+  document.getElementById('prog').style.width=`${(idx/queue.length)*100}%`;
+
+  const card=document.getElementById('card');
+  const hs=document.getElementById('hard-stamp');
+  if(c.difficulty===3){card.classList.add('hard-mode');hs.classList.add('show');}
+  else{card.classList.remove('hard-mode');hs.classList.remove('show');}
+
+  const dd=document.getElementById('diff-dots');dd.innerHTML='';
+  for(let i=1;i<=3;i++){const s=document.createElement('span');if(i<=c.difficulty)s.className='on';dd.appendChild(s);}
+
+  const pips=document.getElementById('diff-pips').querySelectorAll('span');
+  pips.forEach((p,i)=>{p.className=i<c.difficulty?['','d1','d2','d3'][c.difficulty]:'';});
+
+  const mt=document.getElementById('mode-tag');
+  mt.textContent=c.difficulty===1?'EASY':c.difficulty===2?'MEDIUM':'HARD';
+  mt.className='mode-tag'+(c.difficulty===3?' hard':'');
+
+  document.getElementById('ind-n').style.opacity='0';
+  document.getElementById('ind-a').style.opacity='0';
+  card.style.transform='';card.style.transition='';
+  card.className=(c.difficulty===3?'swipe-card hard-mode':'swipe-card')+' card-enter';
+  setTimeout(()=>{card.className=c.difficulty===3?'swipe-card hard-mode':'swipe-card';},400);
+}
+
+function updateScore(){document.getElementById('sc-ok').textContent=scoreOk;document.getElementById('sc-bad').textContent=scoreBad;}
+function updateStreakUI(){
+  const b=document.getElementById('streak-badge'),n=document.getElementById('streak-num');
+  n.textContent=streak;
+  if(streak>=2){b.classList.add('show');b.classList.add('pulse');setTimeout(()=>b.classList.remove('pulse'),400);}
+  else b.classList.remove('show');
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// DECIDE
+// ─────────────────────────────────────────────────────────────────────
+function decide(choice){
+  if(waiting)return; waiting=true;
+  const c=queue[idx];
+  const ok=(choice==='normal')===c.isNormal;
+  if(ok){scoreOk++;streak++;if(streak>bestStreak)bestStreak=streak;}
+  else{scoreBad++;streak=0;}
+  updateScore();updateStreakUI();
+  if(streak===3&&!hardUnlocked)unlockHard();
+  else if(streak===5)showMilestone('🔥','5 Streak!','Exceptional accuracy');
+  const card=document.getElementById('card');
+  card.className=(c.difficulty===3?'swipe-card hard-mode ':' swipe-card ')+(choice==='normal'?'exit-l':'exit-r');
+  setTimeout(()=>showResult(c,ok,choice),280);
+}
+
+function unlockHard(){
+  hardUnlocked=true;
+  const rest=queue.slice(idx+1);
+  queue=[...queue.slice(0,idx+1),...shuffle(HARD),...rest];
+  const t=document.getElementById('unlock-toast');
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);
+  showMilestone('💀','Hard Mode!','3 streak — expert cases unlocked');
+}
+
+function showMilestone(e,ti,su){
+  const m=document.getElementById('milestone');
+  document.getElementById('m-emoji').textContent=e;
+  document.getElementById('m-title').textContent=ti;
+  document.getElementById('m-sub').textContent=su;
+  m.classList.add('show');setTimeout(()=>m.classList.remove('show'),2200);
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// DIAGNOSIS PICKER — phase 1 of result flow
+// ─────────────────────────────────────────────────────────────────────
+let pendingCase=null, pendingOk=false, pendingChoice='';
+
+// Pool of all unique diagnoses for distractor generation
+const ALL_DIAGNOSES = [
+  'Normal Chest Radiograph',
+  'Right-Sided Pneumonia — Patchy Consolidation',
+  'Left Lower Lobe Pneumonia',
+  'Right Upper Lobe Pneumonia',
+  'Right Pleural Effusion',
+  'Left Pleural Effusion',
+  'Bilateral Pleural Effusions',
+  'Left Spontaneous Pneumothorax',
+  'Right Spontaneous Pneumothorax',
+  'Tension Pneumothorax',
+  'Pulmonary Oedema — Kerley B Lines',
+  'Congestive Heart Failure',
+  'Cardiomegaly',
+  'Bilateral Pneumonia / ARDS Pattern',
+  'PCP Pneumonia — Bilateral Interstitial Infiltrates',
+  'Pulmonary Tuberculosis — Cavitary Disease',
+  'Miliary Tuberculosis',
+  'Pulmonary Embolism',
+  'Lung Mass — Suspicious for Malignancy',
+  'Mediastinal Widening',
+  'Lobar Collapse / Atelectasis',
+  'Opportunistic Pneumonia — Transplant Patient',
+  'Supine Pneumothorax — Deep Sulcus Sign',
+];
+
+function getDistractors(correct, n=3) {
+  // Pick n plausible distractors that aren't the correct answer
+  // Prefer similar-category distractors for more challenge
+  const pool = ALL_DIAGNOSES.filter(d => d !== correct);
+  const shuffled = [...pool].sort(()=>Math.random()-0.5);
+  return shuffled.slice(0, n);
+}
+
+function showResult(c, ok, choice) {
+  pendingCase=c; pendingOk=ok; pendingChoice=choice;
+
+  // Normal cases skip the picker — nothing to name
+  if(c.isNormal){
+    showFullResult(c, ok, choice);
+    return;
+  }
+
+  // Build 4 options: correct + 3 distractors, shuffled
+  const distractors = getDistractors(c.diagnosis, 3);
+  const options = [c.diagnosis, ...distractors].sort(()=>Math.random()-0.5);
+
+  // Populate picker
+  document.getElementById('picker-swipe-verdict').textContent =
+    ok ? `✓ Correct — Abnormal` : `✕ Wrong — It was Abnormal`;
+  document.getElementById('picker-swipe-verdict').className =
+    'picker-swipe-verdict ' + (ok ? 'ok' : 'fail');
+  document.getElementById('picker-question').textContent = 'Now name the diagnosis:';
+
+  const grid = document.getElementById('picker-options');
+  grid.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'picker-opt';
+    btn.textContent = opt;
+    btn.onclick = () => selectDiagnosis(btn, opt, c.diagnosis, options);
+    grid.appendChild(btn);
+  });
+
+  // Reset reveal button
+  document.getElementById('picker-reveal-btn').style.display='none';
+  document.getElementById('picker-reveal-btn').classList.remove('visible');
+  document.getElementById('picker-reveal-btn').disabled=true;
+  document.getElementById('picker-feedback').textContent='';
+  document.getElementById('picker-feedback').className='picker-feedback';
+
+  document.getElementById('picker-overlay').classList.add('open');
+}
+
+function selectDiagnosis(btn, selected, correct, allOpts) {
+  // Disable all buttons
+  document.querySelectorAll('.picker-opt').forEach(b=>b.disabled=true);
+
+  if(selected===correct){
+    btn.classList.add('opt-correct');
+    document.getElementById('picker-feedback').textContent='✓ Exactly right';
+    document.getElementById('picker-feedback').className='picker-feedback correct';
+  } else {
+    btn.classList.add('opt-wrong');
+    // Highlight the correct answer
+    document.querySelectorAll('.picker-opt').forEach(b=>{
+      if(b.textContent===correct) b.classList.add('opt-correct');
+    });
+    document.getElementById('picker-feedback').textContent=`The answer was: ${correct}`;
+    document.getElementById('picker-feedback').className='picker-feedback wrong';
+  }
+
+  // Show reveal button
+  const revBtn=document.getElementById('picker-reveal-btn');
+  revBtn.style.display='block';
+  revBtn.disabled=false;
+  // Animate in
+  setTimeout(()=>revBtn.classList.add('visible'),50);
+}
+
+function revealFull(){
+  document.getElementById('picker-overlay').classList.remove('open');
+  setTimeout(()=>showFullResult(pendingCase, pendingOk, pendingChoice), 200);
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// FULL RESULT SHEET — phase 2
+// ─────────────────────────────────────────────────────────────────────
+function showFullResult(c, ok, choice){
+  const icon=document.getElementById('v-icon'),title=document.getElementById('v-title'),sub=document.getElementById('v-sub');
+  if(ok){
+    icon.textContent='✓'; icon.className='v-icon ok';
+    title.textContent='Correct!'; title.className='ok';
+    sub.textContent = c.isNormal
+      ? 'You correctly identified this as a normal film'
+      : 'You correctly identified this as abnormal';
+  } else {
+    icon.textContent='✕'; icon.className='v-icon fail';
+    title.textContent='Not quite'; title.className='fail';
+    sub.textContent = c.isNormal
+      ? 'This was a normal film — no acute findings'
+      : `This was abnormal — you said ${choice}`;
+  }
+  document.getElementById('diag-tag').textContent=`🔍 ${c.diagnosis}`;
+  document.getElementById('expl').textContent=c.explanation;
+  const ul=document.getElementById('findings');ul.innerHTML='';
+  c.findings.forEach(f=>{const li=document.createElement('li');li.textContent=f;ul.appendChild(li);});
+
+  const aImg=document.getElementById('annot-img');
+  const aSvg=document.getElementById('annot-svg');
+  const imgSrc=c.annotImg||c.img;
+  aImg.style.opacity='0';
+  aImg.onload=()=>{
+    aImg.style.opacity='1';
+    const w=aImg.naturalWidth||600,h=aImg.naturalHeight||500;
+    aSvg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+    if(!c.annotImg)buildAnnotations(c.annots||[],w,h);
+    else aSvg.innerHTML='';
+  };
+  aImg.src=imgSrc;
+  document.getElementById('overlay').classList.add('open');
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// BUILD SVG ANNOTATIONS
+// ─────────────────────────────────────────────────────────────────────
+function buildAnnotations(annots,W,H){
+  const svg=document.getElementById('annot-svg');
+  svg.innerHTML='';
+  if(!annots||annots.length===0)return;
+
+  const style=document.createElementNS('http://www.w3.org/2000/svg','style');
+  style.textContent='@keyframes drawDash{to{stroke-dashoffset:0}} @keyframes fadeUp{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}';
+  svg.appendChild(style);
+
+  annots.forEach((a,i)=>{
+    const d=i*0.28;
+    const px=v=>v/100*W, py=v=>v/100*H;
+
+    if(a.type==='ellipse'){
+      const cx=px(a.cx),cy=py(a.cy),rx=px(a.rx),ry=py(a.ry);
+      const perim=Math.PI*(3*(rx+ry)-Math.sqrt((3*rx+ry)*(rx+3*ry)));
+      const el=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+      el.setAttribute('cx',cx);el.setAttribute('cy',cy);el.setAttribute('rx',rx);el.setAttribute('ry',ry);
+      el.setAttribute('stroke',a.color);el.setAttribute('stroke-width',Math.max(W*0.005,1.5));
+      el.setAttribute('fill','none');
+      el.setAttribute('stroke-dasharray',perim);el.setAttribute('stroke-dashoffset',perim);
+      el.setAttribute('style',`animation:drawDash 0.7s ease ${d}s forwards`);
+      svg.appendChild(el);
+      addLabel(svg,a.label,cx,cy-ry-W*0.02,a.color,W,d+0.5);
+    }
+
+    if(a.type==='arrow'){
+      const x1=px(a.x1),y1=py(a.y1),x2=px(a.x2),y2=py(a.y2);
+      const len=Math.sqrt((x2-x1)**2+(y2-y1)**2);
+      const mid=i;
+      // defs
+      const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+      const mk=document.createElementNS('http://www.w3.org/2000/svg','marker');
+      mk.setAttribute('id',`mka${mid}`);mk.setAttribute('markerWidth','7');mk.setAttribute('markerHeight','7');
+      mk.setAttribute('refX','6');mk.setAttribute('refY','3.5');mk.setAttribute('orient','auto');
+      const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+      poly.setAttribute('points','0 0, 7 3.5, 0 7');poly.setAttribute('fill',a.color);
+      mk.appendChild(poly);defs.appendChild(mk);svg.appendChild(defs);
+      const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1',x1);line.setAttribute('y1',y1);line.setAttribute('x2',x2);line.setAttribute('y2',y2);
+      line.setAttribute('stroke',a.color);line.setAttribute('stroke-width',Math.max(W*0.004,1.5));
+      line.setAttribute('marker-end',`url(#mka${mid})`);
+      line.setAttribute('stroke-dasharray',len);line.setAttribute('stroke-dashoffset',len);
+      line.setAttribute('style',`animation:drawDash 0.5s ease ${d}s forwards`);
+      svg.appendChild(line);
+      addLabel(svg,a.label,(x1+x2)/2,Math.min(y1,y2)-W*0.02,a.color,W,d+0.35);
+    }
+  });
+}
+
+function addLabel(svg,text,cx,cy,color,W,delay){
+  const fs=Math.max(W*0.019,8);
+  const pad=fs*0.5;
+  const approxW=text.length*fs*0.55+pad*2;
+  const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  rect.setAttribute('x',cx-approxW/2);rect.setAttribute('y',cy-fs-pad);
+  rect.setAttribute('width',approxW);rect.setAttribute('height',fs+pad*2);
+  rect.setAttribute('rx',fs*0.35);rect.setAttribute('fill','rgba(0,0,0,0.75)');
+  rect.setAttribute('style',`opacity:0;animation:fadeUp 0.35s ease ${delay}s forwards`);
+  svg.appendChild(rect);
+  const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t.setAttribute('x',cx);t.setAttribute('y',cy-pad*0.2);
+  t.setAttribute('text-anchor','middle');t.setAttribute('fill',color);
+  t.setAttribute('font-size',fs);t.setAttribute('font-family','Space Mono, monospace');t.setAttribute('font-weight','700');
+  t.setAttribute('style',`opacity:0;animation:fadeUp 0.35s ease ${delay}s forwards`);
+  t.textContent=text;svg.appendChild(t);
+}
+
+function nextCase(){
+  document.getElementById('overlay').classList.remove('open');
+  idx++;waiting=false;
+  if(idx>=queue.length){showDone();return;}
+  setTimeout(renderCase,180);
+}
+
+function showDone(){
+  document.getElementById('main').style.display='none';
+  document.getElementById('done').classList.add('show');
+  document.getElementById('final-num').textContent=`${scoreOk}/${queue.length}`;
+  const fs=document.getElementById('final-streak');
+  if(bestStreak>=3)fs.textContent=`🔥 Best streak: ${bestStreak}`;
+}
+
+function restart(){
+  queue=buildQueue();idx=0;scoreOk=0;scoreBad=0;
+  streak=0;bestStreak=0;hardUnlocked=false;waiting=false;
+  updateScore();
+  document.getElementById('streak-badge').classList.remove('show');
+  document.getElementById('streak-num').textContent='0';
+  document.getElementById('done').classList.remove('show');
+  document.getElementById('main').style.display='';
+  renderCase();
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// SWIPE / DRAG with tap-to-fullscreen
+// Distinguish: short tap (<200ms, <10px drag) = fullscreen
+//              drag = swipe decision
+// ─────────────────────────────────────────────────────────────────────
+(function(){
+  const card=document.getElementById('card');
+  const imgWrap=document.getElementById('img-wrap');
+  let sx=0,sy=0,cx=0,drag=false,startTime=0;
+
+  const start=(x,y)=>{
+    if(waiting||lightboxOpen||lightboxJustClosed)return;
+    sx=x;sy=y;cx=x;drag=false;startTime=Date.now();
+    card.style.transition='none';
+  };
+  const move=(x,y)=>{
+    if(waiting||lightboxOpen||lightboxJustClosed)return;
+    const dx=x-sx,dy=y-sy;
+    if(!drag&&(Math.abs(dx)>8||Math.abs(dy)>8))drag=true;
+    if(!drag)return;
+    cx=x;
+    card.style.transform=`translateX(${dx}px) rotate(${dx*0.07}deg)`;
+    const n=document.getElementById('ind-n'),a=document.getElementById('ind-a');
+    if(dx<-35){n.style.opacity=Math.min(1,(Math.abs(dx)-35)/70);a.style.opacity='0';}
+    else if(dx>35){a.style.opacity=Math.min(1,(dx-35)/70);n.style.opacity='0';}
+    else{n.style.opacity='0';a.style.opacity='0';}
+  };
+  const end=(x)=>{
+    if(waiting||lightboxOpen||lightboxJustClosed){
+      drag=false;
+      card.style.transform='';
+      return;
+    }
+    const dt=Date.now()-startTime;
+    const dx=x-sx;
+
+    if(!drag&&dt<250&&Math.abs(dx)<10){
+      card.style.transition='';
+      card.style.transform='';
+      openLightbox('card');
+      return;
+    }
+
+    drag=false;
+    card.style.transition='transform .28s ease';
+    if(dx<-85)decide('normal');
+    else if(dx>85)decide('abnormal');
+    else{
+      card.style.transform='';
+      document.getElementById('ind-n').style.opacity='0';
+      document.getElementById('ind-a').style.opacity='0';
+    }
+  };
+
+  card.addEventListener('mousedown',e=>{start(e.clientX,e.clientY);});
+  window.addEventListener('mousemove',e=>{if(!waiting)move(e.clientX,e.clientY);});
+  window.addEventListener('mouseup',e=>end(e.clientX));
+  card.addEventListener('touchstart',e=>{start(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
+  window.addEventListener('touchmove',e=>{if(!waiting)move(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
+  window.addEventListener('touchend',e=>end(e.changedTouches[0].clientX));
+})();
+
+// ESC closes lightbox
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+
+// INIT
+queue=buildQueue();
+renderCase();
+</script>
+</body>
+</html>
