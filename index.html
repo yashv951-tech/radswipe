@@ -303,7 +303,10 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
   .picker-opt{font-size:13px}
   /* Centred modal instead of bottom-sheet on desktop */
   .overlay,.picker-overlay{align-items:center;padding:0 16px}
-  .sheet,.picker-sheet{border-radius:20px;max-width:620px;width:100%;margin:0 auto}
+  .sheet,.picker-sheet{border-radius:20px;max-width:620px;width:100%;margin:0 auto;
+    transform:scale(0.92);opacity:0;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .25s ease}
+  .overlay.open .sheet,.picker-overlay.open .picker-sheet{transform:scale(1);opacity:1}
   .btn{height:56px;font-size:15px}
 }
 </style>
