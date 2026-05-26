@@ -991,6 +991,127 @@ const CASES = [
     ]
   },
 
+  // ── HARD CASES ────────────────────────────────────────────────────────
+  {
+    caseId:'CXR-019',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/3/30/Pneumonia_of_Right_Lung_Middle_Lobe.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (James Heilman MD)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Pneumonia_of_Right_Lung_Middle_Lobe.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'52M — one week of right-sided pleuritic chest pain, productive cough, and low-grade fever.',
+    sub:'PA chest radiograph — respiratory assessment',
+    diagnosis:'Right Middle Lobe Pneumonia — Silhouette Sign',
+    explanation:'There is a right perihilar opacity that obliterates the right cardiac border — the silhouette sign. Because the right middle lobe directly abuts the right heart border, any process filling the RML airspace erases that interface. The right hemidiaphragm remains visible, which distinguishes RML disease from right lower lobe pathology where the diaphragm is the obliterated border.',
+    findings:[
+      'Loss of right cardiac border — positive silhouette sign',
+      'Right perihilar and mid-zone opacity — RML airspace consolidation',
+      'Right hemidiaphragm intact — pathology confined to the middle lobe',
+      'Right upper lobe clear — no upper lobe involvement',
+      'Recurrent RML pneumonia warrants CT and bronchoscopy to exclude an obstructing endobronchial lesion'
+    ],
+    annots:[
+      {type:'ellipse',cx:38,cy:62,rx:14,ry:13,color:'#ef4444',label:'RML opacity'},
+      {type:'arrow',x1:28,y1:52,x2:39,y2:58,color:'#f59e0b',label:'Silhouette sign'},
+    ]
+  },
+
+  {
+    caseId:'CXR-020',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/6/6c/Chest_radiograph_of_miliary_tuberculosis_1.jpg',
+    credit:'Wikimedia Commons — CC BY 4.0',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Chest_radiograph_of_miliary_tuberculosis_1.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'82F — 3-week history of fever, drenching night sweats, and 6 kg weight loss.',
+    sub:'PA chest radiograph — respiratory assessment',
+    diagnosis:'Miliary Tuberculosis',
+    explanation:'There is a diffuse bilateral reticulonodular pattern with uniformly distributed millet-seed sized (1–3 mm) opacities throughout both lung fields. This appearance is pathognomonic of haematogenous dissemination of Mycobacterium tuberculosis from a reactivating or silent primary focus. In elderly patients the classic miliary pattern is easily dismissed as bilateral haziness without a systematic approach — clinical context (fever, night sweats, weight loss) is the key to suspicion.',
+    findings:[
+      'Diffuse bilateral micronodules — 1–3 mm, uniformly distributed without lobar predominance',
+      'No consolidation or cavitation — haematogenous pattern, not primary reactivation TB',
+      'No visible mediastinal lymphadenopathy or pleural effusion in this case',
+      'Elderly and immunocompromised patients are at highest risk of miliary dissemination',
+      'Sputum AFB smear, IGRA, and bronchoscopic BAL required; respiratory isolation and anti-TB therapy must not be delayed pending results'
+    ],
+    annots:[
+      {type:'ellipse',cx:25,cy:40,rx:14,ry:12,color:'#ef4444',label:'Micronodules R lung'},
+      {type:'ellipse',cx:72,cy:38,rx:14,ry:12,color:'#ef4444',label:'Micronodules L lung'},
+    ]
+  },
+
+  {
+    caseId:'CXR-021',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/7/7b/Hilar_Adenopathy_from_Sarcoidosis.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (James Heilman MD)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Hilar_Adenopathy_from_Sarcoidosis.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'28M — incidental finding on chest X-ray. Mild exertional dyspnoea and dry cough for 2 months.',
+    sub:'PA chest radiograph — respiratory referral',
+    diagnosis:'Sarcoidosis — Bilateral Hilar Lymphadenopathy',
+    explanation:'Bilateral symmetric hilar enlargement without parenchymal infiltrates is Stage I sarcoidosis. The lobulated, bilateral "potato nodes" are characteristic. The critical differential is lymphoma, which typically also involves paratracheal or anterior mediastinal nodes and presents with B symptoms; sarcoidosis favours young non-smokers and has a predilection for Black and Scandinavian populations. Serum ACE alone is neither sensitive nor specific.',
+    findings:[
+      'Bilateral hilar enlargement — symmetric lobulated "potato nodes"',
+      'No parenchymal infiltrates — Stage I disease (lymphadenopathy without lung involvement)',
+      'Heart size normal — bilateral hilar prominence is not cardiomegaly',
+      'Differential: lymphoma, primary TB complex, fungal infection, metastatic disease',
+      'Serum ACE, serum calcium, HRCT thorax, and bronchoscopic transbronchial biopsy are the next investigations'
+    ],
+    annots:[
+      {type:'ellipse',cx:38,cy:55,rx:8,ry:7,color:'#ef4444',label:'R hilar mass'},
+      {type:'ellipse',cx:63,cy:53,rx:9,ry:8,color:'#ef4444',label:'L hilar mass'},
+    ]
+  },
+
+  {
+    caseId:'CXR-022',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/1/16/Massivepericarialeffusion.png',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (James Heilman MD)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Massivepericarialeffusion.png',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'55M — 2-week progressive dyspnoea. Muffled heart sounds and elevated JVP on examination.',
+    sub:'PA chest radiograph — cardiac assessment',
+    diagnosis:'Pericardial Effusion — Water Bottle Sign',
+    explanation:'The cardiac silhouette is massively enlarged with a smooth, globular "water bottle" contour, lacking the normal cardiac waist. This morphology results from circumferential pericardial fluid redistributing around the heart — not myocardial hypertrophy. The key distinguishing feature is clear lung fields: in acute LVF the lungs would be congested. Bedside echocardiography is mandatory to assess for tamponade physiology before any delay.',
+    findings:[
+      'Massively enlarged globular cardiac silhouette — smooth water-bottle contour',
+      'Loss of normal cardiac waist — fluid distributes evenly, erasing normal cardiac borders',
+      'Clear lung fields — no pulmonary oedema, distinguishes from acute LVF and dilated cardiomyopathy',
+      'Beck\'s triad: hypotension, muffled heart sounds, elevated JVP — tamponade until excluded',
+      'Urgent bedside echo required; pericardiocentesis if tamponade physiology confirmed'
+    ],
+    annots:[
+      {type:'ellipse',cx:48,cy:63,rx:28,ry:21,color:'#ef4444',label:'Water bottle silhouette'},
+      {type:'arrow',x1:48,y1:42,x2:48,y2:50,color:'#f59e0b',label:'Loss of cardiac waist'},
+    ]
+  },
+
+  {
+    caseId:'CXR-023',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/e/ef/Dextrocardia.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Prashanthns)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Dextrocardia.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'34F — routine pre-operative assessment. No cardiac symptoms. No prior cardiac history.',
+    sub:'PA chest radiograph — pre-operative assessment',
+    diagnosis:'Dextrocardia with Situs Inversus',
+    explanation:'The cardiac apex points toward the patient\'s right and the bulk of the heart lies in the right hemithorax — dextrocardia. When accompanied by mirror-image organ arrangement (situs inversus totalis) there is no intrinsic structural cardiac defect and most patients are entirely asymptomatic. This is a classic systematic-review trap: a student who does not check cardiac apex position and gastric bubble situs on every CXR will read this as normal.',
+    findings:[
+      'Cardiac apex pointing to patient\'s right — dextrocardia confirmed',
+      'Mirror-image cardiac and abdominal situs — situs inversus totalis if abdominal organs also reversed',
+      'No intrinsic structural heart disease in isolated situs inversus totalis',
+      'ECG will show inverted P and QRS in lead I — critical for any future arrhythmia or ischaemia interpretation',
+      'In young women, consider Kartagener syndrome: situs inversus + chronic sinusitis + bronchiectasis due to ciliary dyskinesia'
+    ],
+    annots:[
+      {type:'ellipse',cx:36,cy:60,rx:18,ry:16,color:'#ef4444',label:'Heart — right chest'},
+      {type:'arrow',x1:44,y1:72,x2:30,y2:70,color:'#f59e0b',label:'Apex — patient\'s right'},
+    ]
+  },
+
 ];
 
 // ─── DISTRACTORS ────────────────────────────────────────────────────
@@ -1018,6 +1139,13 @@ const ALL_DIAGNOSES=[
   'Malpositioned NG Tube — Right Mainstem Bronchus','Right Mainstem Intubation',
   'Left Lung Mass — Suspected Bronchogenic Carcinoma',
   'Right Upper Lobe Mass — Pancoast Tumour','Solitary Pulmonary Metastasis',
+  'Right Middle Lobe Pneumonia — Silhouette Sign',
+  'Sarcoidosis — Bilateral Hilar Lymphadenopathy',
+  'Pulmonary Hypertension — Bilateral Hilar Enlargement',
+  'Lymphoma — Mediastinal Lymphadenopathy',
+  'Pericardial Effusion — Water Bottle Sign',
+  'Dilated Cardiomyopathy','Cardiac Tamponade',
+  'Dextrocardia with Situs Inversus','Isolated Dextrocardia — No Situs Inversus',
 ];
 function getDistractors(correct,n=3){
   return shuffle([...ALL_DIAGNOSES].filter(d=>d!==correct)).slice(0,n);
