@@ -70,8 +70,14 @@
 <!-- Favicon & app icons -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23080a0f'/><text y='.9em' font-size='78' x='50%25' text-anchor='middle'>🩻</text></svg>">
 <link rel="apple-touch-icon" href="https://thoraswipe.com/og-image.png">
+
+<!-- Fonts — preconnect first, then non-blocking stylesheet -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700&display=swap">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700&display=swap');
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 :root{
   --bg:#080a0f;--surface:#10131a;--card:#161920;--border:#22273a;
   --text:#e4e8f0;--muted:#606880;--green:#22c55e;--red:#ef4444;
@@ -378,6 +384,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 </div>
 
 <main id="main">
+  <h1 class="sr-only">Free Chest X-Ray Interpretation Quiz — CXR Practice for Medical Students, Junior Doctors &amp; Radiographers</h1>
   <div class="prog-wrap"><div class="prog-fill" id="prog" style="width:0%"></div></div>
   <div class="card-stack">
     <div class="ghost ghost-2"></div>
