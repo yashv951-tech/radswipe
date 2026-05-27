@@ -141,7 +141,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 /* RESULT OVERLAY */
 .overlay{position:fixed;inset:0;z-index:101;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s}
 .overlay.open{background:rgba(0,0,0,.78);pointer-events:all;backdrop-filter:blur(6px)}
-.sheet{width:100%;max-width:480px;background:var(--surface);border-radius:22px 22px 0 0;border:1px solid var(--border);border-bottom:none;padding:16px 18px 48px;transform:translateY(100%);transition:transform .38s cubic-bezier(.34,1.56,.64,1);max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sheet{width:100%;max-width:480px;background:var(--surface);border-radius:22px 22px 0 0;border:1px solid var(--border);border-bottom:none;padding:16px 18px 48px;transform:translateY(100%);transition:transform .38s cubic-bezier(.34,1.56,.64,1);max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
 .overlay.open .sheet{transform:translateY(0)}
 .verdict-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .v-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
@@ -167,6 +167,8 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .findings-box ul{list-style:none;display:flex;flex-direction:column;gap:5px}
 .findings-box li{font-size:11px;color:var(--text);display:flex;align-items:flex-start;gap:7px;line-height:1.5}
 .findings-box li::before{content:'→';color:var(--blue);flex-shrink:0;font-family:'Space Mono',monospace;font-size:10px;margin-top:1px}
+.sheet-close{position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color .2s,border-color .2s;z-index:5}
+.sheet-close:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
 .btn-next{width:100%;height:50px;border:none;border-radius:13px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:transform .15s,opacity .15s}
 .btn-next:active{transform:scale(.97);opacity:.9}
 
@@ -519,6 +521,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 <div class="overlay" id="overlay">
   <div class="sheet">
     <div class="handle"></div>
+    <button class="sheet-close" onclick="nextCase()" title="Next case">✕</button>
     <div class="verdict-row">
       <div class="v-icon" id="v-icon"></div>
       <div class="v-text"><h3 id="v-title"></h3><p id="v-sub"></p></div>
