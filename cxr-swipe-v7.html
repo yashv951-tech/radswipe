@@ -69,7 +69,8 @@
 
 <!-- Favicon & app icons -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23080a0f'/><text y='.9em' font-size='78' x='50%25' text-anchor='middle'>🩻</text></svg>">
-<link rel="apple-touch-icon" href="https://thoraswipe.com/og-image.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
 
 <!-- Fonts — preconnect first, then non-blocking stylesheet -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -357,6 +358,15 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 </style>
 </head>
 <body>
+
+<noscript>
+  <div style="font-family:sans-serif;max-width:560px;margin:60px auto;padding:0 24px;color:#e4e8f0;background:#080a0f;line-height:1.7">
+    <h1>ThoraSwipe — Free Chest X-Ray Interpretation Trainer</h1>
+    <p>ThoraSwipe is a free, swipe-based chest X-ray (CXR) quiz for medical students, junior doctors, and radiographers. Practice CXR pattern recognition with instant feedback, annotated findings, and progressive difficulty from easy to expert cases.</p>
+    <p>JavaScript is required to run ThoraSwipe. Please enable JavaScript in your browser to use the app.</p>
+    <p><a href="https://thoraswipe.com/" style="color:#60a5fa">thoraswipe.com</a></p>
+  </div>
+</noscript>
 
 <header>
   <div class="logo">
@@ -1386,6 +1396,7 @@ function renderCase(){
   document.getElementById('case-tag').textContent=c.caseId;
   document.getElementById('card-title').textContent=c.title;
   document.getElementById('card-sub').textContent=c.sub;
+  imgEl.alt=c.title+' — '+c.sub+' ('+c.caseId+')';
   document.getElementById('src-credit').textContent=c.credit;
   document.getElementById('prog').style.width=((idx+1)/queue.length*100)+'%';
 
