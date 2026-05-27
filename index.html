@@ -1162,6 +1162,7 @@ const HARD=CASES.filter(c=>c.difficulty===3);
 let queue=[],idx=0,scoreOk=0,scoreBad=0,imgLoadSeq=0;
 let streak=0,bestStreak=0,hardUnlocked=false,waiting=false;
 let lightboxOpen=false,lightboxJustClosed=false;
+let nudging=false;
 let currentImgSrc='';
 let pendingCase=null,pendingOk=false,pendingChoice='';
 
@@ -1290,6 +1291,7 @@ function renderCase(){
       currentImgSrc=imgEl.src;imgEl.style.display='block';shEl.style.display='none';
       const hint=document.getElementById('zoom-hint');hint.classList.add('show');
       setTimeout(()=>hint.classList.remove('show'),2500);
+      if(idx===0)playNudgeTutorial();
     };
     imgEl.onerror=()=>{
       if(loadId!==imgLoadSeq)return;
@@ -1632,18 +1634,59 @@ async function submitContactForm(){
   btn.disabled=false;btn.textContent='Send Message';
 }
 
+// ─── FIRST-CASE NUDGE TUTORIAL ───────────────────────────────────────
+function playNudgeTutorial(){
+  nudging=true;
+  const card=document.getElementById('card');
+  const indN=document.getElementById('ind-n');
+  const indA=document.getElementById('ind-a');
+  const ease='cubic-bezier(.4,0,.2,1)';
+
+  // Phase 1 — nudge right (abnormal side): after card-enter settles
+  setTimeout(()=>{
+    card.style.transition='transform .32s '+ease;
+    card.style.transform='translateX(62px) rotate(5deg)';
+    indA.style.transition='opacity .2s'; indA.style.opacity='0.85';
+
+    // Phase 2 — snap back to centre
+    setTimeout(()=>{
+      card.style.transform='translateX(0) rotate(0deg)';
+      indA.style.opacity='0';
+
+      // Phase 3 — nudge left (normal side)
+      setTimeout(()=>{
+        card.style.transform='translateX(-52px) rotate(-4deg)';
+        indN.style.transition='opacity .2s'; indN.style.opacity='0.85';
+
+        // Phase 4 — snap back to centre
+        setTimeout(()=>{
+          card.style.transform='translateX(0) rotate(0deg)';
+          indN.style.opacity='0';
+
+          // Phase 5 — clean up
+          setTimeout(()=>{
+            card.style.transition='';
+            card.style.transform='';
+            nudging=false;
+          },320);
+        },360);
+      },400);
+    },360);
+  },680); // 680ms: card-enter (380ms) + brief pause
+}
+
 // ─── SWIPE / DRAG ────────────────────────────────────────────────────
 (function(){
   const card=document.getElementById('card');
   let sx=0,sy=0,cx=0,drag=false,startTime=0,mouseIsDown=false;
 
   const start=(x,y)=>{
-    if(waiting||lightboxOpen||lightboxJustClosed)return;
+    if(waiting||nudging||lightboxOpen||lightboxJustClosed)return;
     mouseIsDown=true;sx=x;sy=y;cx=x;drag=false;startTime=Date.now();
     card.style.transition='none';
   };
   const move=(x,y)=>{
-    if(!mouseIsDown||waiting||lightboxOpen||lightboxJustClosed)return;
+    if(!mouseIsDown||waiting||nudging||lightboxOpen||lightboxJustClosed)return;
     const dx=x-sx,dy=y-sy;
     if(!drag&&(Math.abs(dx)>8||Math.abs(dy)>8))drag=true;
     if(!drag)return;
