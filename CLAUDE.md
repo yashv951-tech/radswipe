@@ -113,6 +113,8 @@ Each case is an object in the `CASES` array. The fields are:
 - Use only **Wikimedia Commons** (`upload.wikimedia.org`). Radiopaedia hotlink-blocks; NIH Open-i URLs go dead.
 - Fetch the Commons file page to confirm: direct URL (not `/thumb/`), which side pathology is on, patient demographics, exact licence.
 - Never add `crossorigin="anonymous"` to `<img>` tags — use `referrerpolicy="no-referrer"` only.
+- **If the image comes from a published case report**, the `credit` field must name the actual authors (e.g. `'Wikimedia Commons — CC BY 4.0 (Herreros et al.)'`), not just the licence. Check the Commons page — the uploader and the original authors are often different people.
+- **Verify the diagnosis matches what the image actually shows.** For situs-dependent findings (dextrocardia, situs inversus, organ position), confirm explicitly from the Commons description or Wikipedia usage — do not infer from the filename alone. An image described only as "cardiac apex facing right" does not confirm situs inversus totalis.
 
 ### PA CXR anatomical convention
 
@@ -147,9 +149,11 @@ After adding a case, add its `diagnosis` (and any useful wrong-answer variants) 
 |---|---|
 | 1 (EASY) | Classic presentation, single obvious finding |
 | 2 (MEDIUM) | Requires identifying a named sign (silhouette, meniscus) or subtle finding |
-| 3 (HARD) | Subtle, requires clinical context integration, broad differential |
+| 3 (HARD) | Subtle finding AND requires clinical context integration AND broad differential |
 
 Normal cases default to difficulty 1. Use 2 only if a normal variant (e.g. pectoralis shadows) could be mistaken for pathology.
+
+**The named-sign rule:** If the primary teaching point is recognising a named radiological sign (silhouette sign, meniscus sign, Hampton's hump, water bottle sign, etc.), that is difficulty **2**, not 3 — even if the sign is subtle. Difficulty 3 requires the sign to be subtle *and* the diagnosis to depend on integrating clinical context. When in doubt, use 2.
 
 ---
 
@@ -158,5 +162,63 @@ Normal cases default to difficulty 1. Use 2 only if a normal variant (e.g. pecto
 - **`credit` and `sourceUrl` must match.** If the image is on Wikimedia Commons, both must point there — not to the site where you first encountered the image.
 - **Do not list the confirmed diagnosis in its own differential** in the findings array.
 - **Do not include UI/implementation notes in findings text** (e.g. "(viewer's left)") — findings are clinical statements.
-- **Sex-specific teaching points matter.** E.g. catamenial pneumothorax for young women, not Marfan (a male-predominant association).
+- **Sex-specific teaching points matter.** E.g. catamenial pneumothorax for young women, not Marfan (a male-predominant association). But do not add sex-specificity where none exists — PCD/Kartagener affects males and females equally; the sex-specific feature is male infertility (immotile sperm), not the condition itself.
 - **`sourceUrl` must be a page URL, not a raw image URL.** The "View source" link in the result overlay opens this URL.
+- **Never reuse the same `imageUrl` across two cases.** Before adding a case, grep the existing `CASES` array for the filename to confirm it is not already in use. Duplicate images break the educational integrity of the game — a learner who has seen the film once will recognise it immediately on a second pass.
+- **The `sub` field must always specify the projection: `'PA chest radiograph — ...'` or `'AP chest radiograph — ...'`.** Omitting the projection is always wrong. Check the Commons filename or description to determine which projection was used (`pa` = posteroanterior; `ap` = anteroposterior). If the image was taken in an ICU or emergency setting, it is almost certainly AP (portable). PA is the standard upright outpatient/inpatient film.
+
+---
+
+## Medical writing rules (from audit)
+
+These rules were added after a formal accuracy review. Violating them produces incorrect or misleading teaching content.
+
+### Language
+- **Never write "pathognomonic"** for a CXR finding. Virtually no plain-film appearance is pathognomonic — miliary pattern, water bottle sign, and others all have differentials. Use "highly characteristic of", "consistent with", or "classic for".
+- **Use precise anatomical descriptors.** Do not write "perihilar" when you mean "paracardiac" (RML/lingular disease abuts the cardiac border, not the hilum). Common errors: RML opacity described as perihilar; lower-lobe collapse called "basal". Check lobar anatomy before writing.
+- **Colloquial terms are allowed but must be paired with the proper term.** Write `lobulated bilateral lymphadenopathy ("potato nodes")`, not just `"potato nodes"`.
+- **Match the source's severity language exactly.** If the Commons description says "subtotale Atelektase" (near-total atelectasis), do not write "complete" or "total" collapse throughout the case. Overstating severity is a factual error even if the distinction seems minor.
+
+### AP vs PA projection
+AP (portable/anteroposterior) films require specific caveats that PA films do not:
+- **Cardiac silhouette is magnified** — the CTR cannot be used to reliably assess cardiomegaly on an AP film.
+- **Mediastinum appears wider** — do not overcall mediastinal widening on AP films.
+- **Scapulae project over the lung fields** — can mimic or obscure apical pathology.
+
+Whenever a case uses an AP film, the `sub` field must say `'AP chest radiograph — ...'` and the `explanation` must note the projection and its implications (at minimum: "this is a portable AP film — cardiac silhouette is magnified").
+
+ICU, emergency department, and resuscitation CXRs are **almost always AP**. Identify this from the Commons filename (`ap` suffix) or the clinical context before writing.
+
+### Clinical accuracy
+- **If the source image comes from a published case report, use the actual patient demographics and presentation** — do not fabricate details that contradict the source. If the source says the patient was immunocompetent, do not write a teaching point saying immunocompromised patients are at highest risk.
+- **Do not claim a CXR finding alone distinguishes two conditions if echocardiography or CT is actually required.** E.g. a globular cardiac silhouette with clear lungs is seen in both pericardial effusion *and* compensated dilated cardiomyopathy — CXR cannot differentiate them; echo is mandatory.
+- **Investigation recommendations must reflect current guidelines** (year of last review: 2025–26). Specific example: for sampling hilar/mediastinal lymph nodes, EBUS-TBNA is now the standard first-line procedure — not bronchoscopic transbronchial biopsy of the lung parenchyma.
+- **State the limitations of supporting tests.** E.g. IGRA can be falsely negative in miliary TB due to immunological anergy; serum ACE is neither sensitive nor specific for sarcoidosis. Don't present a test as definitively useful without its caveat.
+- **Do not teach folk rules or informal clinical heuristics as validated criteria.** Example: "NG tube must cross the midline" is a bedside teaching habit, not a published safety guideline. The validated criteria are aspirate pH <5.5 or confirmed gastric placement on CXR. If you are unsure whether a criterion is evidence-based, do not include it.
+
+### ECG and non-radiographic correlates
+- When listing ECG correlates of a radiographic finding, be complete. Dextrocardia inverts **all** waveforms in lead I (P, QRS, **and T**) — not just P and QRS.
+
+### Differential diagnosis
+- When listing a differential, ensure each item is a genuine **radiographic** mimic on CXR — not just a clinical differential. The learner is interpreting a film, not a symptom complex.
+- **Qualify opportunistic infection differentials.** PCP (Pneumocystis jirovecii pneumonia) is only a valid differential in immunocompromised patients (HIV CD4 <200, transplant, high-dose steroids). Do not list it as a general differential for bilateral pneumonia without stating the immune status requirement.
+- **Match the differential to the specific radiographic pattern, not just the lobe or density.** Example: mesothelioma is not a differential for ipsilateral white-out with *ipsilateral* mediastinal shift (which indicates volume loss/collapse). Mesothelioma causes a frozen hemithorax with variable or no shift. Ensure each differential item could actually produce the exact pattern shown — shift direction, lobar distribution, and associated signs all matter.
+
+---
+
+## Additional rules (from audit round 3)
+
+### Tension vs simple pneumothorax
+- **Always verify the image before writing the clinical narrative.** A CXR described as "spontaneous pneumothorax" may still show mediastinal shift or cardiac displacement consistent with tension physiology. Specifically check the Wikimedia Commons description for phrases like "Mediastinalshift" or "Spannungspneumothorax" before writing "no tracheal deviation — not under tension." An image originally created to illustrate tension PTX must never be used to teach absence of tension.
+
+### Annotation accuracy
+- **Only annotate findings that are definitively visible in the image.** If a finding (e.g. air-fluid level, subtle cavity) is mentioned as "may be present" or "often seen" in the findings text, do **not** add an annotation arrow pointing to it — annotation implies confirmation. Use `findings` text with hedging language ("may be visible", "if present") for uncertain features; reserve `annots` for unambiguous, confirmed findings.
+
+### British English consistency
+- **Use British English spellings throughout all case fields.** Key pairs: dyspnoea (not dyspnea), oedema (not edema), haemothorax (not hemothorax), haemoptysis (not hemoptysis), anaemia (not anemia). Inconsistent spelling within the same case or across cases is a quality error.
+
+### CTR notation
+- **Express cardiothoracic ratio as a decimal, not a percentage.** Write "CTR > 0.5" not "CTR > 50%". The ratio is dimensionless (transverse cardiac diameter ÷ maximum transverse thoracic diameter); expressing it as a percentage is factually incorrect. The findings array and the explanation must use the same notation.
+
+### Credit for published case report images
+- **When a Wikimedia Commons image originates from a published paper, the credit field must name the actual authors** in the format: `'Wikimedia Commons — CC BY X.X (Surname1 & Surname2, Journal Year)'`. The uploader and the original authors are often different people — always check the Commons file page "Source" field, not just the uploader name.

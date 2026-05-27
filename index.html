@@ -575,37 +575,43 @@ const CASES = [
   {
     caseId:'CXR-001',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/1/1c/PulmEdema.PNG',
-    credit:'Wikimedia Commons — CC BY-SA 3.0',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (James Heilman MD)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:PulmEdema.PNG',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:1,
-    title:'68M — increasing dyspnea, bilateral ankle edema. History of HF.',
+    title:'68M — increasing dyspnoea, bilateral ankle oedema. History of HF.',
     sub:'PA chest radiograph — cardiac assessment',
     diagnosis:'Pulmonary Oedema — Acute LVF',
-    explanation:'Cardiomegaly is present with a cardiothoracic ratio > 50%. There is notable cephalization of the pulmonary vessels and blunting of the costophrenic angles, consistent with pulmonary edema/fluid overload from acute decompensated heart failure.',
+    explanation:'Cardiomegaly is present with a cardiothoracic ratio > 0.5. There is notable cephalization of the pulmonary vessels and blunting of the costophrenic angles, consistent with pulmonary oedema from acute decompensated heart failure.',
     findings:['Cardiomegaly — cardiothoracic ratio > 0.5','Cephalization of pulmonary vessels','Bilateral costophrenic angle blunting','Perihilar haziness — bat-wing distribution','Acute decompensated heart failure'],
     annots:[
       {type:'ellipse',cx:50,cy:62,rx:22,ry:18,color:'#ef4444',label:'Cardiomegaly'},
-      {type:'arrow',x1:28,y1:32,x2:28,y2:44,color:'#f59e0b',label:'Cephalization'},
+      {type:'arrow',x1:28,y1:44,x2:28,y2:25,color:'#f59e0b',label:'Cephalization'},
       {type:'ellipse',cx:73,cy:82,rx:13,ry:7,color:'#ef4444',label:'L angle blunting'},
       {type:'ellipse',cx:26,cy:82,rx:13,ry:7,color:'#ef4444',label:'R angle blunting'},
     ]
   },
   {
     caseId:'CXR-002',
-    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/2/2f/Pneumothorax_CXR.jpg',
-    credit:'Wikimedia Commons — CC BY-SA 2.5',
-    sourceUrl:'https://commons.wikimedia.org/wiki/File:Pneumothorax_CXR.jpg',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/9/97/Rt_sided_pneumoD.jpg',
+    credit:'Wikimedia Commons — CC BY 3.0 (James Heilman MD)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Rt_sided_pneumoD.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:1,
-    title:'24F — acute onset sharp left-sided chest pain and shortness of breath.',
-    sub:'PA chest radiograph — emergency presentation',
-    diagnosis:'Left Spontaneous Pneumothorax',
-    explanation:'There is a visible thin visceral pleural line in the left upper lung zone with an absence of lung markings peripheral to it, characteristic of a spontaneous pneumothorax. Management depends on size and symptoms — small asymptomatic PTX may be observed; large or symptomatic requires needle aspiration or intercostal drain.',
-    findings:['Visible visceral pleural line — left upper zone','Absent lung markings peripheral to pleural line','Left lung partially collapsed','No tracheal deviation — not under tension','Young female with spontaneous PTX — consider catamenial pneumothorax (endometriosis-related, occurs at menses)'],
+    title:'22M — sudden right-sided chest pain and dyspnoea. Tall, slender build. Non-smoker.',
+    sub:'PA chest radiograph — emergency department',
+    diagnosis:'Right Spontaneous Pneumothorax',
+    explanation:'A visible visceral pleural line in the right upper zone with absence of lung markings peripherally confirms a large spontaneous pneumothorax. The trachea and mediastinum are midline — no shift, ruling out tension. Primary spontaneous pneumothorax classically affects tall slender young men with apical blebs; management depends on size and symptoms — small asymptomatic PTX may be observed; large or symptomatic requires needle aspiration or intercostal drain.',
+    findings:[
+      'Visible visceral pleural line — right upper zone, clearly delineated',
+      'Absent lung markings peripheral to pleural line — right lung collapsed',
+      'Trachea midline — no mediastinal shift, ruling out tension pneumothorax',
+      'Large right-sided pneumothorax — collapse well beyond 2 cm from chest wall',
+      'Classic primary spontaneous PTX — tall slender young male; apical bleb rupture commonest cause'
+    ],
     annots:[
-      {type:'arrow',x1:68,y1:18,x2:62,y2:30,color:'#ef4444',label:'Pleural line'},
-      {type:'ellipse',cx:78,cy:25,rx:10,ry:16,color:'#f59e0b',label:'No lung markings'},
+      {type:'arrow',x1:35,y1:15,x2:25,y2:28,color:'#ef4444',label:'Pleural line'},
+      {type:'ellipse',cx:16,cy:30,rx:10,ry:18,color:'#f59e0b',label:'No lung markings'},
     ]
   },
   {
@@ -708,15 +714,15 @@ const CASES = [
     sourceUrl:'https://commons.wikimedia.org/wiki/File:Left-sided_Pleural_Effusion.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:2,
-    title:'58F — 2-week progressive dyspnea, dullness to percussion and reduced breath sounds at the left base.',
+    title:'58F — 2-week progressive dyspnoea, dullness to percussion and reduced breath sounds at the left base.',
     sub:'PA chest radiograph — respiratory assessment',
-    diagnosis:'Large Left Pleural Effusion',
-    explanation:'There is a large homogeneous opacity obliterating the left hemithorax with a concave upper meniscus border, consistent with a massive pleural effusion. The left diaphragm and costophrenic angle are obscured. In large effusions the mediastinum may shift to the contralateral side. Causes include malignancy, cardiac failure, empyema, and hypoalbuminaemia.',
+    diagnosis:'Massive Left Pleural Effusion',
+    explanation:'There is a massive homogeneous opacity obliterating the left hemithorax with a concave upper meniscus border, consistent with a massive pleural effusion. The left diaphragm and costophrenic angle are obscured. Mediastinal shift to the right is expected with an effusion of this size and helps distinguish effusion from collapse (which shifts ipsilaterally). Causes include malignancy, cardiac failure, empyema, and hypoalbuminaemia.',
     findings:[
-      'Large homogeneous opacity — left hemithorax',
+      'Massive homogeneous opacity — left hemithorax obliterated',
       'Meniscus sign — concave upper border of free pleural fluid',
       'Obliterated left costophrenic angle and left hemidiaphragm',
-      'Possible mediastinal shift to the right in very large effusions',
+      'Mediastinal shift to the right — expected with massive effusion; distinguishes from collapse (ipsilateral shift)',
       'Differential: malignancy, CCF, empyema, hypoalbuminaemia'
     ],
     annots:[
@@ -898,14 +904,14 @@ const CASES = [
   {
     caseId:'CXR-016',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/a/ae/X-ray_of_hiatal_hernia.jpg',
-    credit:'Wikimedia Commons — CC BY 4.0',
+    credit:'Wikimedia Commons — CC BY 4.0 (Farhat & Towle, JEM 2018)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:X-ray_of_hiatal_hernia.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:1,
     title:'67F — epigastric pain and regurgitation after meals. Referred for atypical chest pain workup.',
     sub:'PA chest radiograph — emergency department',
     diagnosis:'Hiatal Hernia',
-    explanation:'A rounded gas-containing opacity is visible behind the cardiac shadow, representing herniation of the gastric fundus through the oesophageal hiatus into the posterior mediastinum. On a PA radiograph, a hiatal hernia classically produces a retrocardiac rounded shadow — often with an air-fluid level — behind and overlapping the lower cardiac silhouette. It is frequently an incidental finding but can cause heartburn, regurgitation, dysphagia, or atypical chest pain mimicking cardiac disease.',
+    explanation:'A rounded gas-containing opacity is visible behind the cardiac shadow, representing herniation of the gastric fundus through the oesophageal hiatus into the posterior mediastinum. On a PA radiograph, a hiatal hernia classically produces a retrocardiac rounded shadow — often with an air-fluid level on an erect film — behind and overlapping the lower cardiac silhouette. It is frequently an incidental finding but can cause heartburn, regurgitation, dysphagia, or atypical chest pain mimicking cardiac disease.',
     findings:[
       'Retrocardiac rounded opacity — gas-containing shadow visible behind the cardiac silhouette',
       'Air-fluid level may be visible within the herniated gastric fundus on an erect film',
@@ -915,7 +921,6 @@ const CASES = [
     ],
     annots:[
       {type:'ellipse',cx:52,cy:68,rx:11,ry:9,color:'#ef4444',label:'Retrocardiac gas shadow'},
-      {type:'arrow',x1:60,y1:60,x2:54,y2:68,color:'#f59e0b',label:'Air-fluid level'},
     ]
   },
 
@@ -1097,7 +1102,7 @@ const ALL_DIAGNOSES=[
   'Right Middle Lobe Pneumonia','Right Upper Lobe Pneumonia',
   'Bilateral Pneumonia — Viral Pattern','Bilateral Pneumonia — Ground-Glass Opacification',
   'ARDS — Advanced Bilateral Opacification','Rapidly Progressive Bilateral Pneumonia — ARDS Trajectory',
-  'Right Pleural Effusion','Left Pleural Effusion','Large Left Pleural Effusion',
+  'Right Pleural Effusion','Left Pleural Effusion','Large Left Pleural Effusion','Massive Left Pleural Effusion',
   'Unilateral Pleural Effusion — Subacute Presentation',
   'Left Spontaneous Pneumothorax','Right Spontaneous Pneumothorax','Right Pneumothorax — Complication of Mechanical Ventilation',
   'Tension Pneumothorax — Clinical Diagnosis','Supine Pneumothorax — Deep Sulcus Sign',
