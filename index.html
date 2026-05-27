@@ -46,7 +46,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 header{width:100%;max-width:480px;padding:12px 18px 6px;display:flex;align-items:center;justify-content:space-between;z-index:10;position:relative}
 .logo{font-family:'Space Mono',monospace;font-size:17px;font-weight:700;display:flex;align-items:center;gap:7px}
-.logo span{color:var(--blue)}
+.logo-name{color:var(--text)}.logo-name span{color:var(--blue)}
 .header-right{display:flex;align-items:center;gap:8px}
 .score-pill{font-family:'Space Mono',monospace;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 12px;display:flex;align-items:center;gap:7px}
 .s-ok{color:var(--green)}.s-bad{color:var(--red)}.s-div{color:var(--border)}.s-lbl{color:var(--muted);font-size:10px;line-height:1}
@@ -335,7 +335,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
       <path d="M24 58 C16 50 16 36 22 28 C26 22 34 20 40 25 L40 58 Z" stroke="#60a5fa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(96,165,250,0.10)"/>
       <path d="M72 58 C80 50 80 36 74 28 C70 22 62 20 56 25 L56 58 Z" stroke="#60a5fa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(96,165,250,0.10)"/>
     </svg>
-    Thora<span>Swipe</span>
+    <span class="logo-name">Thora<span>Swipe</span></span>
   </div>
   <div class="header-right">
     <div class="streak-badge" id="streak-badge">🔥 <span id="streak-num">0</span></div>
