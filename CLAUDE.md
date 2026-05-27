@@ -222,3 +222,25 @@ ICU, emergency department, and resuscitation CXRs are **almost always AP**. Iden
 
 ### Credit for published case report images
 - **When a Wikimedia Commons image originates from a published paper, the credit field must name the actual authors** in the format: `'Wikimedia Commons — CC BY X.X (Surname1 & Surname2, Journal Year)'`. The uploader and the original authors are often different people — always check the Commons file page "Source" field, not just the uploader name.
+
+---
+
+## Additional rules (from audit round 4)
+
+### AP projection — James Heilman files
+- **James Heilman MD images with the suffix `M.jpg` (e.g. `RLL_pneumoniaM.jpg`, `LLL_pneumonia_with_effusionM.jpg`) are AP films**, confirmed from their Commons descriptions. Any case using one of these files must say `'AP chest radiograph — ...'` in `sub` and must include the AP caveat in `explanation`: "Note this is a portable AP film — the cardiac silhouette is magnified and CTR cannot be reliably used."
+
+### Diagnosis must never appear in its own differential
+- **This rule is routinely violated in pneumonia cases.** "Bacterial lobar pneumonia" is not a valid differential item for a confirmed bacterial lobar pneumonia diagnosis — it IS the diagnosis. The differential slot must list genuine radiographic alternates: aspiration, pulmonary infarction, lobar collapse, organising pneumonia. Check every new case before committing.
+
+### Every `sub` field must specify projection
+- **Three cases (CXR-008, CXR-009, CXR-013) were found with `'Chest radiograph — ...'` — the projection was omitted entirely.** The projection word (`PA` or `AP`) is mandatory. Use the Commons filename suffix (`_pa_`, `_ap_`), Commons description, or clinical context (ICU/emergency → AP; outpatient/standing → PA) to determine projection.
+
+### Differential must match the specific radiographic pattern
+- **Do not include items that require cavitation, volume loss, or shift in a differential for a solid opacity without those features.** Example: "lung abscess" is only a radiographic mimic when cavitation is present — for a solid lobulated mass, the mimic should be "organising pneumonia" or "carcinoid tumour." Match every differential item to the *exact* CXR pattern, not just the clinical diagnosis category.
+
+### Government source images: name the specific agency
+- **"NIH" is an umbrella term covering many agencies.** When an image originates from the National Cancer Institute, write `'Public Domain (NCI / National Cancer Institute)'` not `'Public Domain (NIH)'`. Check the Commons page Source field for the exact originating agency.
+
+### Anatomical specificity in findings
+- **Describe mass and opacity locations to the lobe or zone level, not just "left lung field" or "right mid-zone."** Write "left upper lobe" or "right lower zone" — this is clinically meaningful (upper-lobe predominance in lung cancer, lower-lobe predominance in aspiration) and is what a radiologist would document.

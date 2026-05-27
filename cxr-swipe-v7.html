@@ -694,13 +694,13 @@ const CASES = [
     title:'67M — 3-day productive cough, fever 38.8°C, right-sided pleuritic chest pain.',
     sub:'PA chest radiograph — emergency assessment',
     diagnosis:'Right Middle Lobe Pneumonia',
-    explanation:'There is increased opacity in the right mid-zone with loss of the right heart border — a positive silhouette sign. The right middle lobe is anatomically adjacent to the right cardiac border; when both structures share the same radiodensity, the border is effaced. S. pneumoniae is the most common cause in this age group.',
+    explanation:'There is increased opacity in the right mid-zone with loss of the right heart border — a positive silhouette sign. The right middle lobe is anatomically adjacent to the right cardiac border; when both structures share the same radiodensity, the border is effaced. S. pneumoniae is the most common cause of community-acquired lobar pneumonia.',
     findings:[
       'Right mid-zone opacity — right middle lobe consolidation',
       'Loss of right heart border — positive silhouette sign',
       'Air bronchograms may be visible within the opacity',
-      'Preserved right costophrenic angle',
-      'Classic community-acquired pneumonia pattern'
+      'Preserved right costophrenic angle — no effusion',
+      'Differential: RML atelectasis/collapse (similar opacity but with volume loss and mediastinal shift), pulmonary infarction (subpleural wedge-shaped opacity), lymphoma (rarely consolidates a lobe)'
     ],
     annots:[
       {type:'ellipse',cx:28,cy:62,rx:13,ry:9,color:'#ef4444',label:'RML consolidation'},
@@ -733,20 +733,20 @@ const CASES = [
   {
     caseId:'CXR-008',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/f/fb/RLL_pneumoniaM.jpg',
-    credit:'Wikimedia Commons — CC BY 3.0',
+    credit:'Wikimedia Commons — CC BY 3.0 (James Heilman MD)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:RLL_pneumoniaM.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:2,
     title:'56M — 3-day productive cough, fever to 38.9°C, and right-sided pleuritic chest pain.',
-    sub:'Chest radiograph — emergency assessment',
+    sub:'AP chest radiograph — emergency assessment',
     diagnosis:'Right Lower Lobe Pneumonia',
-    explanation:'Dense consolidation in the right lower lobe obliterates the right hemidiaphragm silhouette — the positive silhouette sign confirms the opacity is in contact with the right hemidiaphragm, placing it in the lower rather than middle lobe. The preserved right heart border confirms the right middle lobe is clear. Air bronchograms within the consolidation indicate patent proximal airways with alveolar filling by exudate, consistent with lobar bacterial pneumonia.',
+    explanation:'Dense consolidation in the right lower lobe obliterates the right hemidiaphragm silhouette — the positive silhouette sign confirms the opacity is in contact with the right hemidiaphragm, placing it in the lower rather than middle lobe. The preserved right heart border confirms the right middle lobe is clear. Note this is a portable AP film — the cardiac silhouette is magnified and CTR cannot be reliably used. Air bronchograms within the consolidation indicate patent proximal airways with alveolar filling by exudate, consistent with lobar bacterial pneumonia.',
     findings:[
       'Right lower lobe consolidation — homogeneous opacity at the right lung base',
       'Loss of right hemidiaphragm contour — positive silhouette sign at the RLL—diaphragm interface',
       'Right heart border preserved — confirms right middle lobe not involved',
       'Air bronchograms may be visible within the opacity',
-      'Differential: bacterial lobar pneumonia (Streptococcus pneumoniae), aspiration pneumonia, pulmonary infarction'
+      'Differential: aspiration pneumonia (right lower lobe predilection), pulmonary infarction (wedge-shaped subpleural opacity, pleuritic pain), right lower lobe collapse (volume loss and ipsilateral mediastinal shift)'
     ],
     annots:[
       {type:'ellipse',cx:28,cy:72,rx:14,ry:12,color:'#ef4444',label:'RLL consolidation'},
@@ -756,20 +756,20 @@ const CASES = [
   {
     caseId:'CXR-009',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/f/f8/LLL_pneumonia_with_effusionM.jpg',
-    credit:'Wikimedia Commons — CC BY 3.0',
+    credit:'Wikimedia Commons — CC BY 3.0 (James Heilman MD)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:LLL_pneumonia_with_effusionM.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:2,
     title:'61M — 5-day cough productive of purulent sputum, fever to 39.2°C, and left-sided pleuritic chest pain.',
-    sub:'Chest radiograph — acute medical assessment',
+    sub:'AP chest radiograph — acute medical assessment',
     diagnosis:'Left Lower Lobe Pneumonia with Pleural Effusion',
-    explanation:'Left lower lobe consolidation obliterates the left hemidiaphragm — the positive silhouette sign at the LLL—diaphragm interface localises the pathology to the lower lobe. The left heart border remains distinct, confirming the lingula is spared. Blunting of the left costophrenic angle indicates a small parapneumonic effusion; if the patient fails to defervesce after 48 hours of antibiotics, pleural fluid should be sampled to exclude empyema.',
+    explanation:'Left lower lobe consolidation obliterates the left hemidiaphragm — the positive silhouette sign at the LLL—diaphragm interface localises the pathology to the lower lobe. The left heart border remains distinct, confirming the lingula is spared. Note this is a portable AP film — the cardiac silhouette is magnified and CTR cannot be reliably used. Blunting of the left costophrenic angle indicates a small parapneumonic effusion; if the patient fails to defervesce after 48 hours of antibiotics, pleural fluid should be sampled to exclude empyema.',
     findings:[
       'Left lower lobe consolidation — homogeneous opacity at the left lung base',
       'Loss of left hemidiaphragm contour — positive silhouette sign at the LLL—diaphragm interface',
       'Left heart border preserved — lingula not involved',
       'Blunting of the left costophrenic angle — small parapneumonic pleural effusion',
-      'Differential: bacterial lobar pneumonia, aspiration pneumonia, pulmonary infarction with parapneumonic effusion'
+      'Differential: aspiration pneumonia with parapneumonic effusion, pulmonary infarction (wedge-shaped subpleural opacity), left lower lobe collapse (volume loss, ipsilateral mediastinal shift, absent rather than blunted diaphragm contour)'
     ],
     annots:[
       {type:'ellipse',cx:72,cy:68,rx:14,ry:12,color:'#ef4444',label:'LLL consolidation'},
@@ -835,7 +835,7 @@ const CASES = [
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:3,
     title:'68M — 6-week progressive dyspnoea, non-productive cough, and 7 kg unintentional weight loss.',
-    sub:'Chest radiograph — respiratory outpatient clinic',
+    sub:'PA chest radiograph — respiratory outpatient clinic',
     diagnosis:'Right Lung Collapse — Bronchial Carcinoma',
     explanation:'Near-total right hemithorax opacification with ipsilateral mediastinal deviation — the trachea and cardiac shadow displaced toward the right — is the hallmark of subtotal right lung collapse. The direction of mediastinal shift is the critical discriminator: collapse pulls structures toward the lesion; massive effusion and tension pneumothorax push them away. In this clinical context of unintentional weight loss and progressive dyspnoea, endobronchial carcinoma causing resorption atelectasis of the right lung is the leading diagnosis, requiring urgent CT staging and bronchoscopy.',
     findings:[
@@ -952,20 +952,20 @@ const CASES = [
   {
     caseId:'CXR-018',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/d/d8/LungCancer-Xray-01.jpg',
-    credit:'Wikimedia Commons — Public Domain (NIH)',
+    credit:'Wikimedia Commons — Public Domain (NCI / National Cancer Institute)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:LungCancer-Xray-01.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:2,
     title:'63M — 10-week haemoptysis, 8 kg weight loss, and persistent non-productive cough. 35 pack-year smoker.',
     sub:'PA chest radiograph — respiratory outpatient',
     diagnosis:'Left Lung Mass — Suspected Bronchogenic Carcinoma',
-    explanation:'A dense irregular mass in the left lung with lobulated margins represents a primary pulmonary malignancy until proven otherwise. Bronchogenic carcinoma is the most common primary lung tumour; smoking is the dominant risk factor accounting for over 80% of cases. Plain radiography is insensitive for lesions under 1 cm and for lesions obscured by overlying structures. New pulmonary masses with constitutional symptoms and a significant smoking history require urgent CT-PET staging, sputum cytology, and respiratory specialist referral.',
+    explanation:'A dense irregular mass in the left upper zone with lobulated margins represents a primary pulmonary malignancy until proven otherwise. Bronchogenic carcinoma is the most common primary lung tumour; smoking is the dominant risk factor accounting for over 80% of cases. Plain radiography is insensitive for lesions under 1 cm and for lesions obscured by overlying structures. New pulmonary masses with constitutional symptoms and a significant smoking history require urgent CT-PET staging, sputum cytology, and respiratory specialist referral.',
     findings:[
-      'Left lung mass — dense irregular opacity with lobulated margins in the left lung field',
+      'Left upper zone mass — dense irregular opacity with lobulated margins; all major lung cancer subtypes show upper lobe predominance',
       'Constitutional symptoms — haemoptysis and weight loss with a lung mass are highly suspicious for malignancy',
       'No obvious contralateral pulmonary lesion or pleural effusion visible — CT required to exclude nodal or pleural spread',
       '35 pack-year smoking history — major risk factor for squamous cell carcinoma, adenocarcinoma, and small cell lung carcinoma',
-      'Differential: solitary pulmonary metastasis, pulmonary carcinoid tumour, primary lung abscess'
+      'Differential: solitary pulmonary metastasis (usually smooth and round; requires known primary), pulmonary carcinoid tumour (often central; peripheral type can mimic), large organising pneumonia (irregular margins; responds to steroids, not surgery)'
     ],
     annots:[
       {type:'ellipse',cx:67,cy:30,rx:14,ry:12,color:'#ef4444',label:'Left lung mass'},
