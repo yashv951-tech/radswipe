@@ -998,14 +998,14 @@ const CASES = [
     credit:'Wikimedia Commons — CC BY-SA 4.0 (James Heilman MD)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:Pneumonia_of_Right_Lung_Middle_Lobe.jpg',
     sourceLabel:'Wikimedia Commons',
-    isNormal:false, difficulty:3,
+    isNormal:false, difficulty:2,
     title:'52M — one week of right-sided pleuritic chest pain, productive cough, and low-grade fever.',
     sub:'PA chest radiograph — respiratory assessment',
     diagnosis:'Right Middle Lobe Pneumonia — Silhouette Sign',
-    explanation:'There is a right perihilar opacity that obliterates the right cardiac border — the silhouette sign. Because the right middle lobe directly abuts the right heart border, any process filling the RML airspace erases that interface. The right hemidiaphragm remains visible, which distinguishes RML disease from right lower lobe pathology where the diaphragm is the obliterated border.',
+    explanation:'There is a right paracardiac opacity that obliterates the right cardiac border — the silhouette sign. Because the right middle lobe directly abuts the right heart border, any process filling the RML airspace erases that interface. The right hemidiaphragm remains visible, which distinguishes RML disease from right lower lobe pathology where the diaphragm is the obliterated border.',
     findings:[
       'Loss of right cardiac border — positive silhouette sign',
-      'Right perihilar and mid-zone opacity — RML airspace consolidation',
+      'Right paracardiac and mid-zone opacity — RML airspace consolidation',
       'Right hemidiaphragm intact — pathology confined to the middle lobe',
       'Right upper lobe clear — no upper lobe involvement',
       'Recurrent RML pneumonia warrants CT and bronchoscopy to exclude an obstructing endobronchial lesion'
@@ -1019,20 +1019,20 @@ const CASES = [
   {
     caseId:'CXR-020',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/6/6c/Chest_radiograph_of_miliary_tuberculosis_1.jpg',
-    credit:'Wikimedia Commons — CC BY 4.0',
+    credit:'Wikimedia Commons — CC BY 4.0 (Herreros et al.)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:Chest_radiograph_of_miliary_tuberculosis_1.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:3,
-    title:'82F — 3-week history of fever, drenching night sweats, and 6 kg weight loss.',
+    title:'82F — 3-week history of fever, chills, and significant weight loss.',
     sub:'PA chest radiograph — respiratory assessment',
     diagnosis:'Miliary Tuberculosis',
-    explanation:'There is a diffuse bilateral reticulonodular pattern with uniformly distributed millet-seed sized (1–3 mm) opacities throughout both lung fields. This appearance is pathognomonic of haematogenous dissemination of Mycobacterium tuberculosis from a reactivating or silent primary focus. In elderly patients the classic miliary pattern is easily dismissed as bilateral haziness without a systematic approach — clinical context (fever, night sweats, weight loss) is the key to suspicion.',
+    explanation:'There is a diffuse bilateral reticulonodular pattern with uniformly distributed millet-seed sized (1–3 mm) opacities throughout both lung fields. This appearance is highly characteristic of haematogenous dissemination of Mycobacterium tuberculosis from a reactivating or silent primary focus. The miliary pattern is not pathognomonic — miliary metastases and disseminated fungal infections (histoplasmosis, coccidioidomycosis) can produce an identical appearance — making clinical context essential.',
     findings:[
       'Diffuse bilateral micronodules — 1–3 mm, uniformly distributed without lobar predominance',
-      'No consolidation or cavitation — haematogenous pattern, not primary reactivation TB',
+      'No consolidation or cavitation — haematogenous dissemination pattern, distinct from post-primary TB which typically shows upper-lobe fibro-cavitary disease',
       'No visible mediastinal lymphadenopathy or pleural effusion in this case',
-      'Elderly and immunocompromised patients are at highest risk of miliary dissemination',
-      'Sputum AFB smear, IGRA, and bronchoscopic BAL required; respiratory isolation and anti-TB therapy must not be delayed pending results'
+      'Miliary TB can affect immunocompetent individuals; elderly patients carry higher risk due to declining immune surveillance regardless of comorbidities',
+      'Sputum AFB smear and bronchoscopic BAL required; note IGRA may be falsely negative in miliary TB due to immunological anergy — do not withhold treatment based on a negative result'
     ],
     annots:[
       {type:'ellipse',cx:25,cy:40,rx:14,ry:12,color:'#ef4444',label:'Micronodules R lung'},
@@ -1050,13 +1050,13 @@ const CASES = [
     title:'28M — incidental finding on chest X-ray. Mild exertional dyspnoea and dry cough for 2 months.',
     sub:'PA chest radiograph — respiratory referral',
     diagnosis:'Sarcoidosis — Bilateral Hilar Lymphadenopathy',
-    explanation:'Bilateral symmetric hilar enlargement without parenchymal infiltrates is Stage I sarcoidosis. The lobulated, bilateral "potato nodes" are characteristic. The critical differential is lymphoma, which typically also involves paratracheal or anterior mediastinal nodes and presents with B symptoms; sarcoidosis favours young non-smokers and has a predilection for Black and Scandinavian populations. Serum ACE alone is neither sensitive nor specific.',
+    explanation:'Bilateral hilar enlargement without parenchymal infiltrates is Stage I sarcoidosis. The lobulated bilateral lymph nodes — colloquially called "potato nodes" — may appear asymmetric in some cases. The critical differential is lymphoma, which typically also involves paratracheal or anterior mediastinal nodes and presents with B symptoms; sarcoidosis favours young non-smokers and has a predilection for Black and Scandinavian populations. Serum ACE alone is neither sensitive nor specific.',
     findings:[
-      'Bilateral hilar enlargement — symmetric lobulated "potato nodes"',
+      'Bilateral hilar enlargement — lobulated lymphadenopathy ("potato nodes"), may be asymmetric',
       'No parenchymal infiltrates — Stage I disease (lymphadenopathy without lung involvement)',
       'Heart size normal — bilateral hilar prominence is not cardiomegaly',
       'Differential: lymphoma, primary TB complex, fungal infection, metastatic disease',
-      'Serum ACE, serum calcium, HRCT thorax, and bronchoscopic transbronchial biopsy are the next investigations'
+      'Serum ACE, serum calcium, HRCT thorax; EBUS-TBNA (endobronchial ultrasound-guided needle aspiration) of hilar nodes is now the preferred first-line diagnostic procedure for Stage I disease'
     ],
     annots:[
       {type:'ellipse',cx:38,cy:55,rx:8,ry:7,color:'#ef4444',label:'R hilar mass'},
@@ -1078,7 +1078,7 @@ const CASES = [
     findings:[
       'Massively enlarged globular cardiac silhouette — smooth water-bottle contour',
       'Loss of normal cardiac waist — fluid distributes evenly, erasing normal cardiac borders',
-      'Clear lung fields — no pulmonary oedema, distinguishes from acute LVF and dilated cardiomyopathy',
+      'Clear lung fields — no pulmonary oedema, helps distinguish from acute LVF; note dilated cardiomyopathy can also appear globular with clear lungs — echocardiography is mandatory to differentiate',
       'Beck\'s triad: hypotension, muffled heart sounds, elevated JVP — tamponade until excluded',
       'Urgent bedside echo required; pericardiocentesis if tamponade physiology confirmed'
     ],
@@ -1090,9 +1090,9 @@ const CASES = [
 
   {
     caseId:'CXR-023',
-    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/e/ef/Dextrocardia.jpg',
-    credit:'Wikimedia Commons — CC BY-SA 3.0 (Prashanthns)',
-    sourceUrl:'https://commons.wikimedia.org/wiki/File:Dextrocardia.jpg',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/d/d7/Situs_inversus_chest_Nevit.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Nevit)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Situs_inversus_chest_Nevit.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:3,
     title:'34F — routine pre-operative assessment. No cardiac symptoms. No prior cardiac history.',
@@ -1103,8 +1103,8 @@ const CASES = [
       'Cardiac apex pointing to patient\'s right — dextrocardia confirmed',
       'Mirror-image cardiac and abdominal situs — situs inversus totalis if abdominal organs also reversed',
       'No intrinsic structural heart disease in isolated situs inversus totalis',
-      'ECG will show inverted P and QRS in lead I — critical for any future arrhythmia or ischaemia interpretation',
-      'In young women, consider Kartagener syndrome: situs inversus + chronic sinusitis + bronchiectasis due to ciliary dyskinesia'
+      'ECG will show global waveform inversion in lead I (inverted P, QRS, and T) — critical for any future arrhythmia or ischaemia interpretation',
+      'In any young patient, consider Primary Ciliary Dyskinesia (Kartagener syndrome): situs inversus + chronic sinusitis + bronchiectasis; in males, PCD additionally causes immotile sperm and infertility'
     ],
     annots:[
       {type:'ellipse',cx:36,cy:60,rx:18,ry:16,color:'#ef4444',label:'Heart — right chest'},
