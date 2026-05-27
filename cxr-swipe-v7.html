@@ -659,7 +659,7 @@ const CASES = [
     sourceLabel:'Wikimedia Commons',
     isNormal:true, difficulty:1,
     title:'38M — annual GP review, no symptoms. Well-built, physically active individual.',
-    sub:'Chest radiograph — general practice review',
+    sub:'PA chest radiograph — general practice review',
     diagnosis:'Normal Chest Radiograph',
     explanation:'The chest radiograph is normal. The bilateral soft-tissue density projected over the lower lung zones represents pectoralis major muscle shadows — a normal variant in well-muscled individuals. These should not be mistaken for consolidation or pleural abnormality. Lungs are clear, cardiac size is normal, and costophrenic angles are sharp.',
     findings:[
@@ -803,15 +803,15 @@ const CASES = [
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:2,
     title:'74M — 8-day history of fever, dry cough, and progressive dyspnoea. SpO₂ 87% on room air.',
-    sub:'Chest radiograph — emergency department',
+    sub:'AP chest radiograph — emergency department',
     diagnosis:'COVID-19 Bilateral Pneumonia',
-    explanation:'Bilateral peripheral airspace opacification with lower-zone predominance represents the typical chest radiograph pattern of COVID-19 pneumonia, reflecting multifocal ground-glass and consolidative infiltrates. The peripheral distribution and relative central sparing help distinguish this from cardiogenic pulmonary oedema, which produces a central perihilar bat-wing pattern. Plain radiography has low sensitivity in early COVID-19 disease; CT thorax is more sensitive for peripheral ground-glass opacities.',
+    explanation:'Bilateral peripheral airspace opacification with lower-zone predominance represents the typical pattern of COVID-19 pneumonia, reflecting multifocal ground-glass and consolidative infiltrates. Note this is an AP (portable) film — the cardiac silhouette appears magnified and CTR cannot be reliably used to assess heart size. The peripheral distribution and relative central sparing help distinguish this from cardiogenic pulmonary oedema, which produces a central perihilar bat-wing pattern. Plain radiography has low sensitivity in early COVID-19 disease; CT thorax is more sensitive for peripheral ground-glass opacities.',
     findings:[
       'Bilateral peripheral airspace opacification — lower zone predominance in both lungs',
       'Ground-glass pattern — haziness without complete airspace consolidation',
       'Relative central sparing — distinguishes from cardiogenic pulmonary oedema (perihilar bat-wing pattern)',
       'No pleural effusion — in contrast to bacterial pneumonia which more commonly causes effusion',
-      'Differential: bilateral bacterial pneumonia, atypical pneumonia (Mycoplasma, Legionella), PCP pneumonia'
+      'Differential: bilateral bacterial pneumonia, atypical pneumonia (Mycoplasma, Legionella), PCP pneumonia (in immunocompromised host only)'
     ],
     annots:[
       {type:'ellipse',cx:26,cy:62,rx:14,ry:15,color:'#ef4444',label:'R peripheral opacity'},
@@ -822,30 +822,6 @@ const CASES = [
 
   // ── HARD ──────────────────────────────────────────────────────────
   {
-    caseId:'CXR-012',
-    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/6/6c/Chest_radiograph_of_miliary_tuberculosis_1.jpg',
-    credit:'Wikimedia Commons — CC BY 4.0',
-    sourceUrl:'https://commons.wikimedia.org/wiki/File:Chest_radiograph_of_miliary_tuberculosis_1.jpg',
-    sourceLabel:'Wikimedia Commons',
-    isNormal:false, difficulty:3,
-    title:'82F — 13-day history of fever, chills, night sweats, and progressive malaise. No localising respiratory symptoms.',
-    sub:'PA chest radiograph — medical admission',
-    diagnosis:'Miliary Tuberculosis',
-    explanation:'There is a diffuse bilateral miliary nodular pattern — innumerable tiny (1–3mm) nodules distributed throughout both lung fields with no lobar predilection, consistent with haematogenous dissemination of Mycobacterium tuberculosis. Miliary TB can be subtle on plain radiography and demands a high index of suspicion. The elderly and immunocompromised are at greatest risk of atypical presentation. Differential includes disseminated fungal infection (histoplasmosis, coccidioidomycosis), sarcoidosis, and haematogenous pulmonary metastases.',
-    findings:[
-      'Diffuse bilateral miliary nodules — 1–3mm, random distribution throughout both lungs',
-      'No lobar predominance — distinguishes from bacterial consolidation',
-      'No pleural effusion or hilar lymphadenopathy visible on plain film',
-      'Elderly female — immunosenescence predisposes to reactivation or primary TB',
-      'Differential: disseminated fungal infection (histoplasmosis, coccidioidomycosis), haematogenous pulmonary metastases, sarcoidosis'
-    ],
-    annots:[
-      {type:'ellipse',cx:26,cy:40,rx:15,ry:24,color:'#ef4444',label:'R lung — miliary'},
-      {type:'ellipse',cx:72,cy:40,rx:14,ry:24,color:'#ef4444',label:'L lung — miliary'},
-      {type:'arrow',x1:38,y1:28,x2:32,y2:34,color:'#f59e0b',label:'Millet-seed nodules'},
-    ]
-  },
-  {
     caseId:'CXR-013',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/f/f1/Mediastinalshift_bei_BC.jpg',
     credit:'Wikimedia Commons — CC BY-SA 3.0',
@@ -855,13 +831,13 @@ const CASES = [
     title:'68M — 6-week progressive dyspnoea, non-productive cough, and 7 kg unintentional weight loss.',
     sub:'Chest radiograph — respiratory outpatient clinic',
     diagnosis:'Right Lung Collapse — Bronchial Carcinoma',
-    explanation:'Complete right hemithorax opacification with ipsilateral mediastinal deviation — the trachea and cardiac shadow displaced toward the right — is the hallmark of total right lung collapse. The direction of mediastinal shift is the critical discriminator: collapse pulls structures toward the lesion; massive effusion and tension pneumothorax push them away. In this clinical context of unintentional weight loss and progressive dyspnoea, endobronchial carcinoma causing resorption atelectasis of the entire right lung is the leading diagnosis, requiring urgent CT staging and bronchoscopy.',
+    explanation:'Near-total right hemithorax opacification with ipsilateral mediastinal deviation — the trachea and cardiac shadow displaced toward the right — is the hallmark of subtotal right lung collapse. The direction of mediastinal shift is the critical discriminator: collapse pulls structures toward the lesion; massive effusion and tension pneumothorax push them away. In this clinical context of unintentional weight loss and progressive dyspnoea, endobronchial carcinoma causing resorption atelectasis of the right lung is the leading diagnosis, requiring urgent CT staging and bronchoscopy.',
     findings:[
-      'Complete right hemithorax opacification — total right lung white-out',
+      'Near-total right hemithorax opacification — subtotal right lung collapse with ipsilateral volume loss',
       'Ipsilateral mediastinal shift — trachea and heart displaced rightward, confirming collapse rather than effusion or pneumothorax',
       'Left lung hyperinflation — increased translucency of the left hemithorax from compensatory overexpansion',
-      'No visible right hilar structures — endobronchial obstruction with resorption atelectasis of the entire right lung',
-      'Differential: massive right pleural effusion (mediastinum shifts away to the left), right pneumonectomy status, mesothelioma'
+      'No visible right hilar structures — endobronchial obstruction with resorption atelectasis of the right lung',
+      'Differential: massive right pleural effusion (mediastinum shifts away to the left), right pneumonectomy status, pulmonary agenesis/aplasia (rare congenital cause of hemithorax opacification with volume loss)'
     ],
     annots:[
       {type:'ellipse',cx:26,cy:45,rx:20,ry:28,color:'#ef4444',label:'R lung white-out'},
@@ -947,18 +923,18 @@ const CASES = [
   {
     caseId:'CXR-017',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/d/dc/ETTubeandNGtube.png',
-    credit:'Wikimedia Commons — CC BY-SA 4.0',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (James Heilman MD)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:ETTubeandNGtube.png',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:2,
     title:'58M — day 3 of mechanical ventilation for severe community-acquired pneumonia. Review lines and tubes.',
-    sub:'Chest radiograph — ICU review',
+    sub:'AP chest radiograph — ICU review',
     diagnosis:'Endotracheal Tube and NG Tube — Correct Positioning',
-    explanation:'The endotracheal tube tip is visible in the lower trachea, correctly positioned 3–5 cm above the carina at T4–T5 level. The nasogastric tube descends through the oesophagus with its tip projecting below the left hemidiaphragm, confirming intragastric placement. Systematic assessment of every line and tube is mandatory on all ICU radiographs. A malpositioned NG tube in the right mainstem bronchus is a leading cause of preventable iatrogenic death — enteral feeding must never begin without confirming position below the diaphragm.',
+    explanation:'The endotracheal tube tip is visible in the lower trachea, correctly positioned 3–5 cm above the carina at T4–T5 level. The nasogastric tube descends through the oesophagus with its tip projecting below the left hemidiaphragm, confirming intragastric placement. Note this is a portable AP film — cardiac silhouette is magnified. Systematic assessment of every line and tube is mandatory on all ICU radiographs. A malpositioned NG tube in the right mainstem bronchus is a leading cause of preventable iatrogenic death — enteral feeding must never begin without confirming position below the diaphragm.',
     findings:[
       'Endotracheal tube tip — at T4–T5 level, 3–5 cm above carina — correctly positioned',
       'Nasogastric tube tip — below the left hemidiaphragm in the stomach — correctly positioned',
-      'NG tube safety criteria: must cross the midline, descend below the diaphragm, and project into the stomach before feeding',
+      'NG tube safety: tip must be clearly below the diaphragm within the gastric shadow; confirm with aspirate pH <5.5 or CXR before any feeding — "crosses the midline" alone is not a validated safety criterion',
       'ETT malposition risk: if too distal, preferentially ventilates right lung causing left lung collapse; if too proximal, risks accidental extubation',
       'Differential for NG tube malposition: tip in right mainstem bronchus, coiled in hypopharynx, penetrating lung parenchyma'
     ],
