@@ -1600,11 +1600,24 @@ function restart(){
 }
 
 let contactFrom='';
+let contactPendingOverlay=''; // '' | 'picker' | 'result'
 function showContact(){
   const mainEl=document.getElementById('main');
   const doneEl=document.getElementById('done');
   const cpEl=document.getElementById('contact-page');
   contactFrom=doneEl.classList.contains('show')?'done':'main';
+  // Close lightbox if open
+  if(lightboxOpen)closeLightbox();
+  // Dismiss any open overlay and remember it so we can restore on return
+  if(document.getElementById('picker-overlay').classList.contains('open')){
+    contactPendingOverlay='picker';
+    document.getElementById('picker-overlay').classList.remove('open');
+  } else if(document.getElementById('overlay').classList.contains('open')){
+    contactPendingOverlay='result';
+    document.getElementById('overlay').classList.remove('open');
+  } else {
+    contactPendingOverlay='';
+  }
   mainEl.style.display='none';
   doneEl.classList.remove('show');
   document.getElementById('diff-banner').style.display='none';
@@ -1620,6 +1633,13 @@ function hideContact(){
     document.getElementById('done').classList.add('show');
   } else {
     document.getElementById('main').style.display='';
+    // Restore whichever overlay was open when the user navigated away
+    if(contactPendingOverlay==='picker'){
+      document.getElementById('picker-overlay').classList.add('open');
+    } else if(contactPendingOverlay==='result'){
+      document.getElementById('overlay').classList.add('open');
+    }
+    contactPendingOverlay='';
   }
 }
 function showLegal(){
