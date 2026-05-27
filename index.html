@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src https://upload.wikimedia.org data:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src https://upload.wikimedia.org data:; script-src 'unsafe-inline'; connect-src https://formspree.io; base-uri 'none'; form-action https://formspree.io; frame-ancestors 'none';">
 <title>ThoraSwipe — CXR Trainer</title>
 
 <!-- SEO & share preview ─────────────────────────────────────────── -->
@@ -248,7 +248,18 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .legal-section ul li{font-size:12px;color:var(--muted);line-height:1.75;margin-bottom:4px}
 .legal-warn{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.25)}
 .legal-warn .legal-section-title{color:var(--red)}
-.legal-footer-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;background:var(--blue-dim);border:1px solid rgba(96,165,250,.25);border-radius:10px;padding:8px 16px;margin-top:4px;transition:background .2s}
+.legal-footer-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;background:var(--blue-dim);border:1px solid rgba(96,165,250,.25);border-radius:10px;padding:8px 16px;margin-top:4px;transition:background .2s;cursor:pointer}
+/* ── Contact form ─────────────────────────────────────────────────── */
+.cf-select,.cf-textarea{display:block;width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Sora',sans-serif;font-size:13px;padding:11px 14px;margin-bottom:10px;outline:none;box-sizing:border-box;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.cf-select:focus,.cf-textarea:focus{border-color:rgba(96,165,250,.5)}
+.cf-select option{background:var(--card)}
+.cf-textarea{resize:vertical;min-height:100px;line-height:1.6}
+.cf-submit{width:100%;height:44px;background:var(--blue);border:none;border-radius:10px;color:#fff;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:opacity .2s;margin-top:2px}
+.cf-submit:hover{opacity:.85}
+.cf-submit:disabled{opacity:.4;cursor:default}
+.cf-status{font-size:12px;text-align:center;min-height:18px;margin-top:8px}
+.cf-status.ok{color:var(--green)}.cf-status.err{color:var(--red)}
+.cf-inline-link{background:none;border:none;color:var(--blue);font-family:inherit;font-size:inherit;cursor:pointer;padding:0;text-decoration:underline}
 .legal-footer-link:hover{background:rgba(96,165,250,.2)}
 
 /* header info button */
@@ -397,33 +408,19 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     <p class="muted">Cases are curated from open-access published literature. All images are sourced from Wikimedia Commons under open licences (CC0, CC BY, and CC BY-SA).</p>
   </div>
 
-  <div class="cp-row">
-    <a class="cp-link" href="mailto:radswipe.contact@gmail.com">
-      <div class="cp-link-icon blue">✉</div>
-      <div class="cp-link-body">
-        <div class="cp-link-label">Email Us</div>
-        <div class="cp-link-sub">radswipe.contact@gmail.com</div>
-      </div>
-      <div class="cp-link-arrow">›</div>
-    </a>
-
-    <a class="cp-link" href="mailto:radswipe.contact@gmail.com?subject=Bug%20Report%20%2F%20Issue&body=Case%20affected%3A%0ADescribe%20the%20issue%3A">
-      <div class="cp-link-icon gold">⚑</div>
-      <div class="cp-link-body">
-        <div class="cp-link-label">Report a Case Error</div>
-        <div class="cp-link-sub">Wrong annotation, incorrect diagnosis, image issue</div>
-      </div>
-      <div class="cp-link-arrow">›</div>
-    </a>
-
-    <a class="cp-link" href="mailto:radswipe.contact@gmail.com?subject=Case%20Suggestion">
-      <div class="cp-link-icon green">＋</div>
-      <div class="cp-link-body">
-        <div class="cp-link-label">Suggest a Case</div>
-        <div class="cp-link-sub">Submit a teaching case for review</div>
-      </div>
-      <div class="cp-link-arrow">›</div>
-    </a>
+  <div class="cp-card" style="margin-bottom:0">
+    <div class="cp-card-title">Contact Us</div>
+    <select class="cf-select" id="cf-type" aria-label="Message type">
+      <option value="">— Select a topic —</option>
+      <option value="General">General / Say hello</option>
+      <option value="Bug Report">Report a case error or bug</option>
+      <option value="Case Suggestion">Suggest a new case</option>
+      <option value="Attribution Enquiry">Image attribution enquiry</option>
+      <option value="Legal Enquiry">Legal enquiry</option>
+    </select>
+    <textarea class="cf-textarea" id="cf-msg" placeholder="Your message…" aria-label="Message"></textarea>
+    <button class="cf-submit" id="cf-submit" onclick="submitContactForm()">Send Message</button>
+    <div class="cf-status" id="cf-status"></div>
   </div>
 
   <div class="cp-divider"></div>
@@ -491,13 +488,13 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     </ul>
     <p class="muted">The specific licence for each image is shown in the credit on each case card. Original authors are credited within each case.</p>
     <p class="muted">If you believe any image has been used incorrectly or you are the rights holder and wish to request removal, please contact us.</p>
-    <a class="legal-footer-link" href="mailto:radswipe.contact@gmail.com?subject=Image%20Attribution%20Enquiry">✉ Contact regarding attribution</a>
+    <button class="legal-footer-link" onclick="hideLegal()">✉ Contact regarding attribution</button>
   </div>
 
   <div class="legal-section">
     <div class="legal-section-title">Governing Law</div>
     <p class="muted">These terms are governed by applicable law. Any disputes arising from the use of ThoraSwipe shall be resolved in accordance with the laws of the jurisdiction in which the developers are based.</p>
-    <p class="muted">For any legal enquiries, contact: <strong style="color:var(--text)">radswipe.contact@gmail.com</strong></p>
+    <p class="muted">For any legal enquiries, please <button class="cf-inline-link" onclick="hideLegal()">use the contact form</button>.</p>
   </div>
 </div>
 
@@ -1139,7 +1136,7 @@ function safeImgUrl(url){
   return(typeof url==='string'&&url.startsWith('https://upload.wikimedia.org/'))?url:'';
 }
 function safePageUrl(url){
-  return(typeof url==='string'&&url.startsWith('https://'))?url:'';
+  return(typeof url==='string'&&url.startsWith('https://commons.wikimedia.org/'))?url:'';
 }
 
 // ─── SVG CLONE (avoids innerHTML string manipulation) ────────────────
@@ -1599,6 +1596,40 @@ function showLegal(){
 function hideLegal(){
   document.getElementById('legal-page').classList.remove('show');
   document.getElementById('contact-page').classList.add('show');
+}
+
+// ─── CONTACT FORM ────────────────────────────────────────────────────
+async function submitContactForm(){
+  const typeEl=document.getElementById('cf-type');
+  const msgEl=document.getElementById('cf-msg');
+  const btn=document.getElementById('cf-submit');
+  const status=document.getElementById('cf-status');
+  const type=typeEl.value.trim();
+  const msg=msgEl.value.trim();
+  status.className='cf-status';
+  status.textContent='';
+  if(!type){status.className='cf-status err';status.textContent='Please select a topic.';return;}
+  if(msg.length<10){status.className='cf-status err';status.textContent='Message is too short.';return;}
+  btn.disabled=true;
+  btn.textContent='Sending…';
+  try{
+    const res=await fetch('https://formspree.io/f/REPLACE_WITH_YOUR_FORMSPREE_ID',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({topic:type,message:msg})
+    });
+    if(res.ok){
+      status.className='cf-status ok';
+      status.textContent='Message sent — thanks! We\'ll be in touch.';
+      typeEl.value='';msgEl.value='';
+    } else {
+      throw new Error('server');
+    }
+  }catch(e){
+    status.className='cf-status err';
+    status.textContent='Failed to send — please try again.';
+  }
+  btn.disabled=false;btn.textContent='Send Message';
 }
 
 // ─── SWIPE / DRAG ────────────────────────────────────────────────────
