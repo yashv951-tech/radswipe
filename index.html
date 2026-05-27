@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src https://upload.wikimedia.org data:; script-src 'unsafe-inline'; connect-src https://formspree.io; base-uri 'none'; form-action https://formspree.io; frame-ancestors 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src https://upload.wikimedia.org data:; script-src 'unsafe-inline' https://va.vercel-scripts.com; connect-src https://formspree.io https://va.vercel-scripts.com; base-uri 'none'; form-action https://formspree.io; frame-ancestors 'none';">
 <title>ThoraSwipe — CXR Trainer</title>
 
 <!-- SEO & share preview ─────────────────────────────────────────── -->
@@ -32,6 +32,12 @@
 <!-- Favicon & app icons -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23080a0f'/><text y='.9em' font-size='78' x='50%25' text-anchor='middle'>🩻</text></svg>">
 <link rel="apple-touch-icon" href="https://thoraswipe.com/og-image.png">
+
+<!-- Vercel Speed Insights -->
+<script>
+  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700&display=swap');
 :root{
