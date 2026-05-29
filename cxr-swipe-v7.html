@@ -483,7 +483,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     <div class="swipe-card" id="card">
       <div class="img-wrap" id="img-wrap">
         <div class="shimmer" id="shimmer"><div class="pi">🩻</div><span id="shimmer-msg">Loading…</span></div>
-        <img id="cxr-img" alt="Chest X-ray" referrerpolicy="no-referrer" />
+        <img id="cxr-img" alt="Chest X-ray" referrerpolicy="no-referrer" decoding="async" />
         <div class="case-stamp" id="case-stamp">CASE 001</div>
         <div class="hard-stamp" id="hard-stamp">⚠ HARD</div>
         <div class="src-credit" id="src-credit"></div>
@@ -674,7 +674,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     <div class="handle"></div>
     <div class="picker-swipe-verdict" id="picker-swipe-verdict"></div>
     <div class="picker-img-wrap" id="picker-img-wrap" onclick="openLightbox('card')">
-      <img id="picker-img" alt="CXR preview" referrerpolicy="no-referrer"/>
+      <img id="picker-img" alt="CXR preview" referrerpolicy="no-referrer" decoding="async"/>
       <span class="case-stamp" id="picker-case-stamp"></span>
       <span class="picker-img-hint">🔍 tap to enlarge</span>
     </div>
@@ -697,7 +697,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     <div class="diag-tag" id="diag-tag"></div>
     <a class="source-link" id="source-link" href="#" target="_blank" rel="noopener noreferrer">📄 <span id="source-label">View source</span></a>
     <div class="annot-wrap" id="annot-wrap" onclick="openLightbox('annot')">
-      <img id="annot-img" alt="Annotated CXR" referrerpolicy="no-referrer" />
+      <img id="annot-img" alt="Annotated CXR" referrerpolicy="no-referrer" decoding="async" />
       <svg class="annot-svg" id="annot-svg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
       <div class="annot-zoom-hint">🔍 tap to enlarge</div>
       <button class="annot-toggle" id="annot-toggle" onclick="event.stopPropagation();toggleAnnotations()">Hide labels</button>
@@ -711,7 +711,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <div class="lightbox-img-wrap">
-    <img id="lightbox-img" alt="CXR fullscreen" referrerpolicy="no-referrer" />
+    <img id="lightbox-img" alt="CXR fullscreen" referrerpolicy="no-referrer" decoding="async" />
     <div class="lightbox-label" id="lightbox-label"></div>
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
     <button id="lb-annot-toggle" onclick="event.stopPropagation();toggleAnnotations()" style="display:none">Hide labels</button>
