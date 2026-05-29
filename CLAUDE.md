@@ -4,6 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
+## Deploy checklist
+
+Before committing and pushing a content update (new cases, copy changes):
+1. `cp cxr-swipe-v7.html index.html` — keep index.html in sync
+2. Update `sitemap.xml` `<lastmod>` to today's ISO date (YYYY-MM-DD)
+3. Update `dateModified` in the WebApplication JSON-LD block in `<head>` to today's date
+
+---
+
 ## Project overview
 
 **ThoraSwipe** is a single-file web app (`cxr-swipe-v7.html`) for medical learners to practice chest X-ray interpretation via a swipe-based interface. There is no build step, no framework, no package manager. Open the HTML file in a browser to run it.
@@ -244,3 +253,33 @@ ICU, emergency department, and resuscitation CXRs are **almost always AP**. Iden
 
 ### Anatomical specificity in findings
 - **Describe mass and opacity locations to the lobe or zone level, not just "left lung field" or "right mid-zone."** Write "left upper lobe" or "right lower zone" — this is clinically meaningful (upper-lobe predominance in lung cancer, lower-lobe predominance in aspiration) and is what a radiologist would document.
+
+---
+
+## Pending: contact form (revisit later)
+
+The contact page currently has a **skeleton contact form** (topic dropdown + message textarea) wired to a placeholder Formspree endpoint. The design and backend are intentionally deferred.
+
+### Current state (as of May 2026)
+- CSS classes `.cf-select`, `.cf-textarea`, `.cf-submit`, `.cf-status`, `.cf-inline-link` are defined and styled.
+- HTML form is in the `#contact-page` `<div class="cp-card">` block.
+- `submitContactForm()` JS function exists but calls `https://formspree.io/f/REPLACE_WITH_YOUR_FORMSPREE_ID` — this **must be replaced** before the form works.
+- Legal page email mentions have been removed and replaced with `hideLegal()` links back to the contact form.
+
+### Backend options (all free)
+| Service | Limit | Notes |
+|---|---|---|
+| **FormSubmit** | Unlimited | No account. First submission triggers a one-time activation email to your address. Endpoint: `https://formsubmit.co/ajax/<email-or-hash>`. Hash is visible in source but doesn't expose email directly. |
+| **Web3Forms** | 250/month | No account needed — get an access key at web3forms.com. Clean opaque key, no activation step. |
+| **Formspree** | 50/month | Requires free account. Most polished dashboard. |
+
+### To activate the form
+1. Pick a backend (FormSubmit recommended for unlimited free tier).
+2. Replace the `fetch` URL in `submitContactForm()` — search for `REPLACE_WITH_YOUR_FORMSPREE_ID`.
+3. For FormSubmit: use your real email first; it converts to a hash after activation.
+4. Test end-to-end, then re-sync `index.html` and push.
+
+### Design TODOs (deferred)
+- Consider whether a topic dropdown is the right UX, or whether three separate entry points (general / bug report / case suggestion) work better as distinct buttons that pre-fill the form.
+- Consider adding a name/handle field (optional) so replies can be personalised.
+- The form currently lives inside a `.cp-card` block — evaluate whether it fits visually once real content is in place.
