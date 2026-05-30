@@ -191,14 +191,14 @@ header{width:100%;max-width:480px;padding:12px 18px 6px;display:flex;align-items
 .mode-tag{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:var(--surface);border:1px solid var(--border);color:var(--muted);transition:all .3s}
 .mode-tag.hard{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:var(--red)}
 
-main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 14px 0;position:relative;z-index:5}
+main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px 14px 0;position:relative;z-index:5}
 .prog-wrap{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:10px;overflow:hidden}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:2px;transition:width .4s ease}
 
 .card-stack{width:100%;position:relative;height:clamp(340px,52dvh,480px);touch-action:none}
 .ghost{position:absolute;inset:0;border-radius:20px;background:var(--card);border:1px solid var(--border)}
-.ghost-1{transform:scale(.93) translateY(10px);opacity:.45;z-index:1}
-.ghost-2{transform:scale(.86) translateY(20px);opacity:.22;z-index:0}
+.ghost-1{transform:scale(.93) translateY(10px);opacity:.6;z-index:1;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.ghost-2{transform:scale(.86) translateY(20px);opacity:.35;z-index:0}
 .swipe-card{position:absolute;inset:0;border-radius:20px;background:var(--card);border:1px solid var(--border);overflow:hidden;z-index:5;cursor:grab;user-select:none;will-change:transform;box-shadow:0 8px 40px rgba(0,0,0,.6)}
 .swipe-card:active{cursor:grabbing}
 .swipe-card.hard-mode{border-color:rgba(239,68,68,.4);box-shadow:0 8px 40px rgba(239,68,68,.12)}
@@ -212,7 +212,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .case-stamp{position:absolute;top:10px;left:12px;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;background:rgba(0,0,0,.55);padding:2px 7px;border-radius:4px}
 .hard-stamp{position:absolute;top:10px;right:12px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--red);background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);padding:2px 7px;border-radius:4px;display:none}
 .hard-stamp.show{display:block}
-.src-credit{position:absolute;bottom:8px;right:10px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);background:rgba(0,0,0,.5);padding:2px 6px;border-radius:3px}
+.src-credit{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);opacity:.55;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
 .zoom-hint{position:absolute;bottom:8px;left:12px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.35);background:rgba(0,0,0,.5);padding:2px 7px;border-radius:4px;opacity:0.35;transition:opacity .5s;pointer-events:none}
 .zoom-hint.show{opacity:0.75}
 .ind{position:absolute;top:50%;font-family:'Space Mono',monospace;font-size:22px;font-weight:700;padding:6px 12px;border-radius:8px;border:2.5px solid;letter-spacing:2px;opacity:0;transition:opacity .08s;pointer-events:none}
@@ -243,7 +243,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 /* PICKER */
 .picker-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s}
 .picker-overlay.open{background:rgba(0,0,0,.82);pointer-events:all;backdrop-filter:blur(8px)}
-.picker-sheet{width:100%;max-width:480px;background:var(--surface);border-radius:22px 22px 0 0;border:1px solid var(--border);border-bottom:none;padding:16px 18px 36px;transform:translateY(100%);transition:transform .38s cubic-bezier(.34,1.56,.64,1);max-height:88dvh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.picker-sheet{width:100%;max-width:480px;background:var(--surface);border-radius:22px 22px 0 0;border:1px solid var(--border);border-bottom:none;padding:16px 18px 36px;transform:translateY(100%);transition:transform .38s cubic-bezier(.34,1.56,.64,1);min-height:65dvh;max-height:88dvh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .picker-overlay.open .picker-sheet{transform:translateY(0)}
 .handle{width:34px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 14px}
 .picker-swipe-verdict{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.5px;padding:6px 12px;border-radius:8px;display:inline-block;margin-bottom:14px}
@@ -318,7 +318,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 
 /* DONE */
 .done{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 22px;gap:14px;z-index:10;position:relative;width:100%;max-width:480px}
-.done.show{display:flex}
+.done.show{display:flex;flex:1}
 .done-emoji{font-size:56px;margin-bottom:4px}
 .done h2{font-size:24px;font-weight:700}
 .done p{font-size:13px;color:var(--muted);line-height:1.6;max-width:290px}
@@ -509,7 +509,6 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
         <img id="cxr-img" alt="Chest X-ray" referrerpolicy="no-referrer" decoding="async" />
         <div class="case-stamp" id="case-stamp">CASE 001</div>
         <div class="hard-stamp" id="hard-stamp">⚠ HARD</div>
-        <div class="src-credit" id="src-credit"></div>
         <div class="zoom-hint" id="zoom-hint">🔍 tap to enlarge</div>
         <div class="pacs-bar" id="pacs-bar">
           <button class="pacs-btn" id="pacs-inv" title="Invert" onclick="toggleInvert()">⊡</button>
@@ -528,6 +527,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
         <div class="case-meta"><span class="case-tag" id="case-tag">CASE 1</span><div class="diff-dots" id="diff-dots"></div></div>
         <div class="card-title" id="card-title">Loading…</div>
         <div class="card-sub" id="card-sub">PA chest radiograph</div>
+        <div class="src-credit" id="src-credit"></div>
       </div>
     </div>
   </div>
