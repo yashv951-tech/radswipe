@@ -1527,6 +1527,121 @@ const CASES = [
       {type:'arrow',x1:70,y1:55,x2:70,y2:65,color:'#f59e0b',label:'Flat L diaphragm'},
     ]
   },
+  {
+    caseId:'CXR-034',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/c/c7/X-ray_of_an_infant_with_a_prominent_thymus.jpg',
+    credit:'Wikimedia Commons — CC BY 4.0 (Khan et al., S Afr J Radiol 2015)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:X-ray_of_an_infant_with_a_prominent_thymus.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:true, difficulty:2,
+    title:'6-week-old female infant — referred with "prominent mediastinum on chest radiograph". Born at term (40/40), birth weight 3.4 kg. Feeding well, no respiratory distress at rest. SpO₂ 99% on air.',
+    sub:'AP chest radiograph — neonatal outpatient review',
+    diagnosis:'Normal — Prominent Thymus in Infancy (Thymic Sail Sign)',
+    explanation:'The thymus is a normal anterior mediastinal structure in infants and young children, involuting progressively from age 2–3 years. On CXR it produces characteristic widening of the superior mediastinum; the right lobe often has a convex, wavy lateral border that drapes over adjacent costal cartilages — the thymic sail sign. The thymus should not be confused with a mediastinal mass or cardiomegaly: the border is smooth or gently undulating, the trachea remains midline, and the infant is clinically well without haemodynamic compromise or respiratory distress at rest. The thymus may shrink transiently during acute illness (thymic stress involution) and return to its pre-illness size on recovery — this transient change is physiological. No investigation or intervention is required for incidentally prominent thymus in an otherwise well infant.',
+    findings:[
+      'Prominent superior mediastinum — bilateral soft-tissue opacities extending from the mediastinum represent thymic lobes; the right lobe shows a convex, wavy lateral border (thymic sail sign), characteristic of normal thymic tissue draped over the costal cartilages',
+      'Mediastinal widening is due to thymic tissue, not pathology — the trachea is midline, the cardiac silhouette is not enlarged, and both cardiac borders are well defined deep to the thymic shadow',
+      'Lung fields clear bilaterally — no consolidation, no interstitial thickening, no pleural effusion, no pneumothorax; lucent lung parenchyma visible lateral to the thymus on both sides',
+      'Normal bony thorax for age — symmetrical rib spacing, no fractures, no bony dysplasia; AP projection is standard for neonates and infants who cannot stand for a PA film',
+      'Differential for mediastinal widening in infancy: thymic cyst (smooth rounded opacity, lacks sail sign, may compress trachea), anterior mediastinal lymphoma (rare under age 5, tracheal displacement, systemic symptoms), congenital heart disease (cardiomegaly, abnormal pulmonary vascularity, cyanosis, murmur)'
+    ],
+    annots:[
+      {type:'ellipse',cx:27,cy:35,rx:14,ry:19,color:'#22c55e',label:'R thymic lobe (sail sign)'},
+      {type:'ellipse',cx:63,cy:32,rx:11,ry:16,color:'#22c55e',label:'L thymic lobe'},
+    ]
+  },
+  {
+    caseId:'CXR-035',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8d/Normal_AP.JPG',
+    credit:'Wikimedia Commons — CC BY 3.0 (James Heilman, MD)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Normal_AP.JPG',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:true, difficulty:2,
+    title:'53F — acute pleuritic right-sided chest pain, onset at rest. SpO₂ 97% on air. Heart rate 104 bpm. No leg swelling, no recent surgery or prolonged immobility. Referred from walk-in clinic to emergency department.',
+    sub:'AP chest radiograph — emergency department',
+    diagnosis:'Normal AP Chest Radiograph — No Acute Cardiopulmonary Abnormality',
+    explanation:'This is a portable AP (anteroposterior) chest radiograph taken with the X-ray source anterior to the patient. On AP films the heart lies further from the detector than on a standard PA film: beam divergence magnifies the cardiac silhouette, making CTR unreliable — apparent enlargement of up to 15% is attributable to projection geometry alone. Similarly, the superior mediastinum appears wider on AP and the scapulae may project over the upper lung fields. This film shows clear lung fields bilaterally with no pneumothorax, effusion, consolidation, or pulmonary oedema pattern. A normal AP CXR does not exclude pulmonary embolism — CTPA is the investigation of choice when clinical probability is intermediate or high.',
+    findings:[
+      'AP projection — this is an anteroposterior film; the cardiac silhouette is magnified by beam divergence and CTR cannot be reliably used to assess cardiomegaly on this projection; a standard erect PA radiograph is required for accurate cardiac measurement',
+      'Lung fields bilaterally clear — no focal consolidation, no pleural effusion, no pneumothorax; vascular markings within normal limits and symmetric bilaterally; no pulmonary oedema pattern',
+      'Mediastinum — appears slightly widened, consistent with AP projection geometry; trachea is midline; no mediastinal mass, no aortic contour abnormality',
+      'Costophrenic angles — both clear; no pleural blunting; diaphragmatic contours intact bilaterally',
+      'Differential for this clinical presentation with normal CXR: pulmonary embolism (CXR is normal in up to 30% of confirmed PE — CTPA is the diagnostic investigation of choice), musculoskeletal chest wall pain (diagnosis of exclusion after dangerous causes excluded), pericarditis (CXR often normal; ECG may show saddle-shaped ST elevation)'
+    ],
+    annots:[
+      {type:'ellipse',cx:44,cy:57,rx:12,ry:11,color:'#22c55e',label:'Normal heart (AP magnification)'},
+    ]
+  },
+  {
+    caseId:'CXR-036',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/b/b3/Chest.png',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Chikumaya)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Chest.png',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:true, difficulty:1,
+    title:'29M — baseline CXR requested prior to enrolment in a pharmaceutical clinical trial. No respiratory symptoms. Non-smoker. No cardiac or respiratory history.',
+    sub:'PA chest radiograph — clinical trial screening',
+    diagnosis:'Normal PA Chest Radiograph — No Abnormality Detected',
+    explanation:'A normal chest radiograph should be interpreted using a systematic approach. Recommended sequence: (1) confirm projection and rotation — on a PA film, spinous processes should be equidistant from the medial clavicular ends; (2) cardiac size — CTR < 0.5 on an erect PA confirms normal heart size; (3) mediastinal contours — trachea midline, aortopulmonary window concave or flat, hila at appropriate levels; (4) lung fields — upper, mid, and lower zones, including the retrocardiac area and below the hemidiaphragms; (5) costophrenic angles and pleural spaces; (6) bony thorax and soft tissues. Both lung fields should appear equally radiolucent. This film is unremarkable throughout.',
+    findings:[
+      'Cardiac silhouette — CTR < 0.5 on this erect PA film; heart size and shape within normal limits; left cardiac border well defined (left ventricle and pulmonary artery segment); right cardiac border distinct (right atrium)',
+      'Mediastinum — trachea midline; right paratracheal stripe within normal width; aortopulmonary window concave; both hila at appropriate levels (right slightly lower than left — normal variant) and not enlarged',
+      'Lung fields bilaterally clear — no focal consolidation, no mass or nodule, no cavitation; vascular markings taper normally to the periphery; no interstitial or reticular pattern',
+      'Pleural spaces — both costophrenic angles acute and clear; no pleural effusion; no pneumothorax; no pleural thickening or plaques',
+      'Bones and soft tissues — ribs, clavicles, and visible thoracic vertebrae show no lytic or sclerotic lesion; no rib fractures; soft tissues normal; no subcutaneous emphysema or surgical clips'
+    ],
+    annots:[
+      {type:'ellipse',cx:47,cy:58,rx:10,ry:9,color:'#22c55e',label:'Normal cardiac silhouette'},
+      {type:'arrow',x1:22,y1:78,x2:22,y2:83,color:'#22c55e',label:'Clear R costophrenic angle'},
+      {type:'arrow',x1:78,y1:76,x2:78,y2:81,color:'#22c55e',label:'Clear L costophrenic angle'},
+    ]
+  },
+  {
+    caseId:'CXR-037',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/9/9e/Chest_x-ray_-_posteroanterior_view.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (O\'Dea)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Chest_x-ray_-_posteroanterior_view.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:true, difficulty:2,
+    title:'48M — referred by occupational health physician with "possible hyperinflation on CXR". Works as a security officer requiring annual medical clearance. Ex-smoker (quit 8 years ago, 10 pack-year history). No breathlessness, no wheeze. FEV₁/FVC 0.81, FEV₁ 94% predicted.',
+    sub:'PA chest radiograph — occupational health assessment',
+    diagnosis:'Normal PA Chest Radiograph — Mild Diaphragmatic Flattening, Normal Inspiratory Variant',
+    explanation:'Mild hemidiaphragm flattening can be a normal finding on a well-inspired PA radiograph and does not in itself constitute a diagnosis of COPD. Radiographic criteria for COPD/emphysema require multiple features: hemidiaphragms depressed below the anterior end of the 7th rib, bilateral hyperinflation, peripheral vascular attenuation, and a narrow vertical cardiac silhouette. Here the lung fields are clear, vascular markings are preserved to the periphery, and post-bronchodilator spirometry is entirely normal (FEV₁/FVC 0.81, above the diagnostic threshold of 0.70). CXR is neither sensitive nor specific for early COPD — HRCT chest is required if emphysema is suspected despite a normal spirometry, and post-bronchodilator spirometry remains the diagnostic gold standard per GOLD guidelines.',
+    findings:[
+      'Mild hemidiaphragm flattening bilaterally — hemidiaphragms at the level of the anterior 6th rib; this is at the upper limit of normal and can be seen on a well-inspired film in a healthy individual who is tall or deep-chested',
+      'Lung fields clear — no focal consolidation, no cavitation, no interstitial pattern; vascular markings visible throughout including the periphery — no vascular pruning, which would be expected in true emphysema',
+      'Cardiac silhouette — CTR < 0.5, normal in size; a truly emphysematous chest would produce a narrow, vertical cardiac silhouette dwarfed by the hyperinflated lungs — not seen here',
+      'Costophrenic angles acute bilaterally — no pleural effusion; no pneumothorax; no apical bullae or upper-zone hyperinflation',
+      'Features that would suggest true COPD rather than normal variant: vascular pruning in the outer lung fields, hemidiaphragms depressed below the 7th anterior rib, narrow cardiac silhouette, apical bullae; alternative diagnoses for confirmed hyperinflation include acute severe asthma (episodic, reversible, typically younger patient), alpha-1 antitrypsin deficiency (lower-lobe-predominant emphysema, serum A1AT confirms)'
+    ],
+    annots:[
+      {type:'arrow',x1:25,y1:71,x2:25,y2:77,color:'#22c55e',label:'R diaphragm — normal'},
+      {type:'arrow',x1:72,y1:69,x2:72,y2:75,color:'#22c55e',label:'L diaphragm — normal'},
+    ]
+  },
+  {
+    caseId:'CXR-038',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/2/20/Medical_X-Ray_imaging_AAA02_nevit.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Nevit Dilmen)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Medical_X-Ray_imaging_AAA02_nevit.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:true, difficulty:2,
+    title:'39F — 2-week history of dry cough and mild exertional breathlessness. GP noted "bilateral lower lobe haziness" on initial chest radiograph and referred for specialist review. Non-smoker. SpO₂ 98% on air. Afebrile. Chest clear on auscultation.',
+    sub:'PA chest radiograph — respiratory clinic',
+    diagnosis:'Normal PA Chest Radiograph — Bilateral Breast Shadows',
+    explanation:'Bilateral breast shadows commonly project over the lower lung fields on PA chest radiographs in female patients and may be reported as bilateral consolidation, pulmonary oedema, or pleural effusions. Distinguishing features: the opacity extends beyond the lateral chest wall margin, the inferior border is gradual and diffuse (unlike the sharp meniscus of a pleural effusion), and normal vascular markings remain visible through the haze. The gastric air bubble is visible below the left hemidiaphragm — a normal subdiaphragmatic finding confirming standard patient orientation. When uncertainty persists, comparison with prior CXRs, a lateral view, or CT chest will clarify whether lower zone opacity represents breast tissue or intrathoracic pathology.',
+    findings:[
+      'Bilateral lower zone opacification — this represents normal breast tissue shadow projected over the lower lung fields; the opacity extends beyond the lateral chest wall margin and fades gradually at its inferior border, distinguishing it from pleural effusion or lobar consolidation',
+      'Lung parenchyma visible through the breast shadow — vascular markings traceable through the haze to the periphery; no focal consolidation, no air bronchograms, no reticular or nodular interstitial pattern',
+      'No pleural effusion — both costophrenic angles are clear beneath the breast shadow; the diffuse, gradual lower border contrasts with the sharp meniscus sign of a free pleural effusion',
+      'Cardiac silhouette — CTR < 0.5; no features of cardiac failure (no upper lobe blood diversion, no Kerley B lines, no perihilar bat-wing opacity)',
+      'Differential if lower zone opacity cannot be attributed to breast shadow: pulmonary oedema (bilateral perihilar haze, upper lobe diversion, cardiomegaly, Kerley B lines), bilateral lower lobe consolidation (air bronchograms, lobar distribution, fever, systemically unwell), bilateral pleural effusions (blunted costophrenic angles, meniscus signs bilaterally)'
+    ],
+    annots:[
+      {type:'ellipse',cx:25,cy:72,rx:17,ry:13,color:'#22c55e',label:'R breast shadow'},
+      {type:'ellipse',cx:71,cy:67,rx:14,ry:12,color:'#22c55e',label:'L breast shadow'},
+    ]
+  },
 
 ];
 
@@ -1574,6 +1689,11 @@ const ALL_DIAGNOSES=[
   'Pulmonary Arterial Hypertension','Chronic Thromboembolic Pulmonary Hypertension',
   'COPD — Pulmonary Emphysema','Emphysema — Alpha-1 Antitrypsin Deficiency',
   'Acute Severe Asthma — Hyperinflation','Bronchiolitis Obliterans',
+  'Normal — Prominent Thymus in Infancy (Thymic Sail Sign)','Anterior Mediastinal Mass — Thymoma',
+  'Normal AP Chest Radiograph — No Acute Cardiopulmonary Abnormality',
+  'Normal PA Chest Radiograph — No Abnormality Detected',
+  'Normal PA Chest Radiograph — Mild Diaphragmatic Flattening, Normal Inspiratory Variant',
+  'Normal PA Chest Radiograph — Bilateral Breast Shadows','Bilateral Pleural Effusions',
 ];
 function getDistractors(correct,n=3){
   return shuffle([...ALL_DIAGNOSES].filter(d=>d!==correct)).slice(0,n);
