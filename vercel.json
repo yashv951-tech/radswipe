@@ -18,7 +18,7 @@
       ]
     },
     {
-      "source": "/favicon\\.svg",
+      "source": "/favicon\\.(svg|ico)",
       "headers": [
         {
           "key": "Cache-Control",
