@@ -52,7 +52,7 @@
   "screenshot": "https://thoraswipe.com/og-image.png",
   "softwareVersion": "7",
   "dateCreated": "2025-01-01",
-  "dateModified": "2026-05-29",
+  "dateModified": "2026-05-30",
   "featureList": [
     "22 real chest X-ray cases from easy to expert difficulty",
     "Swipe-based normal vs abnormal classification",
@@ -1410,6 +1410,124 @@ const CASES = [
     ]
   },
 
+  {
+    caseId:'CXR-029',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/2/2d/Oberlappenatelektase_links_pa.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Hellerhoff)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Oberlappenatelektase_links_pa.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:2,
+    title:'58M — 6-week progressive dyspnoea and new left-sided wheeze. 35 pack-year smoker. No fever.',
+    sub:'PA chest radiograph — respiratory clinic',
+    diagnosis:'Left Upper Lobe Collapse — Veil Sign',
+    explanation:'Left upper lobe collapse produces the veil sign: a hazy homogeneous opacity over the left hemithorax, less dense than consolidation because the anteriorly positioned collapsed lobe remains partially translucent to the X-ray beam. The critical differentiator from massive pleural effusion is mediastinal shift direction — collapse draws the mediastinum toward the affected side (volume loss), whereas effusion pushes it away (mass effect). In an adult male smoker with progressive dyspnoea, the leading cause is a central obstructing bronchogenic carcinoma and warrants urgent CT thorax and bronchoscopy. Compensatory hyperinflation of the right lung crossing the midline further confirms significant volume loss on the left.',
+    findings:[
+      'Hazy homogeneous opacity over the left hemithorax — veil sign (anterior collapse allows partial X-ray transmission, producing haziness rather than dense white-out)',
+      'Leftward mediastinal shift — trachea displaced toward the collapsed left upper lobe, confirming volume loss rather than mass effect',
+      'Right lung hyperinflation with crossing of the midline — compensatory expansion filling the vacated left hemithoracic space',
+      'Absent left upper zone vascular markings — lung tissue collapsed and compacted anteriorly against the chest wall',
+      'Differential: massive left pleural effusion (mediastinum shifts right, not left; denser, more homogeneous opacity), left lung consolidation (no mediastinal shift, no volume loss), complete left lung collapse (greater shift, elevated left hemi-diaphragm)'
+    ],
+    annots:[
+      {type:'ellipse',cx:73,cy:48,rx:18,ry:31,color:'#ef4444',label:'Veil sign'},
+      {type:'arrow',x1:48,y1:18,x2:54,y2:28,color:'#f59e0b',label:'Trachea shifted left'},
+    ]
+  },
+
+  {
+    caseId:'CXR-030',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/9/93/Hampton_hump_bei_schwerer_Lungenembolie_-_Roe_Thorax.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Hellerhoff)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Hampton_hump_bei_schwerer_Lungenembolie_-_Roe_Thorax.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:2,
+    title:'54F — sudden right-sided pleuritic chest pain and haemoptysis on day 5 post right total hip replacement. SpO₂ 91% on air.',
+    sub:'PA chest radiograph — emergency assessment',
+    diagnosis:'Pulmonary Embolism — Hampton\'s Hump',
+    explanation:'Hampton\'s Hump is a peripheral, pleural-based, dome-shaped opacity highly characteristic of pulmonary infarction from embolic occlusion of a lobar or segmental pulmonary artery. The convex apex points toward the hilum with the base abutting the visceral pleura, representing haemorrhagic infarction of peripheral lung parenchyma. It occurs in fewer than 25% of confirmed PE cases — a normal or non-diagnostic CXR does not exclude pulmonary embolism. CTPA is the definitive investigation of choice. The post-surgical context, pleuritic chest pain, haemoptysis, and hypoxia form a classic clinical triad warranting immediate anticoagulation pending imaging confirmation.',
+    findings:[
+      'Peripheral, pleural-based, dome-shaped opacity in the right lower zone — Hampton\'s Hump, representing haemorrhagic pulmonary infarction; convex apex points toward the hilum',
+      'Right lower lobe lateral location — consistent with embolic occlusion of a peripheral segmental pulmonary artery supplying this territory',
+      'Remainder of both lung fields clear — isolated peripheral infarct without diffuse pulmonary involvement',
+      'No significant pleural effusion, no cardiomegaly, no pneumothorax — uncomplicating PE on plain film',
+      'Differential: right lower lobe pneumonia (lobar or segmental distribution, denser opacity, productive cough and fever, no surgical precipitant), organising pneumonia (bilateral, subacute, migratory pattern), pulmonary contusion (trauma history required, usually associated rib fractures)'
+    ],
+    annots:[
+      {type:'ellipse',cx:17,cy:62,rx:9,ry:7,color:'#ef4444',label:'Hampton\'s Hump'},
+    ]
+  },
+
+  {
+    caseId:'CXR-031',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/3/3a/Aspergilloma_X-ray_%285390379081%29.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 2.0 (Dr. Yale Rosen)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Aspergilloma_X-ray_(5390379081).jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'52M — 3-month history of intermittent haemoptysis. Non-smoker. Known pulmonary tuberculosis treated 12 years ago. Currently immunocompetent.',
+    sub:'PA chest radiograph — respiratory clinic',
+    diagnosis:'Aspergilloma — Pulmonary Fungal Ball',
+    explanation:'A pulmonary aspergilloma forms when Aspergillus fumigatus colonises a pre-existing lung cavity — most commonly a residual tuberculous cavity, sarcoidosis-related cavity, or large bullae. The characteristic appearance is a rounded soft-tissue mass (fungal ball) within a cavity, sometimes with a crescentic lucency around its superior margin — the Monod sign (air crescent sign). The ball may shift position on decubitus films. Haemoptysis occurs in up to 75% of cases and can be life-threatening. First-line treatment is oral voriconazole; surgical resection is reserved for massive or recurrent haemoptysis. Invasive pulmonary aspergillosis — a distinct and more serious entity — occurs only in severely immunocompromised hosts and should not be confused with the simple aspergilloma seen here.',
+    findings:[
+      'Rounded soft-tissue density in the right upper lobe — the aspergilloma (fungal ball composed of Aspergillus hyphae, fibrin, and inflammatory debris within a pre-existing cavity)',
+      'Associated pleural thickening at the right apex — chronic inflammatory reaction at the cavity wall from prolonged fungal colonisation',
+      'Prior pulmonary TB is the most common predisposing condition — residual cavities provide the ideal substrate for Aspergillus colonisation',
+      'Haemoptysis is the most common presenting symptom; severity ranges from minor to massive and potentially life-threatening',
+      'Differential: primary bronchogenic carcinoma (irregular spiculated margins, lymphadenopathy, progressive growth), reactivation TB cavity (active infection features, air-fluid level, systemic illness), carcinoid tumour (central location, young patient), metastatic deposit (multiple lesions, known primary)'
+    ],
+    annots:[
+      {type:'ellipse',cx:28,cy:25,rx:9,ry:10,color:'#ef4444',label:'Aspergilloma'},
+    ]
+  },
+
+  {
+    caseId:'CXR-032',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/9/9d/Schwere_pulmonale_Hypertonie_51W_-_CR_pa_-_001.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (Hellerhoff)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Schwere_pulmonale_Hypertonie_51W_-_CR_pa_-_001.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'51F — 2-year progressive exertional dyspnoea, now limiting daily activities. Bilateral ankle oedema. History of cardiac surgery in childhood.',
+    sub:'PA chest radiograph — cardiology outpatient clinic',
+    diagnosis:'Pulmonary Arterial Hypertension',
+    explanation:'Severe pulmonary arterial hypertension (PAH) on CXR produces bilateral hilar enlargement from dilated central pulmonary arteries with peripheral vascular pruning — the combination of prominent hila and oligaemic peripheral lung fields is highly characteristic. The right descending pulmonary artery exceeds 16 mm in women; the left main pulmonary artery is visibly prominent. Right ventricular pressure overload eventually causes right heart enlargement. PAH diagnosis requires confirmation by right heart catheterisation (mean PAP > 20 mmHg) — CXR cannot quantify pulmonary pressures and cannot substitute for haemodynamic assessment. Sternal wires from prior cardiac surgery raise the possibility of PAH complicating repaired congenital heart disease (Eisenmenger physiology), a recognised and important association.',
+    findings:[
+      'Bilateral enlarged central pulmonary arteries — prominently enlarged right and left hila disproportionate to the overall cardiac shadow',
+      'Right descending pulmonary artery dilation — exceeds normal calibre (>16 mm in women), a reliable plain-film marker of elevated pulmonary arterial pressure',
+      'Peripheral vascular pruning — lung fields appear oligaemic in the outer thirds bilaterally, reflecting reduced blood flow to the lung periphery',
+      'Sternal wires from prior cardiac surgery — consistent with repaired congenital heart disease, a recognised cause of pulmonary arterial hypertension',
+      'Differential: bilateral hilar lymphadenopathy from sarcoidosis (potato nodes, bilateral symmetry, no peripheral pruning), lymphoma (mediastinal widening, paratracheal nodes), mitral stenosis (upper lobe vascular redistribution, left atrial enlargement, no hila enlargement as predominant feature)'
+    ],
+    annots:[
+      {type:'ellipse',cx:36,cy:49,rx:7,ry:8,color:'#ef4444',label:'Enlarged R PA'},
+      {type:'ellipse',cx:61,cy:38,rx:6,ry:6,color:'#ef4444',label:'Enlarged L PA'},
+    ]
+  },
+
+  {
+    caseId:'CXR-033',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/0/0b/COPD.JPG',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (James Heilman, MD)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:COPD.JPG',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:2,
+    title:'71M — progressive breathlessness over several years, now limiting to 50 metres on the flat. 50 pack-year smoking history. On LABA/LAMA inhaler therapy.',
+    sub:'PA chest radiograph — respiratory clinic',
+    diagnosis:'COPD — Pulmonary Emphysema',
+    explanation:'Severe COPD/emphysema on CXR is characterised by bilateral hyperinflation: flattened or inverted hemidiaphragms, increased lung volumes, and a cardiac silhouette dwarfed by the hyperinflated lungs. More than six anterior rib ends visible above the right hemidiaphragm confirms hyperinflation. Peripheral attenuation of vascular markings reflects destruction of the alveolar-capillary bed. A normal-appearing CXR does not exclude COPD — up to one-third of clinically significant cases show no plain film abnormality. HRCT (not CXR) is the gold standard for characterising emphysema subtype and guiding decisions about surgical or bronchoscopic lung volume reduction in selected patients.',
+    findings:[
+      'Bilateral hyperinflation — lung fields extend below the anterior end of the 7th rib, hemidiaphragms markedly flattened and depressed',
+      'Relatively small cardiac silhouette — heart dwarfed by emphysematous lung expansion; CTR < 0.5 but this reflects hyperinflation, not reduced cardiac size',
+      'Peripheral vascular pruning — attenuated vascular markings in the outer lung fields bilaterally, reflecting capillary bed destruction by emphysema',
+      'No focal consolidation, no pleural effusion — pure emphysematous pattern without acute infective or vascular complication',
+      'Differential: acute severe asthma (reversible hyperinflation, younger patient, resolves between attacks, no vascular pruning), alpha-1 antitrypsin deficiency (lower-zone-predominant emphysema and bullae, younger patient, non-smoker or light smoker), bronchiolitis obliterans (similar hyperinflation but CT shows mosaic attenuation, no smoking history typically)'
+    ],
+    annots:[
+      {type:'arrow',x1:30,y1:57,x2:30,y2:67,color:'#f59e0b',label:'Flat R diaphragm'},
+      {type:'arrow',x1:70,y1:55,x2:70,y2:65,color:'#f59e0b',label:'Flat L diaphragm'},
+    ]
+  },
+
 ];
 
 // ─── DISTRACTORS ────────────────────────────────────────────────────
@@ -1449,6 +1567,13 @@ const ALL_DIAGNOSES=[
   'Right Pleural Mesothelioma','Left Pleural Mesothelioma','Pleural Plaques — Asbestosis',
   'Necrotising Pneumonia — Lung Abscess','Lung Abscess — Klebsiella Pneumonia',
   'Bilateral Apical Pleural Caps — Old Tuberculosis Sequelae','Pancoast Tumour — Superior Sulcus',
+  'Left Upper Lobe Collapse — Veil Sign','Right Upper Lobe Collapse — Golden S Sign',
+  'Left Lower Lobe Collapse — Sail Sign','Complete Left Lung Collapse',
+  'Pulmonary Embolism — Hampton\'s Hump','Pulmonary Infarction — Peripheral Opacity',
+  'Aspergilloma — Pulmonary Fungal Ball','Invasive Pulmonary Aspergillosis',
+  'Pulmonary Arterial Hypertension','Chronic Thromboembolic Pulmonary Hypertension',
+  'COPD — Pulmonary Emphysema','Emphysema — Alpha-1 Antitrypsin Deficiency',
+  'Acute Severe Asthma — Hyperinflation','Bronchiolitis Obliterans',
 ];
 function getDistractors(correct,n=3){
   return shuffle([...ALL_DIAGNOSES].filter(d=>d!==correct)).slice(0,n);
