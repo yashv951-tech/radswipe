@@ -11,6 +11,8 @@ Before committing and pushing a content update (new cases, copy changes):
 2. Update `sitemap.xml` `<lastmod>` to today's ISO date (YYYY-MM-DD)
 3. Update `dateModified` in the WebApplication JSON-LD block in `<head>` to today's date
 
+**After every commit, always run `git push` immediately.** Never leave commits sitting locally. Vercel deploys automatically on push — committing without pushing means the live site is out of date.
+
 ---
 
 ## Project overview
