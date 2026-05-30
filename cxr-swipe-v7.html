@@ -192,8 +192,14 @@ header{width:100%;max-width:480px;padding:12px 18px 6px;display:flex;align-items
 .diff-pips{display:flex;gap:4px}
 .diff-pips span{width:24px;height:4px;border-radius:2px;background:var(--border);transition:background .4s}
 .diff-pips span.d1{background:var(--green)}.diff-pips span.d2{background:var(--gold)}.diff-pips span.d3{background:var(--red)}
-.mode-tag{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:var(--surface);border:1px solid var(--border);color:var(--muted);transition:all .3s}
+.mode-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:var(--surface);border:1px solid var(--border);color:var(--muted);transition:all .3s}
 .mode-tag.hard{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:var(--red)}
+.diff-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.fc-row{display:flex;gap:4px;flex-shrink:0}
+.fchip{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:2px 9px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,border-color .2s,color .2s;letter-spacing:.3px;line-height:1.8}
+.fchip.fc-on-e{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.4);color:var(--green)}
+.fchip.fc-on-m{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.4);color:var(--gold)}
+.fchip.fc-on-h{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.4);color:var(--red)}
 
 main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px 14px 0;position:relative;z-index:5}
 .prog-wrap{width:100%;height:4px;background:rgba(255,255,255,.07);border-radius:2px;margin-bottom:10px;overflow:hidden}
@@ -496,9 +502,15 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 </header>
 
 <div class="diff-banner" id="diff-banner">
-  <span class="diff-label">Difficulty</span>
-  <div class="diff-pips" id="diff-pips"><span></span><span></span><span></span></div>
-  <span class="mode-tag" id="mode-tag" title="Difficulty of current case">EASY</span>
+  <div class="fc-row" role="group" aria-label="Filter by difficulty">
+    <button class="fchip" id="fc-1" onclick="toggleFilter(1)" title="Include Easy cases">Easy</button>
+    <button class="fchip" id="fc-2" onclick="toggleFilter(2)" title="Include Medium cases">Medium</button>
+    <button class="fchip" id="fc-3" onclick="toggleFilter(3)" title="Include Hard cases">Hard</button>
+  </div>
+  <div class="diff-right">
+    <div class="diff-pips" id="diff-pips"><span></span><span></span><span></span></div>
+    <span class="mode-tag" id="mode-tag" title="Difficulty of current case">EASY</span>
+  </div>
 </div>
 
 <main id="main">
@@ -1727,6 +1739,7 @@ function cloneAnnotSvgIntoLb(src,dest){
 const EASY=CASES.filter(c=>c.difficulty===1);
 const MEDIUM=CASES.filter(c=>c.difficulty===2);
 const HARD=CASES.filter(c=>c.difficulty===3);
+let diffFilter=new Set([1,2]); // default: Easy + Medium
 let queue=[],idx=0,scoreOk=0,scoreBad=0,imgLoadSeq=0;
 let streak=0,bestStreak=0,hardUnlocked=false,waiting=false;
 let lightboxOpen=false,lightboxJustClosed=false;
@@ -1735,7 +1748,30 @@ let currentImgSrc='';
 let pendingCase=null,pendingOk=false,pendingChoice='';
 
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-function buildQueue(){return[...shuffle(EASY),...shuffle(MEDIUM)];}
+function buildQueue(){
+  let pool=[];
+  if(diffFilter.has(1))pool=[...pool,...shuffle(EASY)];
+  if(diffFilter.has(2))pool=[...pool,...shuffle(MEDIUM)];
+  if(diffFilter.has(3))pool=[...pool,...shuffle(HARD)];
+  return pool.length?pool:[...shuffle(EASY),...shuffle(MEDIUM)]; // fallback if filter somehow empty
+}
+function toggleFilter(d){
+  if(diffFilter.has(d)){
+    if(diffFilter.size===1)return; // keep at least one selected
+    diffFilter.delete(d);
+  } else {
+    diffFilter.add(d);
+  }
+  updateFilterUI();
+}
+function updateFilterUI(){
+  [1,2,3].forEach(d=>{
+    const chip=document.getElementById('fc-'+d);
+    if(!chip)return;
+    chip.classList.remove('fc-on-e','fc-on-m','fc-on-h');
+    if(diffFilter.has(d))chip.classList.add(d===1?'fc-on-e':d===2?'fc-on-m':'fc-on-h');
+  });
+}
 
 // ─── LIGHTBOX ───────────────────────────────────────────────────────
 function openLightbox(src){
@@ -1925,6 +1961,7 @@ function decide(choice){
 }
 
 function unlockHard(){
+  if(diffFilter.has(3))return; // hard already in queue via filter
   hardUnlocked=true;
   const rest=queue.slice(idx+1);
   queue=[...queue.slice(0,idx+1),...shuffle(HARD),...rest];
@@ -2286,6 +2323,7 @@ function playNudgeTutorial(){
 })();
 
 // INIT
+updateFilterUI();
 queue=buildQueue();
 renderCase();
 </script>
