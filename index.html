@@ -192,8 +192,8 @@ header{width:100%;max-width:480px;padding:12px 18px 6px;display:flex;align-items
 .mode-tag.hard{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:var(--red)}
 
 main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px 14px 0;position:relative;z-index:5}
-.prog-wrap{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:10px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:2px;transition:width .4s ease}
+.prog-wrap{width:100%;height:4px;background:rgba(255,255,255,.07);border-radius:2px;margin-bottom:10px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:2px;transition:width .4s ease;box-shadow:0 0 8px rgba(96,165,250,.5)}
 
 .card-stack{width:100%;position:relative;height:clamp(340px,52dvh,480px);touch-action:none}
 .ghost{position:absolute;inset:0;border-radius:20px;background:var(--card);border:1px solid var(--border)}
@@ -354,9 +354,9 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .cp-link{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--text);transition:border-color .2s,background .2s;cursor:pointer;font-family:'Sora',sans-serif}
 .cp-link:hover{border-color:rgba(96,165,250,.4);background:#111827}
 .cp-link-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.cp-link-icon.blue{background:var(--blue-dim)}
-.cp-link-icon.green{background:rgba(34,197,94,.12)}
-.cp-link-icon.gold{background:var(--gold-dim)}
+.cp-link-icon.blue{background:var(--blue-dim);color:var(--blue)}
+.cp-link-icon.green{background:rgba(34,197,94,.12);color:var(--green)}
+.cp-link-icon.gold{background:var(--gold-dim);color:var(--gold)}
 .cp-link-body{flex:1}
 .cp-link-label{font-size:13px;font-weight:600;margin-bottom:2px}
 .cp-link-sub{font-size:11px;color:var(--muted)}
@@ -589,7 +589,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 
   <div class="cp-row">
     <a class="cp-link" href="mailto:radswipe.contact@gmail.com">
-      <div class="cp-link-icon blue">✉</div>
+      <div class="cp-link-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 4 12 13 22 4"/></svg></div>
       <div class="cp-link-body">
         <div class="cp-link-label">Email Us</div>
         <div class="cp-link-sub">radswipe.contact@gmail.com</div>
@@ -598,7 +598,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     </a>
 
     <a class="cp-link" href="mailto:radswipe.contact@gmail.com?subject=Bug%20Report%20%2F%20Issue&body=Case%20affected%3A%0ADescribe%20the%20issue%3A">
-      <div class="cp-link-icon gold">⚑</div>
+      <div class="cp-link-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>
       <div class="cp-link-body">
         <div class="cp-link-label">Report a Case Error</div>
         <div class="cp-link-sub">Wrong annotation, incorrect diagnosis, image issue</div>
@@ -607,7 +607,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     </a>
 
     <a class="cp-link" href="mailto:radswipe.contact@gmail.com?subject=Case%20Suggestion">
-      <div class="cp-link-icon green">＋</div>
+      <div class="cp-link-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
       <div class="cp-link-body">
         <div class="cp-link-label">Suggest a Case</div>
         <div class="cp-link-sub">Submit a teaching case for review</div>
@@ -620,7 +620,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 
   <div class="cp-row" style="margin-bottom:10px">
     <button class="cp-link" onclick="showLegal()">
-      <div class="cp-link-icon" style="background:rgba(96,165,250,.08)">⚖</div>
+      <div class="cp-link-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <div class="cp-link-body">
         <div class="cp-link-label">Legal &amp; Privacy</div>
         <div class="cp-link-sub">Disclaimer, terms of use, image attribution</div>
