@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src https://upload.wikimedia.org data:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://upload.wikimedia.org data:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';">
 <title>ThoraSwipe — Free Chest X-Ray Quiz & CXR Practice for Medical Students</title>
 
 <!-- SEO & share preview ─────────────────────────────────────────── -->
@@ -130,8 +130,9 @@
 <meta property="og:site_name"   content="ThoraSwipe">
 <meta property="og:title"       content="ThoraSwipe — CXR Pattern Recognition Trainer">
 <meta property="og:description" content="Free swipe-based chest X-ray trainer. Build radiograph reading skills with instant feedback and annotated explanations.">
-<meta property="og:image"       content="https://thoraswipe.com/og-image.png">
-<meta property="og:image:type"  content="image/png">
+<meta property="og:image"            content="https://thoraswipe.com/og-image.png">
+<meta property="og:image:secure_url" content="https://thoraswipe.com/og-image.png">
+<meta property="og:image:type"       content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt"   content="ThoraSwipe logo — CXR Pattern Recognition Trainer">
@@ -154,6 +155,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.json">
+<link rel="image_src" href="https://thoraswipe.com/og-image.png">
 
 <!-- Fonts — preconnect first, then non-blocking stylesheet -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
