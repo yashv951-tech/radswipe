@@ -1285,6 +1285,127 @@ const CASES = [
     ]
   },
 
+  // ── HARD cases ────────────────────────────────────────────────────────
+  {
+    caseId:'CXR-024',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/c/cc/Maessiger_Spannungspneumothorax_links_21M_-_CR_pa_-_001.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (Hellerhoff)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Maessiger_Spannungspneumothorax_links_21M_-_CR_pa_-_001.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'21M — acute-onset left-sided chest pain and dyspnoea at rest. Tall, thin build.',
+    sub:'PA chest radiograph — respiratory assessment',
+    diagnosis:'Left Tension Pneumothorax',
+    explanation:'A left-sided pleural line is visible with absent lung markings peripheral to it, confirming pneumothorax. The slight rightward mediastinal shift indicates elevated intrapleural pressure on the left — tension physiology. In clinical practice, tension pneumothorax is a bedside diagnosis: do not delay needle decompression to obtain a CXR if the patient is haemodynamically compromised. Tall, lean young males are predisposed via apical blebs; spontaneous PTX in this demographic is the classic scenario.',
+    findings:[
+      'Left-sided pleural line — visible lung edge with absent markings beyond it (patient\'s left = viewer\'s right)',
+      'Slight rightward mediastinal shift — hallmark of tension, distinguishes from simple pneumothorax',
+      'Collapsed left lung lobes — partially visible medially',
+      'No rib fractures — favours spontaneous over traumatic aetiology',
+      'Differential: simple left spontaneous pneumothorax (no mediastinal shift), large left pleural effusion (opaque hemithorax, not lucent), lobar collapse (volume loss, not air-filled)'
+    ],
+    annots:[
+      {type:'arrow',x1:82,y1:55,x2:74,y2:48,color:'#ef4444',label:'Pleural line'},
+      {type:'arrow',x1:46,y1:30,x2:42,y2:38,color:'#f59e0b',label:'Mediastinal shift →R'},
+    ]
+  },
+
+  {
+    caseId:'CXR-025',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/a/a2/Floride_kavernisierende_Tuberkulose_27M_-_CR_pa_-_001.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (Hellerhoff)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Floride_kavernisierende_Tuberkulose_27M_-_CR_pa_-_001.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'27M — 3-week history of haemoptysis, drenching night sweats, and weight loss. Recent travel to TB-endemic region.',
+    sub:'PA chest radiograph — respiratory assessment',
+    diagnosis:'Active Cavitary Tuberculosis',
+    explanation:'Florid (active) pulmonary tuberculosis with cavitation involving the upper lobes bilaterally. TB classically involves the upper lobes and superior segments of the lower lobes due to high regional oxygen tension favouring mycobacterial growth. Cavitation occurs when caseous necrosis liquefies and drains into a bronchus, creating an "open" lesion with high infectivity and smear-positive sputum. The combination of upper-lobe distribution, cavitation, and constitutional symptoms (haemoptysis, night sweats, weight loss) is highly characteristic of post-primary TB, but overlap with lung malignancy and necrotising pneumonia requires sputum culture and, if necessary, bronchoscopy.',
+    findings:[
+      'Bilateral upper lobe patchy consolidation and cavitation — highly characteristic of post-primary TB',
+      'Ill-defined nodular opacities in upper zones — bronchogenic spread of infection',
+      'Upper-lobe predominance — distinguishes reactivation TB from primary TB (which causes lower lobe consolidation and hilar lymphadenopathy)',
+      'Cavitation — marks open, smear-positive TB with high infectivity; thick-walled irregular cavity',
+      'Differential: primary lung malignancy with cavitation (unilateral, progressive, no fever), necrotising pneumonia or lung abscess (lower lobe, aspiration history), pulmonary histoplasmosis or coccidioidomycosis (travel/exposure history)'
+    ],
+    annots:[
+      {type:'ellipse',cx:28,cy:22,rx:14,ry:10,color:'#ef4444',label:'RUL cavitation'},
+      {type:'ellipse',cx:72,cy:22,rx:14,ry:10,color:'#ef4444',label:'LUL cavitation'},
+    ]
+  },
+
+  {
+    caseId:'CXR-026',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/d/dc/Pleuramesotheliom_rechts_73M_-_CR_pa_-_001.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (Hellerhoff)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Pleuramesotheliom_rechts_73M_-_CR_pa_-_001.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'73M — progressive right-sided chest wall pain and dyspnoea over 6 months. Former shipyard worker, retired 20 years ago.',
+    sub:'PA chest radiograph — respiratory assessment',
+    diagnosis:'Right Pleural Mesothelioma',
+    explanation:'Circumferential irregular pleural thickening encases the right lung with associated right lung volume reduction — the classic "frozen hemithorax" of advanced pleural mesothelioma. Crucially, ipsilateral volume loss (rather than contralateral mediastinal shift) helps distinguish mesothelioma from a large malignant pleural effusion, which pushes the mediastinum away. Asbestos exposure carries a 30–40-year latency before mesothelioma presentation, most commonly in men with occupational exposure (shipbuilding, construction, insulation). CT and pleural biopsy (video-assisted thoracoscopic surgery preferred) are required for tissue diagnosis.',
+    findings:[
+      'Circumferential irregular pleural thickening encasing the right lung (patient\'s right = viewer\'s left)',
+      'Right lung volume reduction — ipsilateral, reflecting tumour encasement rather than effusion',
+      'No frank free pleural effusion, unlike typical malignant pleural disease',
+      'Unilateral distribution with pleural rind — highly characteristic pattern of mesothelioma',
+      'Differential: metastatic pleural disease (may be bilateral, nodular deposits), chronic empyema with pleural fibrosis (infection history), solitary fibrous tumour of the pleura (usually pedunculated, localised)'
+    ],
+    annots:[
+      {type:'ellipse',cx:22,cy:45,rx:14,ry:30,color:'#ef4444',label:'Pleural rind — R'},
+      {type:'arrow',x1:26,y1:75,x2:30,y2:68,color:'#f59e0b',label:'Volume loss — R'},
+    ]
+  },
+
+  {
+    caseId:'CXR-027',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/4/4d/XR_chest_-_pneumonia_with_abscess_and_caverns_-_d0.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Christaras A)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:XR_chest_-_pneumonia_with_abscess_and_caverns_-_d0.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'37M — 2 weeks of productive cough with foul-smelling sputum, spiking fevers, and weight loss. History of alcohol excess.',
+    sub:'PA chest radiograph — respiratory assessment',
+    diagnosis:'Necrotising Pneumonia — Lung Abscess',
+    explanation:'Bilateral consolidation with poorly demarcated round cavitating lesions in the left lower zone is consistent with necrotising pneumonia and lung abscess formation. Lung abscesses most commonly result from aspiration of oropharyngeal contents in vulnerable patients (alcohol excess, impaired consciousness, dental disease, dysphagia), with anaerobes, Klebsiella pneumoniae, and Staphylococcus aureus the leading organisms. The lower lobe predilection reflects dependent aspiration — the posterior segment of the right upper lobe and superior segment of the lower lobes are most affected when aspiration occurs supine. An air-fluid level, when visible, confirms active cavitation; CT is required for full assessment of cavity extent and to plan drainage.',
+    findings:[
+      'Bilateral airspace consolidation — patchy, ill-defined opacification',
+      'Round poorly demarcated cavitating lesions in the left lower zone, above the cardiac silhouette',
+      'Lower zone predilection — consistent with aspiration as the primary mechanism',
+      'Foul-smelling sputum and alcohol history — strongly favour anaerobic polymicrobial lung abscess',
+      'Differential: active cavitary tuberculosis (upper lobe, constitutional symptoms, travel/exposure), primary malignancy with cavitation (thick irregular wall, unilateral, older smoker), pulmonary infarction with cavitation (pleuritic pain, risk factors for PE)'
+    ],
+    annots:[
+      {type:'ellipse',cx:65,cy:65,rx:12,ry:10,color:'#ef4444',label:'Cavitating lesion'},
+      {type:'ellipse',cx:40,cy:55,rx:18,ry:14,color:'#f59e0b',label:'Consolidation'},
+    ]
+  },
+
+  {
+    caseId:'CXR-028',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/2/23/Pleurakuppenschwielen_beidseits_59W_-_CR_pa_-_001.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (Hellerhoff)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Pleurakuppenschwielen_beidseits_59W_-_CR_pa_-_001.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'59F — incidental finding on pre-operative CXR. Non-smoker born in Southeast Asia. No current respiratory symptoms.',
+    sub:'PA chest radiograph — pre-operative assessment',
+    diagnosis:'Bilateral Apical Pleural Caps — Old Tuberculosis Sequelae',
+    explanation:'Bilateral symmetrical dome-shaped pleural thickening at both lung apices represents chronic fibrous scarring — a common sequela of prior pulmonary tuberculosis in patients from TB-endemic regions. The key radiological clue is bilateral symmetry with fibrotic-appearing opacities and no associated mass, rib destruction, or Horner\'s syndrome. A unilateral, progressive, or asymmetric apical opacity in a smoker raises concern for a Pancoast (superior sulcus) tumour and warrants CT and MRI of the thoracic inlet. Asbestos-related pleural plaques tend to involve the lower zones and diaphragmatic surfaces, sparing the apices. Comparison with prior imaging is essential before attributing apical changes to benign aetiology.',
+    findings:[
+      'Bilateral symmetric dome-shaped apical pleural thickening — consistent with old fibrous scarring',
+      'No associated soft-tissue mass, rib erosion, or cortical destruction',
+      'Distribution and symmetry strongly favour old TB sequelae over malignancy',
+      'Patient from TB-endemic region — prior TB exposure likely despite no documented diagnosis',
+      'Differential: Pancoast tumour (unilateral, progressive, rib destruction, Horner\'s syndrome), asbestos-related pleural plaques (lower zone and diaphragmatic, calcified), radiation-induced fibrosis (unilateral, treatment history)'
+    ],
+    annots:[
+      {type:'ellipse',cx:20,cy:14,rx:10,ry:7,color:'#f59e0b',label:'R apical cap'},
+      {type:'ellipse',cx:80,cy:14,rx:10,ry:7,color:'#f59e0b',label:'L apical cap'},
+    ]
+  },
+
 ];
 
 // ─── DISTRACTORS ────────────────────────────────────────────────────
@@ -1319,6 +1440,11 @@ const ALL_DIAGNOSES=[
   'Pericardial Effusion — Water Bottle Sign',
   'Dilated Cardiomyopathy','Cardiac Tamponade',
   'Dextrocardia with Situs Inversus','Isolated Dextrocardia — No Situs Inversus',
+  'Left Tension Pneumothorax','Right Tension Pneumothorax',
+  'Active Cavitary Tuberculosis','Pulmonary Tuberculosis — Upper Lobe Cavitation',
+  'Right Pleural Mesothelioma','Left Pleural Mesothelioma','Pleural Plaques — Asbestosis',
+  'Necrotising Pneumonia — Lung Abscess','Lung Abscess — Klebsiella Pneumonia',
+  'Bilateral Apical Pleural Caps — Old Tuberculosis Sequelae','Pancoast Tumour — Superior Sulcus',
 ];
 function getDistractors(correct,n=3){
   return shuffle([...ALL_DIAGNOSES].filter(d=>d!==correct)).slice(0,n);
