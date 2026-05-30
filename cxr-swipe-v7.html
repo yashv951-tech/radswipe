@@ -186,7 +186,7 @@ header{width:100%;max-width:480px;padding:12px 18px 6px;display:flex;align-items
 .diff-banner{width:100%;max-width:480px;padding:0 18px 5px;display:flex;align-items:center;gap:8px;z-index:9;position:relative}
 .diff-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
 .diff-pips{display:flex;gap:4px}
-.diff-pips span{width:22px;height:3px;border-radius:2px;background:var(--border);transition:background .4s}
+.diff-pips span{width:24px;height:4px;border-radius:2px;background:var(--border);transition:background .4s}
 .diff-pips span.d1{background:var(--green)}.diff-pips span.d2{background:var(--gold)}.diff-pips span.d3{background:var(--red)}
 .mode-tag{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:var(--surface);border:1px solid var(--border);color:var(--muted);transition:all .3s}
 .mode-tag.hard{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:var(--red)}
@@ -333,13 +333,13 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .contact-divider{width:40px;height:1px;background:var(--border);margin:0 auto 12px}
 .contact-title{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .contact-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:10px}
-.contact-btn{display:inline-flex;align-items:center;gap:6px;font-family:'Sora',sans-serif;font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;background:var(--blue-dim);border:1px solid rgba(96,165,250,.25);border-radius:10px;padding:8px 16px;transition:background .2s}
+.contact-btn{display:flex;align-items:center;justify-content:center;gap:6px;font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--blue);text-decoration:none;background:var(--blue-dim);border:1px solid rgba(96,165,250,.3);border-radius:13px;width:100%;max-width:260px;height:44px;transition:background .2s,border-color .2s}
 .contact-btn:hover{background:rgba(96,165,250,.2)}
 
 /* CONTACT PAGE */
 .contact-page{display:none;flex-direction:column;align-items:center;width:100%;max-width:480px;padding:0 18px 40px;z-index:10;position:relative;overflow-y:auto;gap:0}
 .contact-page.show{display:flex}
-.cp-back{align-self:flex-start;display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;padding:8px 0 20px;transition:color .2s}
+.cp-back{align-self:flex-start;display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text);background:none;border:none;cursor:pointer;padding:8px 0 8px;transition:color .2s;opacity:.7}
 .cp-back:hover{color:var(--text)}
 .cp-hero{text-align:center;margin-bottom:28px}
 .cp-logo{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;margin-bottom:6px;display:flex;flex-direction:column;align-items:center;gap:12px}
@@ -494,7 +494,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 <div class="diff-banner" id="diff-banner">
   <span class="diff-label">Difficulty</span>
   <div class="diff-pips" id="diff-pips"><span></span><span></span><span></span></div>
-  <span class="mode-tag" id="mode-tag">EASY</span>
+  <span class="mode-tag" id="mode-tag" title="Difficulty of current case">EASY</span>
 </div>
 
 <main id="main">
@@ -552,7 +552,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     </svg>
   </div>
   <h2>Round Complete</h2>
-  <p>Pattern recognition is built one case at a time. Keep going.</p>
+  <p id="done-msg">Pattern recognition is built one case at a time. Keep going.</p>
   <div class="final-box">
     <div class="final-num" id="final-num">0/0</div>
     <div class="final-lbl">cases identified correctly</div>
@@ -1874,8 +1874,16 @@ function showDone(){
   document.getElementById('main').style.display='none';
   document.getElementById('done').classList.add('show');
   document.getElementById('final-num').textContent=scoreOk+'/'+queue.length;
+  const pct=queue.length?scoreOk/queue.length:0;
+  document.getElementById('final-num').style.color=pct>=0.7?'var(--green)':pct>=0.4?'var(--gold)':'var(--red)';
+  document.getElementById('done-msg').textContent=pct>=0.7
+    ?'Strong round — pattern recognition is clicking.'
+    :pct>=0.4
+    ?'Good effort — each round builds better recall.'
+    :'Pattern recognition is built one case at a time. Keep going.';
   const fs=document.getElementById('final-streak');
   if(bestStreak>=3)fs.textContent='🔥 Best streak: '+bestStreak;
+  document.querySelector('.score-pill').style.visibility='hidden';
 }
 function restart(){
   queue=buildQueue();idx=0;scoreOk=0;scoreBad=0;
@@ -1885,6 +1893,7 @@ function restart(){
   document.getElementById('streak-num').textContent='0';
   document.getElementById('done').classList.remove('show');
   document.getElementById('main').style.display='';
+  document.querySelector('.score-pill').style.visibility='visible';
   renderCase();
 }
 
