@@ -15,7 +15,9 @@ Before committing and pushing **any** update (new cases, copy changes, bug fixes
    - `<noscript>` paragraph: `"ThoraSwipe includes 37 real chest X-ray cases"` (update the number)
    - Also add any new diagnoses to the `<noscript>` case list under the correct category heading
 
-**After every commit, always run `git push` immediately.** Never leave commits sitting locally. Vercel deploys automatically on push — committing without pushing means the live site is out of date.
+**After every commit, always run `git push` immediately.**
+
+**If you change the default `diffFilter`, add cases, or restructure the queue**, bump `TS_SAVE_KEY` in the JS (e.g. `ts_progress_v2` → `ts_progress_v3`). This invalidates stale localStorage saves so returning users get a fresh queue matching the new defaults, rather than being stuck on an old case count. Never leave commits sitting locally. Vercel deploys automatically on push — committing without pushing means the live site is out of date.
 
 ---
 
