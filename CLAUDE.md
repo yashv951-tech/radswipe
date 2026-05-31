@@ -172,6 +172,85 @@ Normal cases default to difficulty 1. Use 2 only if a normal variant (e.g. pecto
 
 ---
 
+## Writing normal CXR cases
+
+Normal cases are harder to write well than pathological ones. The single most common failure mode is a vignette that tells the learner the answer before they look at the image.
+
+### The vignette must not give away the diagnosis
+
+**Never write:**
+- "Routine screening. Completely asymptomatic."
+- "Occupational health baseline. No symptoms."
+- "Annual health review. No cardiac or respiratory history."
+- "Pre-operative assessment. No respiratory complaints."
+- "Clinical trial enrolment. No abnormality expected."
+
+These are dead giveaways. A learner reads them and immediately swipes Normal without engaging with the film.
+
+**The correct approach:** Give the patient a symptom or a referral reason that could plausibly indicate pathology, but which is also consistent with a normal CXR result. The learner should have to look at the image to decide.
+
+### The ambiguity rule
+
+**The vignette symptom must be explainable by a CXR-negative diagnosis.** Ask yourself: *could a real patient with these symptoms have a completely normal CXR?* If the answer is no, the hook is too alarming.
+
+Good presentations for normal CXR cases:
+- Persistent dry cough after viral URTI — GP querying early pneumonia or atypical infection
+- Mild exertional breathlessness (e.g. "mild breathlessness climbing two flights of stairs") — GP excluding cardiac or pulmonary cause
+- Intermittent chest tightness on exertion — no pleuritic quality, SpO₂ normal, querying cardiac/musculoskeletal
+- Referred for "abnormal appearance on recent chest film" — the referral concern is what generates the ambiguity
+- Occupational exposure (dust inhalation, fume exposure) with mild cough — hypersensitivity pneumonitis possible but CXR may be normal early
+- Pre-operative workup with a new mild symptom — deconditioning or anxiety explains normal CXR
+- Post-viral cough 3–4 weeks — classic CXR-negative diagnosis
+
+Bad presentations (too alarming — would produce CXR findings in reality):
+- Haemoptysis — always warrants CT; a normal CXR doesn't close the case and creates too much disconnect
+- SpO₂ ≤ 97% — implies genuine hypoxia; hard to justify with a completely normal CXR
+- Breathlessness limiting daily activities — severity implies something should be visible
+- Bilateral reduced breath sounds on auscultation — a significant examination finding that usually has a CXR correlate
+- Progressive dyspnoea over weeks or months that is still worsening — severity implies radiographic abnormality
+
+### SpO₂ and vital signs for normal cases
+
+- SpO₂ should be **98–99%** on air. Never use ≤97% for a normal CXR case.
+- Heart rate should be **70–95 bpm** at most. Tachycardia (>100 bpm) implies an acute process.
+- Temperature: use "Afebrile" only — never quote a fever for a normal CXR case.
+
+### Findings array for normal cases
+
+The five findings should annotate what IS normal, not just say "nothing abnormal". Useful slots:
+1. Lung fields — explicitly confirm clear bilaterally
+2. Cardiac size — CTR < 0.5 (confirm on PA film)
+3. Mediastinum — trachea midline, no widening
+4. Pleural spaces — sharp costophrenic angles, no effusion
+5. Teaching point — what does a normal CXR NOT exclude, or what is the specific variant that could be mistaken for pathology?
+
+Finding 5 must add genuine educational value. **Do not repeat finding 1 in different words.** Common failure: finding 1 says "Clear lungs — no consolidation" and finding 5 says "No acute pulmonary abnormality identified." These teach the same thing. Use finding 5 for the clinical teaching point: what CXR-negative diagnoses still need pursuing given the presenting symptom.
+
+### The explanation for normal cases
+
+The explanation should:
+1. Confirm the CXR is normal (one sentence)
+2. Explain the specific variant visible (if any) — e.g. pectoralis shadows, breast tissue, diaphragmatic flattening
+3. State what a normal CXR does and does **not** exclude in this clinical context
+
+Example for a cough case: *"A normal CXR does not exclude post-viral cough, upper airway cough syndrome, or GORD — all CXR-negative diagnoses. Chest radiography was indicated to exclude pneumonia, pleural effusion, and mediastinal pathology, which have been excluded here."*
+
+Never end a normal case explanation with "Cleared for [procedure/duty]." This is a clinical outcome statement, not a teaching point.
+
+### Normal case checklist
+
+Before committing a new normal CXR case, confirm:
+- [ ] Vignette has a symptom or referral reason that could indicate pathology
+- [ ] Symptom is mild enough that a completely normal CXR is clinically plausible
+- [ ] SpO₂ ≥ 98% on air
+- [ ] No alarming vital signs (no tachycardia, no fever)
+- [ ] Finding 5 is a genuine teaching point, not a restatement of another finding
+- [ ] Explanation states what the normal CXR excludes AND what it does not exclude
+- [ ] Explanation does not contain "cleared for [procedure/duty]"
+- [ ] If the teaching point is a normal variant (pectoralis shadows, breast shadows, prominent thymus, etc.), difficulty is set to 2
+
+---
+
 ## Common pitfalls
 
 - **`credit` and `sourceUrl` must match.** If the image is on Wikimedia Commons, both must point there — not to the site where you first encountered the image.
