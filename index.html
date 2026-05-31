@@ -52,9 +52,9 @@
   "screenshot": "https://thoraswipe.com/og-image.png",
   "softwareVersion": "7",
   "dateCreated": "2025-01-01",
-  "dateModified": "2026-05-30",
+  "dateModified": "2026-05-31",
   "featureList": [
-    "22 real chest X-ray cases from easy to expert difficulty",
+    "37 real chest X-ray cases from easy to expert difficulty",
     "Swipe-based normal vs abnormal classification",
     "Annotated radiograph findings with colour-coded overlays",
     "PACS-style brightness, contrast and invert controls",
@@ -159,10 +159,11 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="image_src" href="https://thoraswipe.com/og-image.png">
 
-<!-- Fonts — preconnect first, then non-blocking stylesheet -->
+<!-- Fonts — preconnect first, then non-render-blocking stylesheet (print swap) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700&display=swap"></noscript>
 
 <style>
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -453,31 +454,95 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 <body>
 
 <noscript>
-  <div style="font-family:sans-serif;max-width:560px;margin:60px auto;padding:0 24px;color:#e4e8f0;background:#080a0f;line-height:1.7">
+  <div style="font-family:sans-serif;max-width:600px;margin:60px auto;padding:0 24px;color:#e4e8f0;background:#080a0f;line-height:1.8">
     <h1>ThoraSwipe — Free Chest X-Ray Interpretation Trainer</h1>
-    <p>ThoraSwipe is a free, swipe-based chest X-ray (CXR) quiz for medical students, junior doctors, and radiographers. Practice CXR pattern recognition with instant feedback, annotated findings, and progressive difficulty from easy to expert cases.</p>
-    <h2 style="margin-top:1.2em;font-size:1em">Pathologies and cases covered</h2>
-    <p>The trainer includes 22 real chest X-ray cases covering the following conditions:</p>
+    <p>ThoraSwipe is a free, swipe-based chest X-ray (CXR) quiz for medical students, junior doctors, foundation year doctors, and radiographers. Practice CXR pattern recognition with instant feedback, annotated radiographic findings, and progressive difficulty from easy to expert cases. No account or login required.</p>
+    <p>Each case presents a real chest radiograph for you to classify as normal or abnormal, then challenges you to name the diagnosis from a multiple-choice list, and finally reveals colour-coded annotated findings with a detailed clinical explanation. Cases include both PA and AP projections, covering classic presentations and subtle signs.</p>
+    <h2 style="margin-top:1.4em">Cases and pathologies covered</h2>
+    <p>ThoraSwipe includes 37 real chest X-ray cases organised by difficulty (Easy, Medium, Hard) and covering the following conditions:</p>
+
+    <h3 style="margin-top:1em">Pneumonia &amp; Pulmonary Infection (7 cases)</h3>
     <ul style="padding-left:1.4em">
-      <li>Pulmonary Oedema — Acute LVF</li>
-      <li>Right Spontaneous Pneumothorax</li>
-      <li>Normal Chest Radiograph (multiple variants)</li>
-      <li>Right Lower Lobe Pneumonia</li>
-      <li>Right Middle Lobe Pneumonia — Silhouette Sign</li>
+      <li>Right Middle Lobe Pneumonia — classic lobar consolidation</li>
+      <li>Right Middle Lobe Pneumonia — Silhouette Sign (loss of right heart border)</li>
+      <li>Right Lower Lobe Pneumonia — loss of right hemidiaphragm silhouette</li>
       <li>Left Lower Lobe Pneumonia with Pleural Effusion</li>
-      <li>COVID-19 Bilateral Pneumonia</li>
-      <li>Massive Left Pleural Effusion</li>
-      <li>Miliary Tuberculosis</li>
-      <li>Sarcoidosis — Bilateral Hilar Lymphadenopathy</li>
-      <li>Right Lung Collapse — Bronchial Carcinoma</li>
-      <li>Left Lung Mass — Suspected Bronchogenic Carcinoma</li>
-      <li>Pericardial Effusion — Water Bottle Sign</li>
-      <li>Right Lower Lobe Atelectasis</li>
-      <li>Dextrocardia with Situs Inversus</li>
-      <li>Hiatal Hernia</li>
-      <li>Endotracheal Tube and NG Tube — Correct Positioning</li>
+      <li>COVID-19 Bilateral Pneumonia — bilateral peripheral ground-glass opacities</li>
+      <li>Necrotising Pneumonia — Lung Abscess (cavitation with air-fluid level)</li>
+      <li>Aspergilloma — Pulmonary Fungal Ball (Monod sign / air crescent sign)</li>
     </ul>
-    <p>JavaScript is required to run ThoraSwipe. Please enable JavaScript in your browser to use the app.</p>
+
+    <h3 style="margin-top:1em">Tuberculosis (3 cases)</h3>
+    <ul style="padding-left:1.4em">
+      <li>Miliary Tuberculosis — diffuse bilateral micronodular shadowing</li>
+      <li>Active Cavitary Tuberculosis — upper lobe cavitation with nodular infiltrates</li>
+      <li>Bilateral Apical Pleural Caps — Old Tuberculosis Sequelae</li>
+    </ul>
+
+    <h3 style="margin-top:1em">Pneumothorax (2 cases)</h3>
+    <ul style="padding-left:1.4em">
+      <li>Right Spontaneous Pneumothorax — visible pleural line, absent lung markings</li>
+      <li>Left Tension Pneumothorax — mediastinal shift, haemodynamic compromise</li>
+    </ul>
+
+    <h3 style="margin-top:1em">Malignancy (3 cases)</h3>
+    <ul style="padding-left:1.4em">
+      <li>Left Lung Mass — Suspected Bronchogenic Carcinoma</li>
+      <li>Right Lung Collapse — Bronchial Carcinoma (complete lobar collapse)</li>
+      <li>Right Pleural Mesothelioma — irregular pleural thickening, frozen hemithorax</li>
+    </ul>
+
+    <h3 style="margin-top:1em">Pleural &amp; Vascular Disease (3 cases)</h3>
+    <ul style="padding-left:1.4em">
+      <li>Massive Left Pleural Effusion — contralateral mediastinal shift</li>
+      <li>Pulmonary Embolism — Hampton's Hump (peripheral wedge-shaped infarct)</li>
+      <li>Pulmonary Arterial Hypertension — enlarged central pulmonary arteries, peripheral pruning</li>
+    </ul>
+
+    <h3 style="margin-top:1em">Cardiac (2 cases)</h3>
+    <ul style="padding-left:1.4em">
+      <li>Pulmonary Oedema — Acute Left Ventricular Failure (bat-wing shadowing, Kerley B lines)</li>
+      <li>Pericardial Effusion — Water Bottle Sign (globular cardiac silhouette, clear lungs)</li>
+    </ul>
+
+    <h3 style="margin-top:1em">Atelectasis &amp; Collapse (2 cases)</h3>
+    <ul style="padding-left:1.4em">
+      <li>Right Lower Lobe Atelectasis — post-operative, volume loss, elevated hemidiaphragm</li>
+      <li>Left Upper Lobe Collapse — Veil Sign (hazy hemithorax, ipsilateral mediastinal shift)</li>
+    </ul>
+
+    <h3 style="margin-top:1em">Obstructive Lung Disease (1 case)</h3>
+    <ul style="padding-left:1.4em">
+      <li>COPD — Pulmonary Emphysema (hyperinflation, flat diaphragms, peripheral vascular pruning)</li>
+    </ul>
+
+    <h3 style="margin-top:1em">Granulomatous &amp; Inflammatory (1 case)</h3>
+    <ul style="padding-left:1.4em">
+      <li>Sarcoidosis — Bilateral Hilar Lymphadenopathy (Stage I, bilateral potato nodes)</li>
+    </ul>
+
+    <h3 style="margin-top:1em">Congenital, Anatomical &amp; Other (3 cases)</h3>
+    <ul style="padding-left:1.4em">
+      <li>Dextrocardia with Situs Inversus — mirror-image cardiac and abdominal anatomy</li>
+      <li>Hiatal Hernia — retrocardiac air-fluid level, gastric fundus above diaphragm</li>
+      <li>Endotracheal Tube and NG Tube — Correct Positioning (ICU lines and tubes)</li>
+    </ul>
+
+    <h3 style="margin-top:1em">Normal Chest Radiographs (10 cases)</h3>
+    <ul style="padding-left:1.4em">
+      <li>Normal PA Chest Radiograph — pre-operative screening</li>
+      <li>Normal PA Chest Radiograph — occupational health screening</li>
+      <li>Normal PA Chest Radiograph — clinical trial screening</li>
+      <li>Normal PA Chest Radiograph — annual health review</li>
+      <li>Normal PA Chest Radiograph — dry cough, no abnormality detected</li>
+      <li>Normal PA Chest Radiograph — pectoralis major shadows (normal variant)</li>
+      <li>Normal PA Chest Radiograph — mild diaphragmatic flattening (normal inspiratory variant)</li>
+      <li>Normal PA Chest Radiograph — bilateral breast shadows</li>
+      <li>Normal AP Chest Radiograph — no acute cardiopulmonary abnormality</li>
+      <li>Normal AP Chest Radiograph — prominent thymus in infancy (Thymic Sail Sign)</li>
+    </ul>
+
+    <p style="margin-top:1.4em">JavaScript is required to run ThoraSwipe. Please enable JavaScript in your browser to use the app.</p>
     <p><a href="https://thoraswipe.com/" style="color:#60a5fa">thoraswipe.com</a></p>
   </div>
 </noscript>
@@ -522,7 +587,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     <div class="swipe-card" id="card">
       <div class="img-wrap" id="img-wrap">
         <div class="shimmer" id="shimmer"><div class="pi">🩻</div><span id="shimmer-msg">Loading…</span></div>
-        <img id="cxr-img" alt="Chest X-ray" referrerpolicy="no-referrer" decoding="async" />
+        <img id="cxr-img" alt="Chest X-ray" referrerpolicy="no-referrer" decoding="async" fetchpriority="high" />
         <div class="case-stamp" id="case-stamp">CASE 001</div>
         <div class="hard-stamp" id="hard-stamp">⚠ HARD</div>
         <div class="zoom-hint" id="zoom-hint">🔍 tap to enlarge</div>

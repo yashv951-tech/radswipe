@@ -6,10 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Deploy checklist
 
-Before committing and pushing a content update (new cases, copy changes):
+Before committing and pushing **any** update (new cases, copy changes, bug fixes):
 1. `cp cxr-swipe-v7.html index.html` — keep index.html in sync
 2. Update `sitemap.xml` `<lastmod>` to today's ISO date (YYYY-MM-DD)
 3. Update `dateModified` in the WebApplication JSON-LD block in `<head>` to today's date
+4. **If the total case count has changed**, update it in **two** places inside `cxr-swipe-v7.html`:
+   - JSON-LD `featureList[0]`: `"37 real chest X-ray cases from easy to expert difficulty"` (update the number)
+   - `<noscript>` paragraph: `"ThoraSwipe includes 37 real chest X-ray cases"` (update the number)
+   - Also add any new diagnoses to the `<noscript>` case list under the correct category heading
 
 **After every commit, always run `git push` immediately.** Never leave commits sitting locally. Vercel deploys automatically on push — committing without pushing means the live site is out of date.
 
