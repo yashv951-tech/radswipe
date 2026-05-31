@@ -2066,17 +2066,28 @@ function updateStreakUI(){
 }
 
 // ─── DECIDE ─────────────────────────────────────────────────────────
+function checkStreakMilestones(){
+  if(streak===3&&!hardUnlocked)unlockHard();
+  else if(streak===5)showMilestone('🔥','5 Streak!','Exceptional accuracy');
+}
+
 function decide(choice){
   if(waiting)return;waiting=true;
   // [PHONE-4] fade out swipe hint after first answer
   const hintEl=document.getElementById('hint');if(hintEl)hintEl.style.opacity='0';
   const c=queue[idx];
   const ok=(choice==='normal')===c.isNormal;
-  if(ok){scoreOk++;streak++;if(streak>bestStreak)bestStreak=streak;}
-  else{scoreBad++;streak=0;}
-  updateScore();updateStreakUI();
-  if(streak===3&&!hardUnlocked)unlockHard();
-  else if(streak===5)showMilestone('🔥','5 Streak!','Exceptional accuracy');
+  if(ok){scoreOk++;}else{scoreBad++;}
+  updateScore();
+  // For abnormal cases with a correct swipe, defer streak update to
+  // selectDiagnosis() — streak only increments if diagnosis is also correct.
+  // For normal cases and wrong swipes, update streak immediately.
+  if(c.isNormal||!ok){
+    if(ok){streak++;if(streak>bestStreak)bestStreak=streak;}
+    else{streak=0;}
+    updateStreakUI();
+    checkStreakMilestones();
+  }
   const card=document.getElementById('card');
   card.className=(c.difficulty===3?'swipe-card hard-mode ':' swipe-card ')+(choice==='normal'?'exit-l':'exit-r');
   setTimeout(()=>showResult(c,ok,choice),280);
@@ -2136,11 +2147,17 @@ function selectDiagnosis(btn,selected,correct){
     btn.classList.add('opt-correct');
     document.getElementById('picker-feedback').textContent='✓ Exactly right';
     document.getElementById('picker-feedback').className='picker-feedback correct';
+    // Streak: only increment if the swipe was also correct (pendingOk).
+    // If swipe was wrong, streak was already reset in decide().
+    if(pendingOk){streak++;if(streak>bestStreak)bestStreak=streak;updateStreakUI();checkStreakMilestones();}
   } else {
     btn.classList.add('opt-wrong');
     document.querySelectorAll('.picker-opt').forEach(b=>{if(b.textContent===correct)b.classList.add('opt-correct');});
     document.getElementById('picker-feedback').textContent='The answer was: '+correct;
     document.getElementById('picker-feedback').className='picker-feedback wrong';
+    // Wrong diagnosis resets streak (only matters when swipe was correct —
+    // if swipe was wrong, streak was already reset in decide()).
+    if(pendingOk){streak=0;updateStreakUI();}
   }
   const revBtn=document.getElementById('picker-reveal-btn');
   revBtn.style.display='block';revBtn.disabled=false;
