@@ -1805,7 +1805,7 @@ function cloneAnnotSvgIntoLb(src,dest){
 const EASY=CASES.filter(c=>c.difficulty===1);
 const MEDIUM=CASES.filter(c=>c.difficulty===2);
 const HARD=CASES.filter(c=>c.difficulty===3);
-let diffFilter=new Set([1,2]); // default: Easy + Medium
+let diffFilter=new Set([1,2,3]); // default: all difficulties
 let queue=[],idx=0,scoreOk=0,scoreBad=0,imgLoadSeq=0;
 let streak=0,bestStreak=0,hardUnlocked=false,waiting=false;
 let lightboxOpen=false,lightboxJustClosed=false;
@@ -1819,7 +1819,7 @@ function buildQueue(){
   if(diffFilter.has(1))pool=[...pool,...shuffle(EASY)];
   if(diffFilter.has(2))pool=[...pool,...shuffle(MEDIUM)];
   if(diffFilter.has(3))pool=[...pool,...shuffle(HARD)];
-  return pool.length?pool:[...shuffle(EASY),...shuffle(MEDIUM)]; // fallback if filter somehow empty
+  return pool.length?pool:[...shuffle(EASY),...shuffle(MEDIUM),...shuffle(HARD)]; // fallback if filter somehow empty
 }
 // ─── PROGRESS PERSISTENCE ────────────────────────────────────────────
 // Saves queue (as case IDs), position, scores, streak, and filter to
