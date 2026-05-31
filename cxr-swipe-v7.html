@@ -1933,6 +1933,26 @@ function renderCase(){
   card.style.transform='';card.style.transition='';
   card.className=(c.difficulty===3?'swipe-card hard-mode':'swipe-card')+' card-enter';
   setTimeout(()=>{card.className=c.difficulty===3?'swipe-card hard-mode':'swipe-card';},400);
+
+  prefetchAhead();
+}
+
+// ─── IMAGE PREFETCH ───────────────────────────────────────────────────
+// Silently pre-loads the next 3 images in the queue so they are in the
+// browser cache before the user reaches them. Uses a Set to avoid
+// duplicate requests if the same URL appears more than once in the queue.
+const _prefetchCache=new Set();
+function prefetchAhead(n=3){
+  for(let i=1;i<=n;i++){
+    const next=queue[idx+i];
+    if(!next)break;
+    const url=safeImgUrl(next.imageUrl||'');
+    if(!url||_prefetchCache.has(url))continue;
+    _prefetchCache.add(url);
+    const img=new Image();
+    img.referrerPolicy='no-referrer';
+    img.src=url;
+  }
 }
 
 function updateScore(){document.getElementById('sc-ok').textContent=scoreOk;document.getElementById('sc-bad').textContent=scoreBad;}
