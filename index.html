@@ -1820,6 +1820,41 @@ function buildQueue(){
   if(diffFilter.has(3))pool=[...pool,...shuffle(HARD)];
   return pool.length?pool:[...shuffle(EASY),...shuffle(MEDIUM)]; // fallback if filter somehow empty
 }
+// ─── PROGRESS PERSISTENCE ────────────────────────────────────────────
+// Saves queue (as case IDs), position, scores, streak, and filter to
+// localStorage. Silently no-ops in private-browsing / quota-exceeded.
+const TS_SAVE_KEY='ts_progress_v1';
+function saveProgress(){
+  try{
+    localStorage.setItem(TS_SAVE_KEY,JSON.stringify({
+      queue:queue.map(c=>c.caseId),
+      idx,scoreOk,scoreBad,streak,bestStreak,hardUnlocked,
+      diffFilter:[...diffFilter]
+    }));
+  }catch(e){}
+}
+function loadProgress(){
+  try{
+    const raw=localStorage.getItem(TS_SAVE_KEY);
+    if(!raw)return false;
+    const s=JSON.parse(raw);
+    if(!Array.isArray(s.queue)||!s.queue.length)return false;
+    const caseMap=Object.fromEntries(CASES.map(c=>[c.caseId,c]));
+    const restored=s.queue.map(id=>caseMap[id]).filter(Boolean);
+    if(restored.length<2)return false; // too many cases missing — start fresh
+    queue=restored;
+    idx=Math.min(Math.max(s.idx||0,0),queue.length-1);
+    scoreOk=s.scoreOk||0; scoreBad=s.scoreBad||0;
+    streak=s.streak||0;   bestStreak=s.bestStreak||0;
+    hardUnlocked=!!s.hardUnlocked;
+    if(Array.isArray(s.diffFilter)&&s.diffFilter.length)diffFilter=new Set(s.diffFilter);
+    return true;
+  }catch(e){return false;}
+}
+function clearProgress(){
+  try{localStorage.removeItem(TS_SAVE_KEY);}catch(e){}
+}
+
 function toggleFilter(d){
   if(diffFilter.has(d)){
     if(diffFilter.size===1)return; // keep at least one selected
@@ -1828,6 +1863,7 @@ function toggleFilter(d){
     diffFilter.add(d);
   }
   updateFilterUI();
+  saveProgress();
 }
 function updateFilterUI(){
   [1,2,3].forEach(d=>{
@@ -2051,6 +2087,7 @@ function unlockHard(){
   const rest=queue.slice(idx+1);
   queue=[...queue.slice(0,idx+1),...shuffle(HARD),...rest];
   showMilestone('💀','Hard Mode!','3 streak — expert cases unlocked');
+  saveProgress();
 }
 function showMilestone(e,ti,su){
   const m=document.getElementById('milestone');
@@ -2239,9 +2276,11 @@ function nextCase(){
   document.getElementById('overlay').classList.remove('open');
   idx++;waiting=false;
   if(idx>=queue.length){showDone();return;}
+  saveProgress();
   setTimeout(renderCase,180);
 }
 function showDone(){
+  clearProgress();
   document.getElementById('main').style.display='none';
   document.getElementById('done').classList.add('show');
   document.getElementById('final-num').textContent=scoreOk+'/'+queue.length;
@@ -2257,6 +2296,7 @@ function showDone(){
   document.querySelector('.score-pill').style.visibility='hidden';
 }
 function restart(){
+  clearProgress();
   queue=buildQueue();idx=0;scoreOk=0;scoreBad=0;
   streak=0;bestStreak=0;hardUnlocked=false;waiting=false;
   updateScore();
@@ -2409,8 +2449,11 @@ function playNudgeTutorial(){
 
 // INIT
 updateFilterUI();
-queue=buildQueue();
+const _resumed=loadProgress();
+if(!_resumed)queue=buildQueue();
+updateScore();updateStreakUI();
 renderCase();
+if(_resumed)setTimeout(()=>showMilestone('📋','Progress Restored','Continuing from case '+(idx+1)+' of '+queue.length),700);
 </script>
 </body>
 </html>
