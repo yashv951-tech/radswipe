@@ -867,10 +867,10 @@ const CASES = [
   {
     caseId:'CXR-005',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/1/12/Pektoralisschatten_im_Roentgenbild_38M_-_CR_pa_-_001.jpg',
-    credit:'Wikimedia Commons — CC BY-SA 4.0',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (Hellerhoff)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:Pektoralisschatten_im_Roentgenbild_38M_-_CR_pa_-_001.jpg',
     sourceLabel:'Wikimedia Commons',
-    isNormal:true, difficulty:1,
+    isNormal:true, difficulty:2,
     title:'38M — annual GP review, no symptoms. Well-built, physically active individual.',
     sub:'PA chest radiograph — general practice review',
     diagnosis:'Normal Chest Radiograph',
@@ -880,7 +880,7 @@ const CASES = [
       'Bilateral pectoralis major shadows — normal variant in muscular individuals',
       'Normal cardiac size (CTR < 0.5)',
       'Sharp costophrenic angles bilaterally',
-      'Soft tissue density in lower zones — do not mistake for pathology'
+      'Distinguishing pec. shadows from consolidation — shadows are bilateral, symmetric, and fade gradually toward the axilla; consolidation is unilateral, denser centrally, and may obliterate the hemidiaphragm (positive silhouette sign)'
     ],
     annots:[
       {type:'ellipse',cx:26,cy:43,rx:15,ry:20,color:'#22c55e',label:'R lung — clear'},
@@ -1070,7 +1070,7 @@ const CASES = [
     title:'30M — annual health review. Completely asymptomatic. Lifelong non-smoker.',
     sub:'PA chest radiograph — health screening',
     diagnosis:'Normal Chest Radiograph',
-    explanation:'The chest radiograph is entirely normal. Lung fields are clear bilaterally with no focal consolidation, effusion, or pneumothorax. The cardiothoracic ratio is well below 0.5. The mediastinum is central and the costophrenic angles are sharp. A normal CXR in a symptomatic patient does not exclude all pathology — small pneumothorax, early interstitial disease, and pulmonary embolism can all produce a normal plain film.',
+    explanation:'The chest radiograph is entirely normal. Lung fields are clear bilaterally with no focal consolidation, effusion, or pneumothorax. The cardiothoracic ratio is well below 0.5. The mediastinum is central and the costophrenic angles are sharp. A normal CXR does not exclude all pathology — pulmonary embolism, early interstitial disease, and early malignancy (lesions under 1 cm) can all produce a genuinely normal plain film.',
     findings:[
       'Clear lungs bilaterally — no consolidation, effusion, or pneumothorax',
       'Normal cardiac size — CTR < 0.5',
@@ -1526,13 +1526,13 @@ const CASES = [
     title:'71M — progressive breathlessness over several years, now limiting to 50 metres on the flat. 50 pack-year smoking history. On LABA/LAMA inhaler therapy.',
     sub:'PA chest radiograph — respiratory clinic',
     diagnosis:'COPD — Pulmonary Emphysema',
-    explanation:'Severe COPD/emphysema on CXR is characterised by bilateral hyperinflation: flattened or inverted hemidiaphragms, increased lung volumes, and a cardiac silhouette dwarfed by the hyperinflated lungs. More than six anterior rib ends visible above the right hemidiaphragm confirms hyperinflation. Peripheral attenuation of vascular markings reflects destruction of the alveolar-capillary bed. A normal-appearing CXR does not exclude COPD — up to one-third of clinically significant cases show no plain film abnormality. HRCT (not CXR) is the gold standard for characterising emphysema subtype and guiding decisions about surgical or bronchoscopic lung volume reduction in selected patients.',
+    explanation:'Severe COPD/emphysema on CXR is characterised by bilateral hyperinflation: flattened or inverted hemidiaphragms, increased lung volumes, and a cardiac silhouette dwarfed by the hyperinflated lungs. More than six anterior rib ends visible above the right hemidiaphragm confirms hyperinflation. Peripheral attenuation of vascular markings reflects destruction of the alveolar-capillary bed. A normal-appearing CXR does not exclude COPD — up to one-third of clinically significant cases show no plain film abnormality. HRCT (not CXR) is the gold standard for characterising emphysema subtype and guiding decisions about surgical or bronchoscopic lung volume reduction in selected patients. In younger patients or non-smokers presenting with emphysema, serum alpha-1 antitrypsin levels should be checked — A1AT deficiency causes emphysema with a characteristic lower-zone and bullous predominance on CT, but is indistinguishable from smoking-related emphysema on plain CXR.',
     findings:[
       'Bilateral hyperinflation — lung fields extend below the anterior end of the 7th rib, hemidiaphragms markedly flattened and depressed',
       'Relatively small cardiac silhouette — heart dwarfed by emphysematous lung expansion; CTR < 0.5 but this reflects hyperinflation, not reduced cardiac size',
       'Peripheral vascular pruning — attenuated vascular markings in the outer lung fields bilaterally, reflecting capillary bed destruction by emphysema',
       'No focal consolidation, no pleural effusion — pure emphysematous pattern without acute infective or vascular complication',
-      'Differential: acute severe asthma (reversible hyperinflation, younger patient, resolves between attacks, no vascular pruning), alpha-1 antitrypsin deficiency (lower-zone-predominant emphysema and bullae, younger patient, non-smoker or light smoker), bronchiolitis obliterans (similar hyperinflation but CT shows mosaic attenuation, no smoking history typically)'
+      'Differential: acute severe asthma (reversible hyperinflation, younger patient, resolves between attacks, no vascular pruning), bilateral large pulmonary bullae (focal areas of hyper-lucency can simulate diffuse emphysema; important distinction as bullectomy may be appropriate), bronchiolitis obliterans (similar hyperinflation but CT shows mosaic attenuation, often post-infection or post-transplant, no smoking history)'
     ],
     annots:[
       {type:'arrow',x1:30,y1:57,x2:30,y2:67,color:'#f59e0b',label:'Flat R diaphragm'},

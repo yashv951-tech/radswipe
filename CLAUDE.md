@@ -258,6 +258,47 @@ ICU, emergency department, and resuscitation CXRs are **almost always AP**. Iden
 
 ---
 
+## Additional rules (from audit round 5)
+
+### Credit must always name the creator — not just for published papers
+
+The existing rule only calls out published case report images. The requirement is broader: **every `credit` field must name the creator if they are identifiable on the Commons file page**, regardless of whether the image comes from a paper.
+
+- Always open the Commons file page and check the **Author** field before writing the credit.
+- For Hellerhoff images — identifiable by the naming pattern `[Description]_[age][sex]_-_CR_[projection]_-_001.jpg` (e.g. `Pektoralisschatten_im_Roentgenbild_38M_-_CR_pa_-_001.jpg`) — credit must read `'Wikimedia Commons — CC BY-SA 4.0 (Hellerhoff)'`.
+- A credit that reads only `'Wikimedia Commons — CC BY-SA 4.0'` with no author name is **always wrong** unless the Commons page genuinely lists no identifiable creator.
+
+### Normal case difficulty — pectoralis shadows are difficulty 2, not 1
+
+The difficulty rule already states: *"Use 2 only if a normal variant (e.g. pectoralis shadows) could be mistaken for pathology."* This rule is being violated. To make it explicit:
+
+- **Any normal case where the teaching point is a variant that mimics pathology** (pectoralis shadows, breast shadows, prominent thymus, diaphragmatic humps, etc.) must be `difficulty:2`.
+- `difficulty:1` is reserved for textbook-clean normal films with no notable variants — a film where a competent student would find nothing to second-guess.
+
+### No duplicate findings — every slot must teach something distinct
+
+**Each of the 5 findings must be substantively different.** Before committing, read all 5 findings back to back and ask: does any one of them teach the same point as another, just reworded? If yes, that slot is wasted.
+
+The canonical failure mode: Finding 2 says "Bilateral pectoralis shadows — normal variant" and Finding 5 says "Soft tissue density in lower zones — do not mistake for pathology." These are the same teaching point. Replace the duplicate with content that adds value — a distinguishing feature, a management pearl, a clinical caveat, or a systematic review point.
+
+### Teaching caveats must match the case's own clinical context
+
+**If the explanation or a finding contains a teaching caveat (e.g. "a normal CXR does not exclude…", "consider X in patients with Y"), verify the caveat is consistent with the patient described in `title`.**
+
+- Do not write "A normal CXR in a *symptomatic* patient does not exclude pathology" when the patient is described as *asymptomatic*.
+- Do not write "this is a common incidental finding in *elderly* patients" when the patient is 28.
+- The patient in the `title` is reading the teaching point. If the caveat refers to a different patient type, drop the qualifier or broaden it.
+
+### Differentials: causes are not mimics
+
+**A disease that *causes* a condition is not a radiographic differential for that condition.**
+
+- Alpha-1 antitrypsin deficiency *causes* emphysema — it should **not** appear as a differential item in an emphysema case. It belongs in the `explanation` as a clinical caveat: "check serum A1AT in younger or non-smoking patients."
+- Likewise: sarcoidosis as a cause of pulmonary fibrosis is not a differential for a fibrosis case; TB as a cause of apical scarring is not a differential for an old TB sequelae case.
+- The differential slot must contain entities that produce an **identical or near-identical CXR appearance** but have a different underlying pathology. Ask: *could a radiologist, looking only at this film, reasonably favour this alternative?* If distinguishing the two requires serum levels, biopsy, or CT rather than the plain film itself, it belongs in the explanation, not the differential.
+
+---
+
 ## Pending: contact form (revisit later)
 
 The contact page currently has a **skeleton contact form** (topic dropdown + message textarea) wired to a placeholder Formspree endpoint. The design and backend are intentionally deferred.
