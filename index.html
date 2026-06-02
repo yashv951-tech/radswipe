@@ -2077,11 +2077,14 @@ function decide(choice){
   const hintEl=document.getElementById('hint');if(hintEl)hintEl.style.opacity='0';
   const c=queue[idx];
   const ok=(choice==='normal')===c.isNormal;
-  if(ok){scoreOk++;}else{scoreBad++;}
-  updateScore();
-  // For abnormal cases with a correct swipe, defer streak update to
-  // selectDiagnosis() — streak only increments if diagnosis is also correct.
-  // For normal cases and wrong swipes, update streak immediately.
+  // Score: update immediately for wrong swipes and correct normal swipes.
+  // For abnormal correct swipes, defer to selectDiagnosis() — correct swipe
+  // but wrong diagnosis should still count as a wrong answer in the score.
+  if(!ok){scoreBad++;updateScore();}
+  else if(c.isNormal){scoreOk++;updateScore();}
+  // else: abnormal + correct swipe → score deferred to selectDiagnosis()
+
+  // Streak: same deferral logic — normal cases and wrong swipes update now.
   if(c.isNormal||!ok){
     if(ok){streak++;if(streak>bestStreak)bestStreak=streak;}
     else{streak=0;}
@@ -2147,17 +2150,21 @@ function selectDiagnosis(btn,selected,correct){
     btn.classList.add('opt-correct');
     document.getElementById('picker-feedback').textContent='✓ Exactly right';
     document.getElementById('picker-feedback').className='picker-feedback correct';
-    // Streak: only increment if the swipe was also correct (pendingOk).
-    // If swipe was wrong, streak was already reset in decide().
-    if(pendingOk){streak++;if(streak>bestStreak)bestStreak=streak;updateStreakUI();checkStreakMilestones();}
+    // Score + streak: only update if swipe was also correct (pendingOk).
+    // If swipe was wrong, score + streak were already handled in decide().
+    if(pendingOk){
+      scoreOk++;updateScore();
+      streak++;if(streak>bestStreak)bestStreak=streak;
+      updateStreakUI();checkStreakMilestones();
+    }
   } else {
     btn.classList.add('opt-wrong');
     document.querySelectorAll('.picker-opt').forEach(b=>{if(b.textContent===correct)b.classList.add('opt-correct');});
     document.getElementById('picker-feedback').textContent='The answer was: '+correct;
     document.getElementById('picker-feedback').className='picker-feedback wrong';
-    // Wrong diagnosis resets streak (only matters when swipe was correct —
-    // if swipe was wrong, streak was already reset in decide()).
-    if(pendingOk){streak=0;updateStreakUI();}
+    // Wrong diagnosis: if swipe was correct, score it as wrong and reset streak.
+    // If swipe was also wrong, scoreBad + streak=0 already handled in decide().
+    if(pendingOk){scoreBad++;updateScore();streak=0;updateStreakUI();}
   }
   const revBtn=document.getElementById('picker-reveal-btn');
   revBtn.style.display='block';revBtn.disabled=false;
