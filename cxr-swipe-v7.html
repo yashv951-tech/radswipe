@@ -1812,6 +1812,8 @@ let lightboxOpen=false,lightboxJustClosed=false;
 let nudging=false;
 let currentImgSrc='';
 let pendingCase=null,pendingOk=false,pendingChoice='';
+let recentResults=[];  // rolling window of last 5 outcomes: true=correct, false=wrong
+let adaptDiff=2;       // adaptive difficulty target (1=Easy 2=Medium 3=Hard)
 
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function buildQueue(){
@@ -1830,7 +1832,8 @@ function saveProgress(){
     localStorage.setItem(TS_SAVE_KEY,JSON.stringify({
       queue:queue.map(c=>c.caseId),
       idx,scoreOk,scoreBad,streak,bestStreak,hardUnlocked,
-      diffFilter:[...diffFilter]
+      diffFilter:[...diffFilter],
+      recentResults,adaptDiff
     }));
   }catch(e){}
 }
@@ -1849,6 +1852,8 @@ function loadProgress(){
     streak=s.streak||0;   bestStreak=s.bestStreak||0;
     hardUnlocked=!!s.hardUnlocked;
     if(Array.isArray(s.diffFilter)&&s.diffFilter.length)diffFilter=new Set(s.diffFilter);
+    if(Array.isArray(s.recentResults))recentResults=s.recentResults.slice(-5);
+    if(s.adaptDiff)adaptDiff=s.adaptDiff;
     return true;
   }catch(e){return false;}
 }
@@ -2071,6 +2076,36 @@ function checkStreakMilestones(){
   else if(streak===5)showMilestone('🔥','5 Streak!','Exceptional accuracy');
 }
 
+// ─── ADAPTIVE DIFFICULTY ─────────────────────────────────────────────
+// After each completed case, records the outcome in a 5-case rolling
+// window. If accuracy drifts above 80% or below 30%, adaptDiff steps
+// up or down and the nearest future queue case of the new target
+// difficulty is swapped into position idx+1 (no cases added/removed).
+function adaptDifficulty(wasCorrect){
+  recentResults.push(wasCorrect);
+  if(recentResults.length>5)recentResults.shift();
+  if(recentResults.length<3)return;          // need at least 3 data points
+  if(idx+2>queue.length-1)return;            // not enough queue left to reorder
+
+  const rate=recentResults.filter(Boolean).length/recentResults.length;
+  let newDiff=adaptDiff;
+  if(rate>=0.8)newDiff=Math.min(adaptDiff+1,3); // doing well → harder
+  else if(rate<=0.3)newDiff=Math.max(adaptDiff-1,1); // struggling → easier
+  if(newDiff===adaptDiff)return;             // no change needed
+  adaptDiff=newDiff;
+
+  // If the next case is already at the target difficulty, nothing to do
+  if(queue[idx+1]&&queue[idx+1].difficulty===adaptDiff)return;
+
+  // Swap the nearest upcoming case of the target difficulty to idx+1
+  for(let i=idx+2;i<queue.length;i++){
+    if(queue[i].difficulty===adaptDiff){
+      [queue[idx+1],queue[i]]=[queue[i],queue[idx+1]];
+      break;
+    }
+  }
+}
+
 function decide(choice){
   if(waiting)return;waiting=true;
   // [PHONE-4] fade out swipe hint after first answer
@@ -2080,9 +2115,9 @@ function decide(choice){
   // Score: update immediately for wrong swipes and correct normal swipes.
   // For abnormal correct swipes, defer to selectDiagnosis() — correct swipe
   // but wrong diagnosis should still count as a wrong answer in the score.
-  if(!ok){scoreBad++;updateScore();}
-  else if(c.isNormal){scoreOk++;updateScore();}
-  // else: abnormal + correct swipe → score deferred to selectDiagnosis()
+  if(!ok){scoreBad++;updateScore();adaptDifficulty(false);}
+  else if(c.isNormal){scoreOk++;updateScore();adaptDifficulty(true);}
+  // else: abnormal + correct swipe → score + adapt deferred to selectDiagnosis()
 
   // Streak: same deferral logic — normal cases and wrong swipes update now.
   if(c.isNormal||!ok){
@@ -2156,6 +2191,7 @@ function selectDiagnosis(btn,selected,correct){
       scoreOk++;updateScore();
       streak++;if(streak>bestStreak)bestStreak=streak;
       updateStreakUI();checkStreakMilestones();
+      adaptDifficulty(true);
     }
   } else {
     btn.classList.add('opt-wrong');
@@ -2164,7 +2200,7 @@ function selectDiagnosis(btn,selected,correct){
     document.getElementById('picker-feedback').className='picker-feedback wrong';
     // Wrong diagnosis: if swipe was correct, score it as wrong and reset streak.
     // If swipe was also wrong, scoreBad + streak=0 already handled in decide().
-    if(pendingOk){scoreBad++;updateScore();streak=0;updateStreakUI();}
+    if(pendingOk){scoreBad++;updateScore();streak=0;updateStreakUI();adaptDifficulty(false);}
   }
   const revBtn=document.getElementById('picker-reveal-btn');
   revBtn.style.display='block';revBtn.disabled=false;
@@ -2324,6 +2360,7 @@ function restart(){
   clearProgress();
   queue=buildQueue();idx=0;scoreOk=0;scoreBad=0;
   streak=0;bestStreak=0;hardUnlocked=false;waiting=false;
+  recentResults=[];adaptDiff=2;
   updateScore();
   document.getElementById('streak-badge').classList.remove('show');
   document.getElementById('streak-num').textContent='0';
