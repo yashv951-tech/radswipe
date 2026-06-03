@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Session continuity rule:** At the end of every session, update the "Session log" section at the bottom of this file with a brief summary of what was changed. This allows future sessions to pick up context even if the previous chat is unavailable.
+
 ---
 
 ## Deploy checklist
@@ -11,8 +13,8 @@ Before committing and pushing **any** update (new cases, copy changes, bug fixes
 2. Update `sitemap.xml` `<lastmod>` to today's ISO date (YYYY-MM-DD)
 3. Update `dateModified` in the WebApplication JSON-LD block in `<head>` to today's date
 4. **If the total case count has changed**, update it in **two** places inside `cxr-swipe-v7.html`:
-   - JSON-LD `featureList[0]`: `"37 real chest X-ray cases from easy to expert difficulty"` (update the number)
-   - `<noscript>` paragraph: `"ThoraSwipe includes 37 real chest X-ray cases"` (update the number)
+   - JSON-LD `featureList[0]`: `"42 real chest X-ray cases from easy to expert difficulty"` (update the number)
+   - `<noscript>` paragraph: `"ThoraSwipe includes 42 real chest X-ray cases"` (update the number)
    - Also add any new diagnoses to the `<noscript>` case list under the correct category heading
 
 **After every commit, always run `git push` immediately.**
@@ -411,3 +413,36 @@ The contact page currently has a **skeleton contact form** (topic dropdown + mes
 - Consider whether a topic dropdown is the right UX, or whether three separate entry points (general / bug report / case suggestion) work better as distinct buttons that pre-fill the form.
 - Consider adding a name/handle field (optional) so replies can be personalised.
 - The form currently lives inside a `.cp-card` block — evaluate whether it fits visually once real content is in place.
+
+---
+
+## Session log
+
+### 2026-06-02
+
+**What was done across two sessions (second session recovered from a crashed first):**
+
+- **Added 5 new cases** (CXR-039 to CXR-043), all difficulty 3 (HARD):
+  - CXR-039: Pneumocystis jirovecii Pneumonia (PCP)
+  - CXR-040: Right Pancoast Tumour — Superior Sulcus Carcinoma
+  - CXR-041: Complicated Silicosis — Progressive Massive Fibrosis
+  - CXR-042: Superior Vena Cava Syndrome — Right Lung Carcinoma
+  - CXR-043: Acute Respiratory Distress Syndrome (ARDS)
+
+- **Updated case count** from 37 → 42 in:
+  - JSON-LD `featureList[0]`
+  - `<noscript>` paragraph and category headings
+  - This CLAUDE.md deploy checklist
+
+- **Bumped `TS_SAVE_KEY`** from `ts_progress_v2` → `ts_progress_v3` (required when case count changes)
+
+- **Updated metadata**: `dateModified` and `sitemap.xml` `<lastmod>` both set to `2026-06-02`
+
+- **Synced `index.html`** from `cxr-swipe-v7.html`
+
+- **Contact form**: still deferred — placeholder endpoint `REPLACE_WITH_YOUR_FORMSPREE_ID` not yet replaced
+
+**Current state:**
+- Total cases: **42** (CXR-001 to CXR-043)
+- `TS_SAVE_KEY`: `ts_progress_v3`
+- All changes committed and pushed; Vercel auto-deployed
