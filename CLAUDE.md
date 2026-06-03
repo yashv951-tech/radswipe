@@ -386,6 +386,48 @@ The canonical failure mode: Finding 2 says "Bilateral pectoralis shadows — nor
 
 ---
 
+## Additional rules (from audit round 6)
+
+### "Pathognomonic" — rule already exists but is routinely violated
+
+The existing rule ("Never write 'pathognomonic'") was violated in CXR-041, where eggshell calcification was described as "pathognomonic of silicosis." This is wrong on two counts: it violates the rule, and it is medically inaccurate (eggshell calcification also occurs in sarcoidosis and post-radiation lymphoma).
+
+**Signs that are commonly but incorrectly called pathognomonic — never use this word for any of these:**
+- Eggshell calcification → "highly characteristic of silicosis and coal worker's pneumoconiosis"
+- Miliary pattern → "consistent with miliary TB, haematogenous metastases, or sarcoidosis"
+- Water bottle sign → "classic for pericardial effusion, but also seen in dilated cardiomyopathy"
+- Hampton's hump → "highly characteristic of pulmonary infarction"
+- Air crescent sign → "highly characteristic of aspergilloma or angioinvasive aspergillosis"
+- Sail sign (thymic) → "classic for normal thymus in infancy"
+
+**Pre-commit check:** Search the text of each new case for the word "pathognomonic" before committing. If found, it is always wrong — rewrite.
+
+### Differential: conditions causing volume loss or structural change are not mimics for solid masses
+
+This extends the existing "differential must match the specific radiographic pattern" rule (audit round 4) with a concrete failure mode caught in CXR-041.
+
+**The rule:** Do not include a condition in the differential if it produces a fundamentally different radiographic morphology (e.g. volume loss, cavitation, or ground-glass) rather than the solid mass/opacity pattern shown.
+
+**The specific failure (CXR-041):** Sarcoidosis Stage IV was listed as a differential for bilateral upper zone conglomerate masses (PMF). Stage IV sarcoidosis causes upper lobe fibrosis and volume loss — not conglomerate masses. It is not a genuine radiographic mimic of PMF and was replaced with chronic berylliosis, which produces an identical plain-film appearance.
+
+**Test before including any differential item:** Ask — *does this condition produce a solid opacity/mass at the same location, without volume loss, cavitation, or shift that the target image does not show?* If no, it belongs in the explanation as a clinical distinction, not the differential.
+
+### ICU and lines-and-tubes cases: all visible tubes must be accounted for
+
+**When an image is from an ICU, resuscitation, or lines-and-tubes context, every tube and line visible in the image must appear in the findings.**
+
+Systematic ICU CXR review requires identifying: ETT, central venous line, arterial line, nasogastric/orogastric tube, chest drains, pacing wires, Swan-Ganz catheter (if present). Omitting a visible tube is a teaching error — the learner sees it in the image and gets no guidance.
+
+**The specific failure (CXR-043):** The Commons description for ARDSSevere.png explicitly states "Person is intubated with an OG in place." Only the ET tube was mentioned in the original findings; the OG tube was omitted and has since been added.
+
+**Before committing any ICU case:**
+1. Read the Commons description for mentions of specific lines/tubes.
+2. Look at the image and list every tube/line visible.
+3. Verify every item on that list appears somewhere in the findings array.
+4. For each tube, state the expected correct position and the consequence of malposition.
+
+---
+
 ## Pending: contact form (revisit later)
 
 The contact page currently has a **skeleton contact form** (topic dropdown + message textarea) wired to a placeholder Formspree endpoint. The design and backend are intentionally deferred.
