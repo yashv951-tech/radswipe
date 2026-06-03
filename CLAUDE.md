@@ -501,3 +501,17 @@ The contact page currently has a **skeleton contact form** (topic dropdown + mes
 - **CXR-043 (ARDS), Finding 3**: Added OG tube (visible in image per Commons description) alongside ET tube; added teaching point about expected OG tip position below the left hemidiaphragm.
 
 **Contact form**: still deferred — `REPLACE_WITH_YOUR_FORMSPREE_ID` not yet replaced.
+
+### 2026-06-02 (SEO session)
+
+**Full SEO optimisation pass. Changes across 4 files:**
+
+- **LearningResource schema** added — makes ThoraSwipe eligible for Google's educational rich results; lists 13 specific skills taught
+- **Organization schema** added — establishes brand in Google's Knowledge Graph
+- **FAQPage expanded** from 6 → 11 questions, adding: pleural effusion CXR, pulmonary oedema signs, ABCDE approach, pneumonia on CXR, how to learn chest X-ray reading
+- **Meta description** updated to mention 42 cases and no-login requirement (CTR signal)
+- **Keywords meta** expanded with long-tail terms (ABCDE, OSCE, foundation doctor, etc.)
+- **hreflang tags** added (`en` + `x-default`)
+- **Noscript section** expanded with 3 new sections: how it works (3-step sequence), 10 key radiographic signs with descriptions, who it is for (5 audience types) — this is the primary crawlable content for a JS-heavy app
+- **manifest.json** updated: added `id`, `lang`, `dir`, `categories: ["medical","education"]`, expanded description
+- **vercel.json** updated: added `X-Robots-Tag` response header
