@@ -13,8 +13,8 @@ Before committing and pushing **any** update (new cases, copy changes, bug fixes
 2. Update `sitemap.xml` `<lastmod>` to today's ISO date (YYYY-MM-DD)
 3. Update `dateModified` in the WebApplication JSON-LD block in `<head>` to today's date
 4. **If the total case count has changed**, update it in **two** places inside `cxr-swipe-v7.html`:
-   - JSON-LD `featureList[0]`: `"42 real chest X-ray cases from easy to expert difficulty"` (update the number)
-   - `<noscript>` paragraph: `"ThoraSwipe includes 42 real chest X-ray cases"` (update the number)
+   - JSON-LD `featureList[0]`: `"44 real chest X-ray cases from easy to expert difficulty"` (update the number)
+   - `<noscript>` paragraph: `"ThoraSwipe includes 44 real chest X-ray cases"` (update the number)
    - Also add any new diagnoses to the `<noscript>` case list under the correct category heading
 
 **After every commit, always run `git push` immediately.**
@@ -501,6 +501,26 @@ The contact page currently has a **skeleton contact form** (topic dropdown + mes
 - **CXR-043 (ARDS), Finding 3**: Added OG tube (visible in image per Commons description) alongside ET tube; added teaching point about expected OG tip position below the left hemidiaphragm.
 
 **Contact form**: still deferred — `REPLACE_WITH_YOUR_FORMSPREE_ID` not yet replaced.
+
+### 2026-06-03 (new cases session)
+
+**Added 2 new cases (CXR-044–045). Case count 42 → 44. TS_SAVE_KEY v3 → v4.**
+
+- **CXR-044**: Chilaiditi Syndrome — Hepatic Flexure Colonic Interposition
+  - 85F, difficulty 2, PA CXR, isNormal: false
+  - Hellerhoff, CC BY-SA 4.0
+  - Teaches: bowel gas above right hemidiaphragm (Chilaiditi sign) vs pneumoperitoneum; haustral folds as the discriminator; no acute peritonism
+  - Image: `Chilaiditi-Syndrom_bei_Zwerchfellhochstand_rechts_85W_-_CR_pa_-_001.jpg`
+
+- **CXR-045**: Traumatic Diaphragmatic Rupture — Left Intrathoracic Spleen
+  - 32M, difficulty 3, PA CXR, isNormal: false
+  - Hariharan et al., BMC Gastroenterol 2006, CC BY 2.0
+  - Teaches: loss of left hemidiaphragm silhouette; delayed post-trauma presentation (missed as pleural effusion acutely); haematemesis as presenting feature of intrathoracic herniation
+  - Image: `Diaphragmatic_rupture_spleen_herniation.jpg`
+
+**Note:** These cases originated from a search for "poor inspiration" CXRs. Wikimedia Commons has no images explicitly labeled as poor inspiration — this was confirmed after exhaustive search. The diaphragm/subdiaphragmatic category was substituted as the closest teachable topic with confirmed Commons sourcing.
+
+**Deploy checklist run:** dateModified → 2026-06-03, sitemap lastmod → 2026-06-03, noscript updated with new "Diaphragm & Subdiaphragmatic (2 cases)" category, 8 new distractor diagnoses added to ALL_DIAGNOSES.
 
 ### 2026-06-02 (SEO session)
 
