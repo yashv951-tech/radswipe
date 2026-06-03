@@ -1953,7 +1953,7 @@ function buildQueue(){
 // ─── PROGRESS PERSISTENCE ────────────────────────────────────────────
 // Saves queue (as case IDs), position, scores, streak, and filter to
 // localStorage. Silently no-ops in private-browsing / quota-exceeded.
-const TS_SAVE_KEY='ts_progress_v2'; // v2: default filter now includes Hard (all 37 cases)
+const TS_SAVE_KEY='ts_progress_v3'; // v3: 5 new cases added (CXR-039–043), total 42 cases
 function saveProgress(){
   try{
     localStorage.setItem(TS_SAVE_KEY,JSON.stringify({
