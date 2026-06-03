@@ -446,3 +446,16 @@ The contact page currently has a **skeleton contact form** (topic dropdown + mes
 - Total cases: **42** (CXR-001 to CXR-043)
 - `TS_SAVE_KEY`: `ts_progress_v3`
 - All changes committed and pushed; Vercel auto-deployed
+
+### 2026-06-02 (audit session)
+
+**In-depth medical audit of CXR-039 to CXR-043. Three fixes applied:**
+
+- **CXR-039 (PCP)**: No issues — verified clean ✅
+- **CXR-040 (Pancoast)**: No issues — Commons confirms 47F, right lung, NSCLC, smoker ✅
+- **CXR-041 (Silicosis), Finding 3**: Removed "pathognomonic" (CLAUDE.md violation + medically wrong — eggshell calcification also occurs in sarcoidosis and post-radiation lymphoma). Replaced with "highly characteristic of silicosis and coal worker's pneumoconiosis."
+- **CXR-041 (Silicosis), Finding 5**: Replaced sarcoidosis Stage IV (not a genuine radiographic mimic of PMF) with **chronic berylliosis**, which produces an identical plain-film appearance indistinguishable by CXR.
+- **CXR-042 (SVC Syndrome)**: No issues — verified clean ✅
+- **CXR-043 (ARDS), Finding 3**: Added OG tube (visible in image per Commons description) alongside ET tube; added teaching point about expected OG tip position below the left hemidiaphragm.
+
+**Contact form**: still deferred — `REPLACE_WITH_YOUR_FORMSPREE_ID` not yet replaced.
