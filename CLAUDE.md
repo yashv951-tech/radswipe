@@ -19,6 +19,8 @@ Before committing and pushing **any** update (new cases, copy changes, bug fixes
 
 **After every commit, always run `git push` immediately.**
 
+**CXR-012 is intentionally missing.** The sequence runs CXR-001 to CXR-011, then CXR-013 onwards. This case was deleted at some point before the current session log begins. The gap causes no bugs — case IDs are labels only, not array indices. If you add a new case, use the next available ID (currently CXR-046). Do not reuse CXR-012 unless you are deliberately filling that specific gap.
+
 **If you change the default `diffFilter`, add cases, or restructure the queue**, bump `TS_SAVE_KEY` in the JS (e.g. `ts_progress_v2` → `ts_progress_v3`). This invalidates stale localStorage saves so returning users get a fresh queue matching the new defaults, rather than being stuck on an old case count. Never leave commits sitting locally. Vercel deploys automatically on push — committing without pushing means the live site is out of date.
 
 ---
