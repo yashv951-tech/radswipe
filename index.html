@@ -52,9 +52,9 @@
   "screenshot": "https://thoraswipe.com/og-image.png",
   "softwareVersion": "7",
   "dateCreated": "2025-01-01",
-  "dateModified": "2026-05-31",
+  "dateModified": "2026-06-02",
   "featureList": [
-    "37 real chest X-ray cases from easy to expert difficulty",
+    "42 real chest X-ray cases from easy to expert difficulty",
     "Swipe-based normal vs abnormal classification",
     "Annotated radiograph findings with colour-coded overlays",
     "PACS-style brightness, contrast and invert controls",
@@ -459,9 +459,9 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     <p>ThoraSwipe is a free, swipe-based chest X-ray (CXR) quiz for medical students, junior doctors, foundation year doctors, and radiographers. Practice CXR pattern recognition with instant feedback, annotated radiographic findings, and progressive difficulty from easy to expert cases. No account or login required.</p>
     <p>Each case presents a real chest radiograph for you to classify as normal or abnormal, then challenges you to name the diagnosis from a multiple-choice list, and finally reveals colour-coded annotated findings with a detailed clinical explanation. Cases include both PA and AP projections, covering classic presentations and subtle signs.</p>
     <h2 style="margin-top:1.4em">Cases and pathologies covered</h2>
-    <p>ThoraSwipe includes 37 real chest X-ray cases organised by difficulty (Easy, Medium, Hard) and covering the following conditions:</p>
+    <p>ThoraSwipe includes 42 real chest X-ray cases organised by difficulty (Easy, Medium, Hard) and covering the following conditions:</p>
 
-    <h3 style="margin-top:1em">Pneumonia &amp; Pulmonary Infection (7 cases)</h3>
+    <h3 style="margin-top:1em">Pneumonia &amp; Pulmonary Infection (8 cases)</h3>
     <ul style="padding-left:1.4em">
       <li>Right Middle Lobe Pneumonia — classic lobar consolidation</li>
       <li>Right Middle Lobe Pneumonia — Silhouette Sign (loss of right heart border)</li>
@@ -470,6 +470,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
       <li>COVID-19 Bilateral Pneumonia — bilateral peripheral ground-glass opacities</li>
       <li>Necrotising Pneumonia — Lung Abscess (cavitation with air-fluid level)</li>
       <li>Aspergilloma — Pulmonary Fungal Ball (Monod sign / air crescent sign)</li>
+      <li>Pneumocystis jirovecii Pneumonia (PCP) — bilateral perihilar interstitial infiltrates, immunocompromised host</li>
     </ul>
 
     <h3 style="margin-top:1em">Tuberculosis (3 cases)</h3>
@@ -485,11 +486,13 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
       <li>Left Tension Pneumothorax — mediastinal shift, haemodynamic compromise</li>
     </ul>
 
-    <h3 style="margin-top:1em">Malignancy (3 cases)</h3>
+    <h3 style="margin-top:1em">Malignancy (5 cases)</h3>
     <ul style="padding-left:1.4em">
       <li>Left Lung Mass — Suspected Bronchogenic Carcinoma</li>
       <li>Right Lung Collapse — Bronchial Carcinoma (complete lobar collapse)</li>
       <li>Right Pleural Mesothelioma — irregular pleural thickening, frozen hemithorax</li>
+      <li>Right Pancoast Tumour — Superior Sulcus Carcinoma (apical mass, Horner's syndrome, rib destruction)</li>
+      <li>Superior Vena Cava Syndrome — Right Lung Carcinoma (right mediastinal widening, dilated collateral veins)</li>
     </ul>
 
     <h3 style="margin-top:1em">Pleural &amp; Vascular Disease (3 cases)</h3>
@@ -499,10 +502,11 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
       <li>Pulmonary Arterial Hypertension — enlarged central pulmonary arteries, peripheral pruning</li>
     </ul>
 
-    <h3 style="margin-top:1em">Cardiac (2 cases)</h3>
+    <h3 style="margin-top:1em">Cardiac &amp; Critical Care (3 cases)</h3>
     <ul style="padding-left:1.4em">
       <li>Pulmonary Oedema — Acute Left Ventricular Failure (bat-wing shadowing, Kerley B lines)</li>
       <li>Pericardial Effusion — Water Bottle Sign (globular cardiac silhouette, clear lungs)</li>
+      <li>Acute Respiratory Distress Syndrome (ARDS) — bilateral diffuse airspace opacification, ICU setting</li>
     </ul>
 
     <h3 style="margin-top:1em">Atelectasis &amp; Collapse (2 cases)</h3>
@@ -511,9 +515,10 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
       <li>Left Upper Lobe Collapse — Veil Sign (hazy hemithorax, ipsilateral mediastinal shift)</li>
     </ul>
 
-    <h3 style="margin-top:1em">Obstructive Lung Disease (1 case)</h3>
+    <h3 style="margin-top:1em">Obstructive &amp; Occupational Lung Disease (2 cases)</h3>
     <ul style="padding-left:1.4em">
       <li>COPD — Pulmonary Emphysema (hyperinflation, flat diaphragms, peripheral vascular pruning)</li>
+      <li>Complicated Silicosis — Progressive Massive Fibrosis (bilateral upper lobe conglomerate masses, occupational dust exposure)</li>
     </ul>
 
     <h3 style="margin-top:1em">Granulomatous &amp; Inflammatory (1 case)</h3>
@@ -1718,6 +1723,128 @@ const CASES = [
     annots:[
       {type:'ellipse',cx:25,cy:72,rx:17,ry:13,color:'#22c55e',label:'R breast shadow'},
       {type:'ellipse',cx:71,cy:67,rx:14,ry:12,color:'#22c55e',label:'L breast shadow'},
+    ]
+  },
+
+  {
+    caseId:'CXR-039',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/7/74/PCPxray.jpg',
+    credit:'Wikimedia Commons — Public Domain (NIH / National Institutes of Health)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:PCPxray.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'34M — 3-week progressive dyspnoea and dry cough. Known HIV infection, not on antiretroviral therapy. CD4 count 68 cells/μL. Temperature 38.1°C. SpO₂ 88% on air.',
+    sub:'PA chest radiograph — respiratory assessment',
+    diagnosis:'Pneumocystis jirovecii Pneumonia (PCP)',
+    explanation:'Bilateral perihilar ground-glass haziness with a fine reticular interstitial pattern is the classic chest radiograph appearance of Pneumocystis jirovecii pneumonia. The pattern mimics cardiogenic pulmonary oedema, but the critical distinguishing features are the clinical context — a severely immunocompromised patient (CD4 < 200) with a weeks-long course and no cardiac history — and the absence of cardiomegaly, pleural effusions, and Kerley B lines. CXR can appear normal in up to 25% of confirmed PCP cases; high-resolution CT is indicated when clinical suspicion is high but the plain film is unremarkable.',
+    findings:[
+      'Bilateral perihilar interstitial haziness — fine reticular ground-glass opacity throughout both lung fields, most prominent centrally and in the perihilar zones; the periphery may appear relatively spared in early disease',
+      'Normal cardiac size — CTR within normal limits; this is the primary discriminator from cardiogenic pulmonary oedema, which produces CTR > 0.5, upper lobe blood diversion, and bilateral pleural effusions',
+      'No pleural effusion — costophrenic angles clear bilaterally; PCP characteristically spares the pleural space; a pleural effusion in a suspected PCP patient should prompt consideration of an alternative or concurrent diagnosis',
+      'Hypoxia disproportionate to radiographic appearance — PCP can cause severe exercise-induced desaturation before the CXR shows significant change; a widened A-a gradient with a near-normal CXR in an HIV-positive patient warrants CT and BAL',
+      'Differential: cardiogenic pulmonary oedema (enlarged heart, perihilar bat-wing, Kerley B lines, acute onset), atypical viral or mycoplasma pneumonia (bilateral interstitial pattern, milder hypoxia, immunocompetent host, self-limiting), lymphocytic interstitial pneumonia — LIP (bilateral nodular interstitial infiltrates in HIV, more discrete nodular pattern than PCP)'
+    ],
+    annots:[
+      {type:'ellipse',cx:27,cy:52,rx:18,ry:24,color:'#f59e0b',label:'Bilateral interstitial haziness (R)'},
+      {type:'ellipse',cx:71,cy:52,rx:18,ry:24,color:'#f59e0b',label:'Bilateral interstitial haziness (L)'},
+    ]
+  },
+
+  {
+    caseId:'CXR-040',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/d/db/Pancoast_Tumor_1.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Jmarchn)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Pancoast_Tumor_1.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'47F — 4-month history of right shoulder and arm pain, worse at night. Progressive weakness of right hand grip. Right-sided ptosis and miosis noted on examination. 30 pack-year smoker.',
+    sub:'PA chest radiograph — respiratory assessment',
+    diagnosis:'Right Pancoast Tumour — Superior Sulcus Carcinoma',
+    explanation:'A subtle right apical opacity occupies the superior sulcus — the anatomical groove between the lung apex and the first rib. Pancoast tumours (superior sulcus carcinomas) are typically non-small cell lung carcinomas that present with shoulder and arm pain from brachial plexus (C8–T1) invasion rather than classical respiratory symptoms, making the primary diagnosis easy to overlook on a cursory read. Horner\'s syndrome (ipsilateral ptosis, miosis, anhidrosis) results from invasion of the stellate ganglion. The right lung apex must always be formally compared with the contralateral side — subtle asymmetric soft-tissue density at one apex, with no other explanation, is Pancoast tumour until proven otherwise on MRI or CT.',
+    findings:[
+      'Right apical opacity — asymmetric soft-tissue density at the right superior sulcus with a convex inferior margin; compare with the clear left apex to appreciate the asymmetry; the right apical region is denser, reflecting the superior sulcus mass',
+      'Brachial plexus invasion (C8, T1 roots) — the dominant presenting symptom is ipsilateral shoulder and medial arm pain with progressive hand weakness; respiratory symptoms are often absent or minimal, diverting diagnosis away from a thoracic cause',
+      'Horner\'s syndrome (ptosis, miosis, anhidrosis) — develops in 25–50% of cases from stellate ganglion invasion; it is ipsilateral to the tumour and indicates deep local invasion; a triad of Horner\'s syndrome + shoulder pain + apical CXR density should be considered a Pancoast tumour until CT/MRI proves otherwise',
+      'Rib and vertebral destruction may be present — first rib involvement or vertebral body erosion confirms local invasion; plain radiograph has limited sensitivity; CT and MRI are essential for staging and surgical planning',
+      'Differential for unilateral apical opacity: pleural cap (bilateral, symmetric, rim-like density — benign apical fibrosis from prior TB or radiation), old apical pleural thickening (stable on serial films), subclavian artery tortuosity (smooth, pulsatile, well-defined vascular shadow; no mass effect)'
+    ],
+    annots:[
+      {type:'ellipse',cx:28,cy:12,rx:14,ry:9,color:'#ef4444',label:'Right apical mass (superior sulcus)'},
+      {type:'arrow',x1:20,y1:25,x2:25,y2:15,color:'#f59e0b',label:'Apical asymmetry — cf. clear L apex'},
+    ]
+  },
+
+  {
+    caseId:'CXR-041',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/2/2b/Silicosis_complicada.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Gumersindorego)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Silicosis_complicada.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'63M — 30-year history of underground silica mining. Progressive dyspnoea over 5 years, limiting him to 50 metres on the flat. SpO₂ 91% on air at rest. Non-smoker. Retired 8 years ago.',
+    sub:'PA chest radiograph — respiratory clinic',
+    diagnosis:'Complicated Silicosis — Progressive Massive Fibrosis',
+    explanation:'Complicated silicosis (progressive massive fibrosis, PMF) develops when simple silicosis — bilateral upper and mid zone nodularity from inhaled crystalline silica — progresses to conglomerate masses exceeding 1 cm, typically in the upper lobes. The masses tend to migrate toward the hila over time, leaving peripheral emphysema in their wake. The presence of bilateral background nodularity throughout the lung fields is the key feature that distinguishes PMF from primary malignancy, which does not produce a nodular background pattern. Silica exposure causes permanent, irreversible fibrosis that can progress even after cessation of exposure. Silicosis is independently associated with a four-fold increased risk of pulmonary tuberculosis and should prompt TB screening.',
+    findings:[
+      'Bilateral upper zone conglomerate masses — large dense opacities (PMF) in both upper lobes exceeding 1 cm by definition; irregular margins, typically bilateral and roughly symmetric; they progressively retract toward the hila on serial films',
+      'Background bilateral nodularity — fine-to-medium nodular opacities throughout the mid and lower zones representing the underlying simple silicosis; this is mandatory evidence that the masses arose in a field of pre-existing pneumoconiosis and not de novo malignancy',
+      'Hilar upward retraction and possible hilar lymphadenopathy — the PMF masses distort and drag the hila superiorly; eggshell calcification of hilar nodes (peripheral rim calcification) is pathognomonic of silicosis though not always visible on plain film',
+      'Peripheral emphysema and bullae — lucent areas at the periphery develop in lung tissue architecturally distorted by fibrosis but not directly involved in mass formation; contributes significantly to breathlessness alongside the restriction from fibrosis',
+      'Differential for bilateral upper zone masses: post-primary tuberculosis with massive fibrosis (active features — cavitation, sputum positivity, systemic illness; bilateral upper zone fibrosis possible, but background nodularity from pneumoconiosis absent), bilateral bronchogenic carcinoma (rare synchronous bilateral primaries; no nodular background; irregular spiculated margins), sarcoidosis Stage IV (end-stage pulmonary fibrosis with upper zone volume loss, but typically associated with hilar lymphadenopathy rather than PMF masses)'
+    ],
+    annots:[
+      {type:'ellipse',cx:32,cy:22,rx:13,ry:14,color:'#ef4444',label:'R upper zone PMF mass'},
+      {type:'ellipse',cx:67,cy:22,rx:13,ry:14,color:'#ef4444',label:'L upper zone PMF mass'},
+      {type:'arrow',x1:50,y1:65,x2:40,y2:56,color:'#f59e0b',label:'Background nodularity'},
+    ]
+  },
+
+  {
+    caseId:'CXR-042',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/4/42/SVCCXR.PNG',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (James Heilman MD)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:SVCCXR.PNG',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'62M — 6-week history of progressive facial swelling worse on waking, bilateral arm oedema, and frontal headache aggravated by bending forward. Visible distended collateral veins across the upper chest. 45 pack-year smoker.',
+    sub:'PA chest radiograph — urgent respiratory assessment',
+    diagnosis:'Superior Vena Cava Syndrome — Right Lung Carcinoma',
+    explanation:'A right-sided lung mass with right hilar and mediastinal involvement compresses the superior vena cava — a thin-walled, low-pressure vessel easily obstructed by adjacent tumour or mediastinal lymphadenopathy. The resulting venous hypertension causes the clinical syndrome: facial and arm oedema worse in the morning (supine overnight), headache on bending forward, and the development of dilated chest wall collateral veins that redirect venous return via the azygos system and thoracoepigastric veins. Lung carcinoma is responsible in approximately 65% of cases (small cell and squamous cell predominate); lymphoma accounts for most of the remainder. CT with intravenous contrast is required to delineate the extent of SVC occlusion and plan treatment — stenting for rapid symptom relief, radiotherapy for radio-sensitive tumours, or systemic chemotherapy.',
+    findings:[
+      'Right lung mass with right hilar and mediastinal involvement — large opacity occupying the right mid zone with involvement of the right hilum and mediastinum; small cell and squamous cell carcinomas are the commonest causative subtypes, both arising centrally and spreading rapidly to mediastinal nodes',
+      'Superior vena cava obstruction (clinical diagnosis) — the SVC syndrome itself is a clinical finding; CXR identifies the underlying mass but cannot directly visualise SVC compression; CT venogram or contrast-enhanced CT is required to confirm occlusion',
+      'Right paratracheal widening — tumour extension or reactive lymphadenopathy in the right paratracheal chain directly compresses the SVC, which runs adjacent to the right side of the trachea before entering the right atrium; a widened right paratracheal stripe supports mediastinal involvement',
+      'Urgency of management — SVC syndrome is an oncological emergency when associated with stridor, haemodynamic compromise, or cerebral oedema; most cases allow time for tissue diagnosis before treatment; endovascular stenting produces the fastest symptom relief regardless of histology',
+      'Differential for right-sided mediastinal / hilar mass: lymphoma with mediastinal widening (bilateral hilar and paratracheal involvement; B symptoms; younger non-smoker; anterior mediastinal predominance), ascending aortic aneurysm (smooth, well-defined right mediastinal contour; pulsatile; no lung mass), right hilar lymphadenopathy from sarcoidosis (bilateral hilar LAP, Stage I; younger non-smoker; no parenchymal mass)'
+    ],
+    annots:[
+      {type:'ellipse',cx:30,cy:47,rx:14,ry:20,color:'#ef4444',label:'Right lung mass + mediastinal involvement'},
+      {type:'arrow',x1:43,y1:27,x2:37,y2:36,color:'#f59e0b',label:'Right mediastinal widening'},
+    ]
+  },
+
+  {
+    caseId:'CXR-043',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/1/19/ARDSSevere.png',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (James Heilman MD)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:ARDSSevere.png',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'49M — day 4 of ICU admission following emergency laparotomy for perforated sigmoid diverticulitis and faecal peritonitis. Mechanically ventilated on FiO₂ 0.8, PEEP 14 cmH₂O. SpO₂ 87%. Vasopressor-dependent.',
+    sub:'AP chest radiograph — ICU daily review',
+    diagnosis:'Acute Respiratory Distress Syndrome (ARDS)',
+    explanation:'Bilateral diffuse airspace opacification in a mechanically ventilated ICU patient with a recognised ARDS precipitant (sepsis from peritonitis) represents ARDS until proven otherwise. The cardinal distinguishing feature from cardiogenic pulmonary oedema is the cardiac silhouette — in ARDS the mechanism is increased capillary permeability, not hydrostatic overload, so the heart remains normal in size despite the bilateral white-out. This is a portable AP film and the cardiac silhouette is magnified; nonetheless it does not appear disproportionately enlarged. Management follows lung-protective ventilation (tidal volume 4–6 mL/kg ideal body weight, plateau pressure ≤ 30 cmH₂O, appropriate PEEP) and treatment of the precipitant; prone positioning reduces mortality in severe ARDS (PaO₂/FiO₂ < 150 mmHg).',
+    findings:[
+      'Bilateral diffuse airspace opacification — homogeneous white-out pattern throughout both lung fields; this is severe ARDS (Berlin Definition: bilateral opacities; PaO₂/FiO₂ ≤ 100 mmHg on PEEP ≥ 5 cmH₂O); opacification is characteristically bilateral and may be asymmetric in distribution',
+      'Normal or non-enlarged cardiac silhouette — the key discriminator from cardiogenic pulmonary oedema; in cardiac failure the CTR is typically > 0.5 with upper lobe vascular diversion, Kerley B lines, and bilateral pleural effusions; note this is a portable AP film — the cardiac silhouette is magnified and CTR cannot be formally applied',
+      'ET tube in situ — endotracheal tube tip should lie 3–7 cm above the carina on an AP film; the carina is at approximately the level of the aortic knuckle; tube position must be formally verified on every ICU radiograph as right mainstem intubation causes right-sided atelectasis and contralateral barotrauma',
+      'ARDS precipitant must be identified and treated concurrently — sepsis (40% of ARDS), pneumonia, aspiration, trauma, pancreatitis, and massive blood transfusion (TRALI) are leading causes; treating only the respiratory failure without addressing the precipitant is a common management error',
+      'Differential for bilateral white-out in ICU: cardiogenic pulmonary oedema (enlarged heart even on AP, Kerley B lines, pleural effusions, responds to diuresis), bilateral aspiration pneumonitis (lower zone predominance, history of aspiration, may resolve within 48 h), diffuse alveolar haemorrhage (haematological malignancy, vasculitis, or anticoagulation; blood on BAL; haemoptysis), bilateral pneumonia — both lungs (fever, purulent sputum, may consolidate asymmetrically)'
+    ],
+    annots:[
+      {type:'ellipse',cx:24,cy:55,rx:22,ry:30,color:'#ef4444',label:'Bilateral airspace opacification (R)'},
+      {type:'ellipse',cx:72,cy:55,rx:22,ry:30,color:'#ef4444',label:'Bilateral airspace opacification (L)'},
+      {type:'arrow',x1:70,y1:20,x2:52,y2:30,color:'#f59e0b',label:'ET tube in trachea'},
     ]
   },
 
