@@ -81,6 +81,10 @@
           "value": "max-age=63072000; includeSubDomains; preload"
         },
         {
+          "key": "X-Robots-Tag",
+          "value": "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+        },
+        {
           "key": "Content-Security-Policy",
           "value": "default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://upload.wikimedia.org data:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';"
         }
