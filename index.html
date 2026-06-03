@@ -54,9 +54,9 @@
   "screenshot": "https://thoraswipe.com/og-image.png",
   "softwareVersion": "7",
   "dateCreated": "2025-01-01",
-  "dateModified": "2026-06-02",
+  "dateModified": "2026-06-03",
   "featureList": [
-    "42 real chest X-ray cases from easy to expert difficulty",
+    "44 real chest X-ray cases from easy to expert difficulty",
     "Swipe-based normal vs abnormal classification",
     "Annotated radiograph findings with colour-coded overlays",
     "PACS-style brightness, contrast and invert controls",
@@ -561,7 +561,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
     <p>ThoraSwipe is a free, swipe-based chest X-ray (CXR) quiz for medical students, junior doctors, foundation year doctors, and radiographers. Practice CXR pattern recognition with instant feedback, annotated radiographic findings, and progressive difficulty from easy to expert cases. No account or login required.</p>
     <p>Each case presents a real chest radiograph for you to classify as normal or abnormal, then challenges you to name the diagnosis from a multiple-choice list, and finally reveals colour-coded annotated findings with a detailed clinical explanation. Cases include both PA and AP projections, covering classic presentations and subtle signs.</p>
     <h2 style="margin-top:1.4em">Cases and pathologies covered</h2>
-    <p>ThoraSwipe includes 42 real chest X-ray cases organised by difficulty (Easy, Medium, Hard) and covering the following conditions:</p>
+    <p>ThoraSwipe includes 44 real chest X-ray cases organised by difficulty (Easy, Medium, Hard) and covering the following conditions:</p>
 
     <h3 style="margin-top:1em">Pneumonia &amp; Pulmonary Infection (8 cases)</h3>
     <ul style="padding-left:1.4em">
@@ -633,6 +633,12 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
       <li>Dextrocardia with Situs Inversus — mirror-image cardiac and abdominal anatomy</li>
       <li>Hiatal Hernia — retrocardiac air-fluid level, gastric fundus above diaphragm</li>
       <li>Endotracheal Tube and NG Tube — Correct Positioning (ICU lines and tubes)</li>
+    </ul>
+
+    <h3 style="margin-top:1em">Diaphragm &amp; Subdiaphragmatic (2 cases)</h3>
+    <ul style="padding-left:1.4em">
+      <li>Chilaiditi Syndrome — hepatic flexure colonic interposition mimicking free subdiaphragmatic air (pneumoperitoneum)</li>
+      <li>Traumatic Diaphragmatic Rupture — left intrathoracic spleen, delayed post-trauma presentation with upper GI bleeding</li>
     </ul>
 
     <h3 style="margin-top:1em">Normal Chest Radiographs (10 cases)</h3>
@@ -1983,6 +1989,54 @@ const CASES = [
     ]
   },
 
+  {
+    caseId:'CXR-044',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/e/e8/Chilaiditi-Syndrom_bei_Zwerchfellhochstand_rechts_85W_-_CR_pa_-_001.jpg',
+    credit:'Wikimedia Commons — CC BY-SA 4.0 (Hellerhoff)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Chilaiditi-Syndrom_bei_Zwerchfellhochstand_rechts_85W_-_CR_pa_-_001.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:2,
+    title:'85F — routine chest radiograph prior to elective surgery. Three-month history of intermittent right-sided abdominal fullness and bloating after meals. No fever. Abdomen soft with mild right upper quadrant discomfort on deep palpation; no guarding or rigidity.',
+    sub:'PA chest radiograph — pre-operative assessment',
+    diagnosis:'Chilaiditi Syndrome — Hepatic Flexure Colonic Interposition',
+    explanation:'Chilaiditi sign is the anatomical variant of colonic interposition between the liver dome and the right hemidiaphragm — most commonly the hepatic flexure. On the PA CXR it produces a curvilinear gas lucency above the liver that closely mimics free subdiaphragmatic air (pneumoperitoneum). Chilaiditi syndrome is the symptomatic form, associated with abdominal discomfort, constipation, or nausea from colonic distension or torsion in the abnormal position. The critical discriminator from pneumoperitoneum is the presence of haustral folds within the gas lucency — haustra are absent in free peritoneal gas, which produces a smooth featureless crescent. The sign is present in approximately 0.025–0.28% of the general population, more common in elderly patients, men, and those with hepatic atrophy or colonic hypermobility. Misdiagnosis as pneumoperitoneum can lead to unnecessary emergency laparotomy — the clinical context (no acute peritonism, chronic bloating) and systematic analysis of the gas shadow are essential to avoid this error.',
+    findings:[
+      'Curvilinear gas lucency above the right hemidiaphragm — the right hemidiaphragm appears elevated with a lobulated gas lucency interposed above the liver dome; this is the cardinal feature of Chilaiditi sign; the irregular, lobulated inferior border follows the colonic wall and contrasts with the smooth crescentic inferior border expected in true pneumoperitoneum',
+      'Haustral fold pattern within the lucency — the definitive discriminator from pneumoperitoneum: colonic haustra (semilunar folds projecting into the bowel lumen) are visible within the gas shadow; free peritoneal gas produces a smooth, featureless crescent with no internal architecture; confirming haustra avoids unnecessary surgical exploration',
+      'Right hemidiaphragm displacement — the right hemidiaphragm is displaced superiorly by interposed bowel rather than by a true diaphragmatic abnormality; the diaphragm muscle itself is intact; the left hemidiaphragm remains at a normal level; this unilateral asymmetry should prompt analysis of the right upper quadrant rather than immediate assumption of free air',
+      'No peritoneal signs — the absence of clinical peritonism (no guarding, no rigidity, no acute abdomen) is a vital discriminator; pneumoperitoneum from bowel perforation almost invariably causes an acute surgical abdomen; chronic intermittent bloating and mild discomfort without peritonism are consistent with symptomatic Chilaiditi syndrome',
+      'Differential for apparent right subdiaphragmatic gas: pneumoperitoneum (smooth crescentic lucency, no haustral folds, acute peritonism — surgical emergency), Morgagni hernia (congenital anterior diaphragmatic defect — right-sided, anterior position on lateral view, bowel herniating into the chest rather than beneath the diaphragm), right diaphragmatic eventration (true elevated right hemidiaphragm with normal lung markings above; no interposed gas lucency)'
+    ],
+    annots:[
+      {type:'ellipse',cx:30,cy:67,rx:16,ry:8,color:'#f59e0b',label:'Colonic gas above R hemidiaphragm'},
+      {type:'arrow',x1:30,y1:73,x2:30,y2:64,color:'#60a5fa',label:'Haustral folds — not free air'},
+    ]
+  },
+
+  {
+    caseId:'CXR-045',
+    imageUrl:'https://upload.wikimedia.org/wikipedia/commons/f/f6/Diaphragmatic_rupture_spleen_herniation.jpg',
+    credit:'Wikimedia Commons — CC BY 2.0 (Hariharan et al., BMC Gastroenterol 2006)',
+    sourceUrl:'https://commons.wikimedia.org/wiki/File:Diaphragmatic_rupture_spleen_herniation.jpg',
+    sourceLabel:'Wikimedia Commons',
+    isNormal:false, difficulty:3,
+    title:'32M — admitted with haematemesis and progressive left-sided breathlessness. Six weeks earlier he sustained multiple left lower rib fractures in a road traffic collision; the post-accident chest radiograph was reported as left pleural effusion and basal atelectasis. SpO₂ 93% on air. Bowel sounds audible over the left lower chest on auscultation.',
+    sub:'PA chest radiograph — emergency assessment',
+    diagnosis:'Traumatic Diaphragmatic Rupture — Left Intrathoracic Spleen',
+    explanation:'Left-sided diaphragmatic rupture from blunt thoracoabdominal trauma allows abdominal viscera — most commonly the stomach, colon, or spleen — to herniate into the pleural cavity. The left diaphragm tears more frequently than the right because the liver provides a protective cushion on the right side. The radiographic hallmark is loss of the normal smooth left hemidiaphragm outline at the point of rupture. Delayed presentation — occurring weeks to months after injury as the diaphragmatic defect progressively enlarges — is the most diagnostically challenging form and is frequently misattributed to pleural effusion or atelectasis on the initial post-trauma CXR. Upper gastrointestinal bleeding from intrathoracic visceral herniation results from gastric volvulus, mucosal ischaemia, or splenic laceration. CT with intravenous contrast is the definitive investigation. Surgical repair is mandatory.',
+    findings:[
+      'Left lower zone opacity — a homogeneous opacity occupies the left lower thorax; this represents the herniated spleen rather than a pleural effusion — there is no meniscus sign (the hallmark of free-flowing pleural fluid) and no isolated blunting of the costophrenic angle; the opacity reflects the solid organ displaced superiorly through the diaphragmatic tear',
+      'Loss of left hemidiaphragm silhouette — the normal smooth left hemidiaphragm outline is absent or disrupted at the site of rupture; preservation of the diaphragm silhouette on CXR virtually excludes diaphragmatic rupture; its loss in the context of thoracoabdominal trauma is the most specific plain-film sign and mandates urgent CT with intravenous contrast',
+      'Delayed presentation — the initial post-injury CXR was reported as pleural effusion and basal atelectasis; acute traumatic diaphragmatic rupture is missed on plain radiograph in up to 50% of cases because herniation may be incomplete at the time of injury; delayed herniation as the defect enlarges is characteristic and should be suspected whenever a patient with prior rib fractures develops new or worsening ipsilateral chest findings weeks later',
+      'Upper gastrointestinal bleeding as the presenting feature — a recognised complication of intrathoracic visceral herniation; results from gastric volvulus, mucosal ischaemia, or splenic laceration; haematemesis in a patient with prior thoracoabdominal trauma mandates urgent cross-sectional imaging to exclude diaphragmatic rupture before upper GI endoscopy',
+      'Differential for left lower zone opacity: large left pleural effusion (fluid layering with gravity, meniscus sign, blunted costophrenic angle, normal left diaphragm outline — all absent here), left lower lobe consolidation or atelectasis (air bronchograms, volume loss, normal diaphragm silhouette, no trauma context), traumatic diaphragmatic rupture with visceral herniation (loss of diaphragm silhouette, post-trauma history, bowel sounds audible over lower chest, ipsilateral rib fractures on prior films)'
+    ],
+    annots:[
+      {type:'ellipse',cx:72,cy:70,rx:12,ry:14,color:'#ef4444',label:'Herniated spleen — left lower zone'},
+      {type:'arrow',x1:65,y1:78,x2:69,y2:68,color:'#f59e0b',label:'Absent left hemidiaphragm silhouette'},
+    ]
+  },
+
 ];
 
 // ─── DISTRACTORS ────────────────────────────────────────────────────
@@ -2034,6 +2088,10 @@ const ALL_DIAGNOSES=[
   'Normal PA Chest Radiograph — No Abnormality Detected',
   'Normal PA Chest Radiograph — Mild Diaphragmatic Flattening, Normal Inspiratory Variant',
   'Normal PA Chest Radiograph — Bilateral Breast Shadows','Bilateral Pleural Effusions',
+  'Chilaiditi Syndrome — Hepatic Flexure Colonic Interposition','Chilaiditi Sign — Incidental Bowel Interposition',
+  'Pneumoperitoneum — Free Subdiaphragmatic Air','Right Diaphragmatic Eventration',
+  'Traumatic Diaphragmatic Rupture — Left Intrathoracic Spleen','Left Diaphragmatic Hernia — Herniated Stomach',
+  'Delayed Traumatic Diaphragmatic Rupture','Morgagni Hernia — Anterior Diaphragmatic Defect',
 ];
 function getDistractors(correct,n=3){
   return shuffle([...ALL_DIAGNOSES].filter(d=>d!==correct)).slice(0,n);
@@ -2088,7 +2146,7 @@ function buildQueue(){
 // ─── PROGRESS PERSISTENCE ────────────────────────────────────────────
 // Saves queue (as case IDs), position, scores, streak, and filter to
 // localStorage. Silently no-ops in private-browsing / quota-exceeded.
-const TS_SAVE_KEY='ts_progress_v3'; // v3: 5 new cases added (CXR-039–043), total 42 cases
+const TS_SAVE_KEY='ts_progress_v4'; // v4: 2 new cases added (CXR-044–045), total 44 cases
 function saveProgress(){
   try{
     localStorage.setItem(TS_SAVE_KEY,JSON.stringify({
