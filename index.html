@@ -54,7 +54,7 @@
   "screenshot": "https://thoraswipe.com/og-image.png",
   "softwareVersion": "7",
   "dateCreated": "2025-01-01",
-  "dateModified": "2026-06-03",
+  "dateModified": "2026-06-06",
   "featureList": [
     "44 real chest X-ray cases from easy to expert difficulty",
     "Swipe-based normal vs abnormal classification",
@@ -339,18 +339,18 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .diff-dots span{width:6px;height:6px;border-radius:50%;background:var(--border)}
 .diff-dots span.on{background:var(--gold)}
 .card-title{font-size:13px;font-weight:600;margin-bottom:3px;line-height:1.4}
-.card-sub{font-size:11px;color:var(--muted)}
+.card-sub{font-size:12px;color:var(--muted)}
 
 .btn-row{width:100%;display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px;padding:0 8px}
 .btn{flex:1;max-width:155px;height:52px;border:none;border-radius:14px;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:transform .15s,background .15s}
-.btn-n{background:rgba(34,197,94,.1);color:var(--green);border:1.5px solid rgba(34,197,94,.3)}
-.btn-a{background:rgba(239,68,68,.1);color:var(--red);border:1.5px solid rgba(239,68,68,.3)}
-.btn-n:hover{background:rgba(34,197,94,.18);border-color:rgba(34,197,94,.5)}
-.btn-a:hover{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.5)}
-.btn-n:active{transform:scale(.95);background:rgba(34,197,94,.2)}
-.btn-a:active{transform:scale(.95);background:rgba(239,68,68,.2)}
+.btn-n{background:rgba(34,197,94,.18);color:var(--green);border:1.5px solid rgba(34,197,94,.5)}
+.btn-a{background:rgba(239,68,68,.18);color:var(--red);border:1.5px solid rgba(239,68,68,.5)}
+.btn-n:hover{background:rgba(34,197,94,.26);border-color:rgba(34,197,94,.7)}
+.btn-a:hover{background:rgba(239,68,68,.26);border-color:rgba(239,68,68,.7)}
+.btn-n:active{transform:scale(.95);background:rgba(34,197,94,.32)}
+.btn-a:active{transform:scale(.95);background:rgba(239,68,68,.32)}
 .swipe-card:hover{border-color:rgba(96,165,250,.3);box-shadow:0 8px 48px rgba(96,165,250,.08)}
-.hint{margin-top:8px;font-size:10px;color:var(--muted);text-align:center;opacity:.6}
+.hint{margin-top:8px;font-size:12px;color:var(--muted);text-align:center;opacity:.6}
 .page-disclaimer{margin-top:6px;font-size:9px;color:var(--muted);text-align:center;opacity:.75;letter-spacing:.2px}
 
 /* PICKER */
@@ -407,7 +407,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 .findings-box{background:var(--card);border-radius:12px;border:1px solid var(--border);padding:10px 13px;margin-bottom:14px}
 .findings-box h4{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;font-family:'Space Mono',monospace}
 .findings-box ul{list-style:none;display:flex;flex-direction:column;gap:5px}
-.findings-box li{font-size:11px;color:var(--text);display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+.findings-box li{font-size:12px;color:var(--text);display:flex;align-items:flex-start;gap:7px;line-height:1.5}
 .findings-box li::before{content:'→';color:var(--blue);flex-shrink:0;font-family:'Space Mono',monospace;font-size:10px;margin-top:1px}
 .sheet-close{position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color .2s,border-color .2s;z-index:5}
 .sheet-close:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
@@ -708,7 +708,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
   <div class="header-right">
     <div class="streak-badge" id="streak-badge">🔥 <span id="streak-num">0</span></div>
     <div class="score-pill"><span class="s-ok" id="sc-ok">0</span><span class="s-lbl">✓</span><span class="s-div">|</span><span class="s-bad" id="sc-bad">0</span><span class="s-lbl">✗</span></div>
-    <button class="hdr-info" onclick="showContact()" title="About & Contact">?</button>
+    <button class="hdr-info" onclick="showContact()" title="About & Contact" aria-label="About & Contact"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r=".5" fill="currentColor" stroke="none"/></svg></button>
   </div>
 </header>
 
@@ -760,7 +760,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
   </div>
   <div class="btn-row">
     <button class="btn btn-n" onclick="decide('normal')">✓ Normal</button>
-    <button class="btn btn-a" onclick="decide('abnormal')">Abnormal ✕</button>
+    <button class="btn btn-a" onclick="decide('abnormal')">✕ Abnormal</button>
   </div>
   <div class="hint" id="hint" style="transition:opacity 0.5s">drag the card or use the buttons below</div>
   <p class="page-disclaimer">Educational use only — not a clinical diagnostic tool</p>
