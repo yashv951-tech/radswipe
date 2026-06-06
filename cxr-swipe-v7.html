@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://upload.wikimedia.org data:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://upload.wikimedia.org data:; script-src 'unsafe-inline' https://cdn.vercel-insights.com; connect-src https://vitals.vercel-insights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none';">
 <title>ThoraSwipe — Free Chest X-Ray Quiz & CXR Practice for Medical Students</title>
 
 <!-- SEO & share preview ─────────────────────────────────────────── -->
@@ -896,9 +896,9 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
       <li>No cookies or tracking technologies are used.</li>
       <li>Your session progress — case position, score, streak, and difficulty filter — is saved to your browser's <strong>localStorage</strong> so you can close the app and resume where you left off. This data never leaves your device.</li>
       <li>Saved progress is automatically cleared when you complete a round or tap Restart. You can also clear it at any time via your browser's site data settings.</li>
-      <li>No analytics, advertising, or third-party tracking services are embedded.</li>
+      <li>Anonymous page-view analytics are collected via <strong>Vercel Web Analytics</strong> — cookieless, no personal data, no fingerprinting. See <a href="https://vercel.com/docs/analytics/privacy-policy" target="_blank" rel="noopener noreferrer" style="color:var(--blue)">Vercel's Analytics Privacy Policy</a>.</li>
     </ul>
-    <p class="muted">The only external network requests made are to load radiograph images from Wikimedia Commons (upload.wikimedia.org) and typefaces from Google Fonts (fonts.googleapis.com / fonts.gstatic.com). These services are subject to their respective privacy policies.</p>
+    <p class="muted">External network requests are made to: Wikimedia Commons (upload.wikimedia.org) for radiograph images; Google Fonts (fonts.googleapis.com / fonts.gstatic.com) for typefaces; and Vercel Analytics (vitals.vercel-insights.com) for anonymised page-view data. Each service is subject to its own privacy policy.</p>
   </div>
 
   <div class="legal-section">
@@ -2839,5 +2839,6 @@ updateScore();updateStreakUI();
 renderCase();
 if(_resumed)setTimeout(()=>showMilestone('📋','Progress Restored','Continuing from case '+(idx+1)+' of '+queue.length),700);
 </script>
+<script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
 </body>
 </html>
