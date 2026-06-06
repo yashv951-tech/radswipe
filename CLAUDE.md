@@ -106,7 +106,98 @@ Two annotation types: `'ellipse'` (draws a dashed animated ellipse) and `'arrow'
 
 ---
 
-## Adding a new case
+## Image sourcing research agent
+
+Use this prompt to launch a research agent when you need to find Wikimedia Commons images for specific pathology gaps. The agent works backwards — it browses Commons categories and file pages first, then cross-references to journal articles — rather than starting with a diagnosis and hunting for an image.
+
+**When to invoke:** run this agent before starting a new batch of cases, or whenever the gap list has grown. It will return a structured table of verified candidates ready to write.
+
+**How to invoke:** paste the prompt below into a new Claude Code session (or use `/agent` if available). Update the "Gaps to fill" section with the current gap list before running.
+
+---
+
+### Agent prompt (copy and paste to run)
+
+```
+You are a research agent for ThoraSwipe, a chest X-ray education app. Your job is to
+find Wikimedia Commons images that fill specific pathology gaps in the case library.
+Work backwards: browse Commons categories first, find candidate images, then check
+each candidate for a linked journal article that provides confirmed clinical details.
+
+## Hard constraints — an image is only usable if ALL of these are true:
+1. Hosted at upload.wikimedia.org (direct hotlink, no /thumb/ path)
+2. Licence is CC BY or CC BY-SA (any version). Reject CC BY-NC, CC BY-ND, or NC-SA.
+3. Plain chest radiograph only — NOT CT, NOT MRI, NOT histology, NOT illustration.
+4. The pathology is clearly visible and unambiguous on the plain film.
+5. The Commons file page confirms the diagnosis — do not infer from filename alone.
+
+## Preferred sourcing (in order):
+1. Image uploaded from a published CC BY journal article — gives confirmed diagnosis,
+   patient demographics, and expert interpretation. Check the Commons file page
+   "Source" field for journal name, authors, and DOI.
+2. Image by a named clinician (e.g. James Heilman MD, Hellerhoff) with a clear
+   description on the file page.
+3. Avoid anonymous uploads with no description beyond the filename.
+
+## Gaps to fill (update this list each session):
+Priority 1 (HIGH):
+- Lingular pneumonia — loss of LEFT heart border (silhouette sign); need a PA CXR
+  showing consolidation obliterating the left cardiac border
+- Malpositioned ETT — endotracheal tube in right mainstem bronchus, left lung collapse
+- Pneumoperitoneum — free air under the diaphragm on erect PA or supine CXR
+- Pulmonary metastases — multiple bilateral nodules, "cannonball" pattern
+
+Priority 2 (MEDIUM):
+- Left lower lobe collapse — sail sign (opacity behind heart, volume loss)
+- Primary TB / Ghon complex — peripheral focus + ipsilateral hilar lymphadenopathy
+- Bronchiectasis — tram-track sign, ring shadows, mucus plugging
+- Anterior mediastinal mass — thymoma, lymphoma, or teratoma
+- Deep sulcus sign — supine pneumothorax on ICU portable AP CXR
+
+## Search strategy:
+For each gap, check these Commons categories (fetch the page, list all files, then
+check promising individual file pages for licence and description):
+- https://commons.wikimedia.org/wiki/Category:X-rays_of_pneumonia
+- https://commons.wikimedia.org/wiki/Category:Pneumoperitoneum
+- https://commons.wikimedia.org/wiki/Category:X-rays_of_atelectasis
+- https://commons.wikimedia.org/wiki/Category:Pulmonary_metastases
+- https://commons.wikimedia.org/wiki/Category:Bronchiectasis
+- https://commons.wikimedia.org/wiki/Category:X-rays_of_tuberculosis
+- https://commons.wikimedia.org/wiki/Category:Mediastinal_tumors
+- https://commons.wikimedia.org/wiki/Category:X-rays_of_the_chest
+- https://commons.wikimedia.org/wiki/Category:X-rays_of_pneumothorax
+
+Also try Wikimedia Commons MediaSearch for each gap:
+https://commons.wikimedia.org/w/index.php?search=TERM&title=Special:MediaSearch&type=image
+
+If a category yields nothing useful after 2–3 file checks, note it and move on.
+Do not spend more than 3 fetches on any single gap.
+
+## Output format — for each usable candidate found:
+| Gap | Commons file URL | Direct image URL | Licence | Author/Source | Journal article? | Findings | Projection | Demographics |
+|-----|-----------------|-----------------|---------|---------------|-----------------|----------|------------|--------------|
+
+If no usable image is found for a gap, state: "Gap X — no usable Commons image found.
+Consider: [specific PMC article URL if found, with its licence]" so the user knows
+whether to upload a CC BY image to Commons.
+
+## Do not:
+- Use Radiopaedia URLs (hotlink-blocked)
+- Use NIH Open-i URLs (service discontinued)
+- Use PMC blob URLs directly in the case (unstable) — flag them for Commons upload instead
+- Guess the diagnosis from a filename — confirm from the file description page
+- Return CT images as chest X-rays
+```
+
+---
+
+**After the agent returns:** take the table of candidates and start a new session saying "write case for [diagnosis] using [Commons URL]". The agent's output is the sourcing brief; writing the case is a separate step.
+
+**If the agent finds a CC BY PMC image not yet on Commons:** upload it via [commons.wikimedia.org/wiki/Special:UploadWizard](https://commons.wikimedia.org/wiki/Special:UploadWizard) using the journal article's CC BY licence, author names, and DOI as the source, then return to write the case.
+
+---
+
+
 
 ### Case data structure
 
