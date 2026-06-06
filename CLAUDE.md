@@ -131,11 +131,31 @@ Each case is an object in the `CASES` array. The fields are:
 
 ### Finding and verifying images
 
-- Use only **Wikimedia Commons** (`upload.wikimedia.org`). Radiopaedia hotlink-blocks; NIH Open-i URLs go dead.
+All images must come from **Wikimedia Commons** (`upload.wikimedia.org`) — it is the only source that reliably hotlinks from a browser for a static app with no backend. Radiopaedia blocks hotlinking (403); NIH Open-i URLs go dead; large ML datasets (NIH ChestX-ray14, MIMIC-CXR, CheXpert, PadChest) require bulk download and a proxy backend, which ThoraSwipe does not have.
+
+#### Preferred sourcing strategy: published open-access papers
+
+The richest cases come from **published open-access case reports** whose images have been uploaded to Wikimedia Commons. These give you confirmed diagnosis, exact patient demographics, expert clinical interpretation, and a citable source — far more than an anonymously-uploaded scan.
+
+**Where to find them:**
+- Search Wikimedia Commons for the pathology name — many open-access journals (BMJ Case Reports, PLOS ONE, Journal of Medical Case Reports) require CC BY, so their figures get uploaded.
+- Search PubMed Central (`pmc.ncbi.nlm.nih.gov`) for the pathology + "chest radiograph" + "case report". Open-access papers have CC BY figures; check whether the CXR figure has been uploaded to Commons, or upload it yourself if the licence permits.
+- The Commons category tree (`Category:Chest X-rays`) and its subcategories by condition are the fastest browsing path.
+
+**What a paper-sourced case gives you that a generic upload does not:**
+- Confirmed diagnosis (not inferred from filename)
+- Patient age, sex, and presenting complaint
+- Clinical context (how the diagnosis was made, what treatment was given)
+- Expert interpretation to draw findings and explanation from
+- Authors to credit
+
+#### Image verification checklist
+
 - Fetch the Commons file page to confirm: direct URL (not `/thumb/`), which side pathology is on, patient demographics, exact licence.
 - Never add `crossorigin="anonymous"` to `<img>` tags — use `referrerpolicy="no-referrer"` only.
 - **If the image comes from a published case report**, the `credit` field must name the actual authors (e.g. `'Wikimedia Commons — CC BY 4.0 (Herreros et al.)'`), not just the licence. Check the Commons page — the uploader and the original authors are often different people.
 - **Verify the diagnosis matches what the image actually shows.** For situs-dependent findings (dextrocardia, situs inversus, organ position), confirm explicitly from the Commons description or Wikipedia usage — do not infer from the filename alone. An image described only as "cardiac apex facing right" does not confirm situs inversus totalis.
+- **Never reuse the same `imageUrl` across two cases.** Grep the existing `CASES` array for the filename before adding a case.
 
 ### PA CXR anatomical convention
 
@@ -566,6 +586,18 @@ Start via `preview_start("thoraswipe")` in Claude Code. Serves the CXR Swipe dir
 ---
 
 ## Session log
+
+### 2026-06-06 (SEO fixes session)
+
+**Fixed SEO items 1–3 from audit:**
+- **Title tag** rewritten to query-first: `Free Chest X-Ray Quiz — CXR Interpretation Practice | ThoraSwipe`
+- **Meta description** trimmed to ≤155 chars, PACS jargon removed
+- **`dateCreated`** in WebApplication schema corrected from `2025-01-01` to `2026-05-24` (actual first git commit date)
+- `index.html` synced; committed and pushed.
+
+**Pending SEO items:** 4–17 from audit list (OG/Twitter tags, schema additions, content, technical, content strategy)
+
+
 
 ### 2026-06-02
 
