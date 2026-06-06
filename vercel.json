@@ -86,7 +86,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://upload.wikimedia.org data:; script-src 'unsafe-inline' https://cdn.vercel-insights.com; connect-src https://vitals.vercel-insights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none';"
+          "value": "default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://upload.wikimedia.org data:; script-src 'unsafe-inline' https://cdn.vercel-insights.com; connect-src 'self' https://vitals.vercel-insights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none';"
         }
       ]
     }
