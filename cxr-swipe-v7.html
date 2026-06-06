@@ -284,7 +284,7 @@ header{width:100%;max-width:480px;padding:12px 18px 6px;display:flex;align-items
 .logo-name{color:var(--text)}.logo-name span{color:var(--blue)}
 .header-right{display:flex;align-items:center;gap:8px}
 .score-pill{font-family:'Space Mono',monospace;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 12px;display:flex;align-items:center;gap:7px}
-.s-ok{color:var(--green)}.s-bad{color:var(--red)}.s-div{color:rgba(255,255,255,.22)}.s-lbl{color:var(--muted);font-size:10px;line-height:1}
+.s-ok{color:var(--green)}.s-bad{color:var(--red)}.s-div{color:rgba(255,255,255,.22)}
 .streak-badge{display:flex;align-items:center;gap:4px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;background:var(--gold-dim);border:1px solid rgba(245,158,11,.35);color:var(--gold);border-radius:20px;padding:4px 10px;transition:all .3s;opacity:0;transform:scale(.8)}
 .streak-badge.show{opacity:1;transform:scale(1)}
 .streak-badge.pulse{animation:sPulse .4s ease}
@@ -299,7 +299,9 @@ header{width:100%;max-width:480px;padding:12px 18px 6px;display:flex;align-items
 .mode-tag.hard{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:var(--red)}
 .diff-right{display:flex;align-items:center;gap:8px;margin-left:auto}
 .fc-row{display:flex;gap:4px;flex-shrink:0}
-.fchip{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:2px 9px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,border-color .2s,color .2s;letter-spacing:.3px;line-height:1.8}
+.fchip{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:background .2s,border-color .2s,color .2s;letter-spacing:.3px;line-height:1.8}
+.fchip:hover:not(.fc-on-e):not(.fc-on-m):not(.fc-on-h){background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.22);color:var(--text)}
+.fchip:active{transform:scale(.94)}
 .fchip.fc-on-e{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.4);color:var(--green)}
 .fchip.fc-on-m{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.4);color:var(--gold)}
 .fchip.fc-on-h{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.4);color:var(--red)}
@@ -707,7 +709,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
   </div>
   <div class="header-right">
     <div class="streak-badge" id="streak-badge">🔥 <span id="streak-num">0</span></div>
-    <div class="score-pill"><span class="s-ok" id="sc-ok">0</span><span class="s-lbl">✓</span><span class="s-div">|</span><span class="s-bad" id="sc-bad">0</span><span class="s-lbl">✗</span></div>
+    <div class="score-pill"><span class="s-ok">✓&thinsp;<span id="sc-ok">0</span></span><span class="s-div">|</span><span class="s-bad">✕&thinsp;<span id="sc-bad">0</span></span></div>
     <button class="hdr-info" onclick="showContact()" title="About & Contact" aria-label="About & Contact"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r=".5" fill="currentColor" stroke="none"/></svg></button>
   </div>
 </header>
@@ -738,7 +740,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
         <div class="hard-stamp" id="hard-stamp">⚠ HARD</div>
         <div class="zoom-hint" id="zoom-hint">🔍 tap to enlarge</div>
         <div class="pacs-bar" id="pacs-bar">
-          <button class="pacs-btn" id="pacs-inv" title="Invert" onclick="toggleInvert()">⊡</button>
+          <button class="pacs-btn" id="pacs-inv" title="Invert" onclick="toggleInvert()" aria-label="Invert"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 3 A9 9 0 0 0 12 21 Z" fill="currentColor"/></svg></button>
           <div class="pacs-div"></div>
           <span class="pacs-lbl">Br</span>
           <input class="pacs-slider" id="wl-b" type="range" min="50" max="200" value="100" oninput="updateWL()">
