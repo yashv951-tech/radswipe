@@ -285,6 +285,8 @@ header{width:100%;max-width:480px;padding:12px 18px 6px;display:flex;align-items
 .logo-name{color:var(--text)}.logo-name span{color:var(--blue)}
 .header-right{display:flex;align-items:center;gap:8px}
 .score-pill{font-family:'Space Mono',monospace;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 12px;display:flex;align-items:center;gap:7px}
+@keyframes pillPulse{0%{transform:scale(1)}40%{transform:scale(1.1)}100%{transform:scale(1)}}
+.score-pill.pulse{animation:pillPulse .3s ease}
 .s-ok{color:var(--green)}.s-bad{color:var(--red)}.s-div{color:rgba(255,255,255,.22)}
 .streak-badge{display:flex;align-items:center;gap:4px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;background:var(--gold-dim);border:1px solid rgba(245,158,11,.35);color:var(--gold);border-radius:20px;padding:4px 10px;transition:all .3s;opacity:0;transform:scale(.8)}
 .streak-badge.show{opacity:1;transform:scale(1)}
@@ -463,7 +465,7 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 /* CONTACT PAGE */
 .contact-page{display:none;flex-direction:column;align-items:center;width:100%;max-width:480px;padding:0 18px 40px;z-index:10;position:relative;overflow-y:auto;gap:0}
 .contact-page.show{display:flex}
-.cp-back{align-self:flex-start;display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text);background:none;border:none;cursor:pointer;padding:8px 0 8px;transition:color .2s;opacity:.7}
+.cp-back{align-self:flex-start;display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text);background:none;border:none;cursor:pointer;padding:8px 0 8px;transition:color .2s;opacity:.7;margin-bottom:12px}
 .cp-back:hover{color:var(--text)}
 .cp-hero{text-align:center;margin-bottom:28px}
 .cp-logo{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;margin-bottom:6px;display:flex;flex-direction:column;align-items:center;gap:12px}
@@ -803,21 +805,6 @@ main{flex:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-
 <!-- Contact page -->
 <div class="contact-page" id="contact-page">
   <button class="cp-back" onclick="hideContact()">← Back</button>
-  <div class="cp-hero">
-    <div class="cp-logo">
-      <svg width="56" height="56" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <line x1="48" y1="14" x2="48" y2="40" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/>
-        <circle cx="48" cy="40" r="2" fill="#60a5fa"/>
-        <path d="M48 40 C42 46 32 50 24 58" stroke="#60a5fa" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        <path d="M48 40 C54 46 64 50 72 58" stroke="#60a5fa" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        <path d="M24 58 C16 50 16 36 22 28 C26 22 34 20 40 25 L40 58 Z" stroke="#60a5fa" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="rgba(96,165,250,0.07)"/>
-        <path d="M72 58 C80 50 80 36 74 28 C70 22 62 20 56 25 L56 58 Z" stroke="#60a5fa" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="rgba(96,165,250,0.07)"/>
-        <path d="M18 60 Q48 70 78 60" stroke="#60a5fa" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.25"/>
-      </svg>
-      <div>Thora<span>Swipe</span></div>
-    </div>
-    <p class="cp-tagline">Free chest X-ray pattern-recognition trainer for medical students, residents, and radiographers.</p>
-  </div>
 
   <div class="cp-card">
     <div class="cp-card-title">About</div>
@@ -2393,7 +2380,7 @@ function prefetchAhead(n=3){
   }
 }
 
-function updateScore(){document.getElementById('sc-ok').textContent=scoreOk;document.getElementById('sc-bad').textContent=scoreBad;}
+function updateScore(){document.getElementById('sc-ok').textContent=scoreOk;document.getElementById('sc-bad').textContent=scoreBad;const pill=document.querySelector('.score-pill');pill.classList.remove('pulse');pill.offsetHeight;pill.classList.add('pulse');}
 function updateStreakUI(){
   const b=document.getElementById('streak-badge'),n=document.getElementById('streak-num');
   n.textContent=streak;
