@@ -460,6 +460,110 @@ The contact page currently has a **skeleton contact form** (topic dropdown + mes
 
 ---
 
+---
+
+## SEO audit (2026-06-06) — pending tasks
+
+A full SEO audit was run on 2026-06-06. Items below are unfixed as of that date.
+
+### 🔴 Bugs — fix before next push
+
+- **Case count mismatch**: `meta name="description"` says "42 real CXR cases" (should be **44**). Same wrong count in `LearningResource` JSON-LD description and `manifest.json` description. The `WebApplication` featureList and noscript are already correct at 44.
+- **`dateCreated: "2025-01-01"`** in WebApplication schema — use the actual git first-commit date if different.
+
+### 🟠 On-page changes (high impact, low effort)
+
+- **Title tag**: rewrite to front-load the primary query.
+  - Current: `ThoraSwipe — Free Chest X-Ray Quiz & CXR Practice for Medical Students`
+  - Target: `Free Chest X-Ray Quiz — CXR Interpretation Practice | ThoraSwipe`
+  - Reason: "Free" first = CTR signal; query-first = better keyword match; brand last.
+
+- **Meta description**: fix case count, shorten to ≤155 chars, drop PACS jargon.
+  - Target (~152 chars): `Free CXR quiz — 44 real chest X-rays with annotated feedback, progressive difficulty, and no login. For medical students, junior doctors and radiographers.`
+
+- **OG tags**: make shareable for WhatsApp/Slack study group sharing.
+  - `og:title` target: `ThoraSwipe — Free Chest X-Ray Quiz (44 Real Cases)`
+  - `og:description` target: `Swipe-based CXR trainer used by medical students and junior doctors. 44 real radiographs, annotated findings, PACS controls. No login.`
+  - Same changes apply to `twitter:title` / `twitter:description`.
+
+- **`Organization` sameAs**: currently `[]`. Add GitHub repo URL and any social profile URL. Even one URL helps Google cross-reference the brand entity.
+
+- **Twitter handle**: `meta name="twitter:site" content="@thoraswipe"` — verify this X/Twitter account exists. If not, remove the tag.
+
+- **`application-name` meta tag**: add `<meta name="application-name" content="ThoraSwipe">` — matches manifest short_name.
+
+### 🟠 Schema additions
+
+- **`AggregateRating`** on WebApplication and/or LearningResource — star ratings appear in SERPs and increase CTR by ~15-30%. Even a static rating based on early feedback is valid.
+  ```json
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "47",
+    "bestRating": "5"
+  }
+  ```
+  Only add when you have real user feedback to back up the numbers.
+
+- **`author` Person schema** on WebApplication — critical for E-E-A-T on medical content. Google classifies CXR interpretation as YMYL (Your Money or Your Life). Anonymous medical tools are actively downgraded.
+  ```json
+  "author": {
+    "@type": "Person",
+    "name": "YOUR NAME",
+    "jobTitle": "Medical Doctor / Radiologist / etc.",
+    "affiliation": { "@type": "Organization", "name": "Your institution" }
+  }
+  ```
+
+### 🟡 Content additions (medium impact)
+
+- **American English variants**: the site uses correct British English (oedema, haemothorax, haemoptysis, anaemia) but US searchers type "edema", "hemothorax", "hemoptysis", "anemia". Add parenthetical US variants once per key term in the noscript section and FAQ answers: e.g. "pulmonary oedema (pulmonary edema)". This doubles keyword surface without duplicate pages.
+
+- **"What does CXR stand for?" FAQ**: high-volume, low-competition featured-snippet opportunity. Add as FAQ #12:
+  - Q: "What does CXR stand for?"
+  - A: "CXR stands for chest X-ray (also written chest xray). It refers to a plain-film radiograph of the thorax used to assess the lungs, heart, mediastinum, pleura, and bony thorax. CXR is the standard abbreviation used in clinical notes, referral letters, and radiology reports worldwide."
+
+- **Additional FAQ questions** not yet covered:
+  - "What does cardiomegaly look like on a chest X-ray?"
+  - "What is the silhouette sign in radiology?"
+  - "What does TB look like on a chest X-ray?"
+  - "How do you identify a pleural effusion on CXR?" (more direct than the current phrasing)
+  - "What is Hampton's Hump?"
+
+- **Noscript H1 variant**: add "chest xray" (no hyphen) once in the opening paragraph — one of the highest-volume search variants and currently absent from all crawlable content.
+
+### 🟡 Technical
+
+- **LCP preload**: the first CXR image loads via JS `img.onload`, making it undiscoverable by the browser preloader. This likely causes a slow LCP score (Core Web Vitals). Fix: add `<link rel="preload" as="image" href="[first-case-image-url]">` in `<head>` for the first case in the queue.
+
+### 🔵 Content strategy (longer term — highest ranking ceiling)
+
+- **Pathology landing pages**: create static HTML pages for the top 10 pathologies (pneumothorax, pleural effusion, pneumonia, pulmonary oedema, etc.). Each page = ~400 words of clinical content + CTA to the quiz. These are independently indexable and compete directly with Radiopaedia on long-tail queries like "pneumothorax chest x-ray quiz".
+
+- **"How to Read a Chest X-Ray" guide**: ~12k searches/month globally. A free, structured HTML guide covering ABCDE, with a CTA to the quiz, would rank and funnel traffic. Biggest single content opportunity.
+
+- **Off-page / backlinks**: domain authority is the core gap vs Radiopaedia (DA 72) and Wikipedia. Priority targets: Reddit r/medicalstudents, r/radiology, The Student Room, Almostadoctor.co.uk, BMA Student resources, medical school Moodle link-sharing, NHS learning resource directories. A single high-DA backlink from an NHS or university domain would be transformative.
+
+---
+
+## Preview server
+
+A local preview server is configured in `.claude/launch.json` (project root, not CXR Swipe subdirectory):
+
+```json
+{
+  "name": "thoraswipe",
+  "runtimeExecutable": "npx",
+  "runtimeArgs": ["serve", "-l", "7823", "."],
+  "cwd": "/Users/yashverma/Documents/Cowork Playground/App Ideas/CXR Swipe",
+  "port": 7823
+}
+```
+
+Start via `preview_start("thoraswipe")` in Claude Code. Serves the CXR Swipe directory at `http://localhost:7823`. Use `preview-beauty.html` (or any temp file) for visual experiments before touching the main file. Always delete temp files before committing.
+
+---
+
 ## Session log
 
 ### 2026-06-02
@@ -537,3 +641,29 @@ The contact page currently has a **skeleton contact form** (topic dropdown + mes
 - **Noscript section** expanded with 3 new sections: how it works (3-step sequence), 10 key radiographic signs with descriptions, who it is for (5 audience types) — this is the primary crawlable content for a JS-heavy app
 - **manifest.json** updated: added `id`, `lang`, `dir`, `categories: ["medical","education"]`, expanded description
 - **vercel.json** updated: added `X-Robots-Tag` response header
+
+### 2026-06-06 (UI polish + analytics + SEO audit session)
+
+**Vercel Web Analytics enabled:**
+- Added `<script defer src="https://cdn.vercel-insights.com/v1/script.js">` before `</body>`
+- Updated CSP in both HTML meta tag and `vercel.json` to allow `cdn.vercel-insights.com` (script-src) and `vitals.vercel-insights.com` (connect-src)
+- Updated legal/privacy page: replaced "no analytics" bullet with accurate Vercel Web Analytics disclosure (cookieless, no personal data)
+
+**UI/design polish — 11 items across 5 commits:**
+- High priority: font-size floor raised to 12px (card-sub, findings list, hint); Normal/Abnormal button contrast increased; button icon symmetry (both lead with symbol); `?` header button replaced with SVG info-circle icon
+- Medium priority: score pill restructured to `✓ 0 | ✕ 0`; difficulty filter chips 9→10px with hover/active states; PACS invert `⊡` replaced with half-circle SVG
+- Beauty items 1–3: ambient background gradient strengthened (7→14% opacity) + warm red accent; SVG noise texture overlay (4% opacity); swipe card gets subtle top-lit gradient + lighter top border; image area bottom fade; blue CTA buttons glow on hover; Normal/Abnormal buttons glow green/red on hover
+- Beauty items 4–6: verdict icon 40→52px with green/red glow; `v-text p` 11→12px; "Round Complete" heading gets blue→green gradient text; score box pulses blue on entry; score number count-up animation (0→final, 650ms ease-out cubic); card-title 13→14px/700; difficulty dots 6→7px with gold glow on active
+- Beauty items 7–9: findings `→` arrow replaced with CSS counter 01–05 in Space Mono; gap 5→8px; findings box gets blue left-accent border; progress bar 4→5px; `progPulse` keyframe fires on each case advance
+- Beauty items 10–11: `pillPulse` keyframe on score pill fires on every `updateScore()` call; contact page redundant logo/wordmark hero removed
+
+**SEO audit run** — see "SEO audit (2026-06-06)" section above for full findings and pending tasks. Key bugs identified: meta description and LearningResource schema still say "42 cases" (should be 44); manifest.json also says 42.
+
+**Preview server configured** in `.claude/launch.json` at project root — see "Preview server" section above.
+
+**Current state:**
+- Total cases: **44** (CXR-001 to CXR-045, CXR-012 intentionally missing)
+- `TS_SAVE_KEY`: `ts_progress_v4`
+- Vercel Analytics: **live**
+- All changes committed and pushed; Vercel auto-deployed
+- **SEO bugs pending** (42→44 count in meta description, LearningResource, manifest)
