@@ -2,7 +2,7 @@
   "id": "https://thoraswipe.com/",
   "name": "ThoraSwipe — Chest X-Ray Interpretation Trainer",
   "short_name": "ThoraSwipe",
-  "description": "Free swipe-based chest X-ray interpretation trainer. Practice CXR pattern recognition with 42 real cases, annotated findings, and progressive difficulty. No login required.",
+  "description": "Free swipe-based chest X-ray interpretation trainer. Practice CXR pattern recognition with 44 real cases, annotated findings, and progressive difficulty. No login required.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#080a0f",
