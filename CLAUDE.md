@@ -468,8 +468,9 @@ A full SEO audit was run on 2026-06-06. Items below are unfixed as of that date.
 
 ### 🔴 Bugs — fix before next push
 
-- **Case count mismatch**: `meta name="description"` says "42 real CXR cases" (should be **44**). Same wrong count in `LearningResource` JSON-LD description and `manifest.json` description. The `WebApplication` featureList and noscript are already correct at 44.
 - **`dateCreated: "2025-01-01"`** in WebApplication schema — use the actual git first-commit date if different.
+
+~~Case count mismatch (42→44)~~ — fixed 2026-06-06.
 
 ### 🟠 On-page changes (high impact, low effort)
 
