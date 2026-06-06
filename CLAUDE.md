@@ -587,6 +587,29 @@ Start via `preview_start("thoraswipe")` in Claude Code. Serves the CXR Swipe dir
 
 ## Session log
 
+### 2026-06-06 (new case + gap analysis session)
+
+**Gap analysis completed** — 44 cases audited, gaps identified across 8 categories. Full gap list in the previous chat session (not reproduced here). Top priorities: lingular pneumonia, malpositioned ETT, pulmonary fibrosis, pneumoperitoneum, pulmonary metastases.
+
+**Added CXR-046: Amiodarone-Induced Pulmonary Toxicity** (difficulty 3, ILD category)
+- First case in new "Interstitial & Fibrotic Lung Disease" category — fills the entire ILD gap
+- Image: James Heilman MD, CC BY-SA 3.0, `IPF_amiodarone.JPG`
+- PA CXR: bilateral diffuse coarse reticulonodular opacification, mid-lower zone predominance, necklace artefact
+- Teaching: drug-induced ILD vs cardiogenic oedema vs IPF/UIP; DLCO as functional marker; amiodarone half-life and mechanism
+- 5 ILD-related distractors added to ALL_DIAGNOSES
+- TS_SAVE_KEY bumped v4 → v5; case count 44 → 45 across all metadata
+
+**ETT malposition & lingular pneumonia**: images not currently on Wikimedia Commons.
+- ETT malposition: Voucharas et al., *Cureus* 2024, PMC10981442 — CC BY 4.0, 67M post-cardiac surgery — user must upload Figure 3 to Wikimedia Commons before case can be added.
+- Lingular pneumonia: no suitable Commons image found after extensive search. Needs new sourcing.
+
+**Current state:**
+- Total cases: **45** (CXR-001 to CXR-046, CXR-012 intentionally missing)
+- `TS_SAVE_KEY`: `ts_progress_v5`
+- Next case ID: **CXR-047**
+
+
+
 ### 2026-06-06 (SEO fixes session)
 
 **Fixed SEO items 1–3 from audit:**
