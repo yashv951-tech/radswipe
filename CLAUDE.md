@@ -541,6 +541,44 @@ Systematic ICU CXR review requires identifying: ETT, central venous line, arteri
 
 ---
 
+## Additional rules (from audit round 7)
+
+This round audited CXR-006, 007, 009, 025, 031. The recurring theme: **the case text and annotations must be verified against the pixels of the actual image, not just against the Commons description or the diagnosis label.** Three cases asserted findings that the image does not show.
+
+### Every annotation must overlie a finding that is actually visible at those coordinates
+
+**The specific failure (CXR-031, Aspergilloma):** the annotation labelled "Aspergilloma" was placed over the right upper lobe, but on inspection (and after contrast-enhancing and zooming that region) the right upper lobe is clear, aerated lung — there is no fungal ball, cavity, or air crescent there. The annotation pointed at normal lung.
+
+**The rule:** before committing any case, open the actual image and confirm that *each* annotation's `cx/cy` lands on the feature named in its `label`. If you cannot see the finding at those coordinates, the annotation is wrong — do not ship it on the assumption that "the diagnosis says it's there." This is the annotation-side counterpart to the existing "only annotate findings that are definitively visible" rule (round 3).
+
+### Confirm laterality and lobe from the source — and if the source does not state them, do not invent them
+
+**The specific failure (CXR-031):** the Commons file page and the original Flickr source gave *no* laterality or lobe at all ("Aspergilloma X-ray" was the entire description). "Right upper lobe" was inferred, written into the findings and annotation, and turned out not to match the image.
+
+**The rule:** when the source does not confirm which side/lobe a finding is on, you may **not** assert one. Either confirm laterality from the image itself with high confidence, find a source that states it, or do not write a lateralised finding. Never let an unconfirmed side reach `title`, `findings`, `diagnosis`, or `annots`. (Extends the existing "confirm from the file description page, do not infer" rule.)
+
+### Never assert mediastinal shift — or its direction — without seeing it; absent expected shift is itself the teaching point
+
+**The specific failure (CXR-007, Pleural Effusion):** the case stated "mediastinal shift to the right — expected with massive effusion" as a confirmed finding. The trachea on the actual film is midline; there is no shift. A large effusion that does **not** push the mediastinum away should instead raise suspicion of underlying lobar collapse or a fixed/infiltrated mediastinum (e.g. malignancy) — that is the real teaching point, and it is the opposite of what the case originally taught.
+
+**The rule:** mediastinal/tracheal shift (presence *and* direction) must be read off the image, never assumed from the diagnosis. Trace the trachea and the cardiac borders before writing any shift statement. If the expected shift is absent, teach its absence and what that implies — do not paper over it with "expected."
+
+### Match severity language to the pixels, not just the source title
+
+**The specific failure (CXR-007):** the Commons title says "massive," and the case escalated that to "obliterating the left hemithorax / left hemithorax obliterated." The film's left upper zone is clearly still aerated — it is a large effusion, not a whole-hemithorax white-out.
+
+**The rule:** the existing round-1 rule ("match the source's severity language exactly") cuts both ways — the *image* is the final authority. If the source label (here, a one-line Commons title) overstates what the film shows, describe what the film shows. Do not write "obliterated / complete / total / whole-hemithorax" unless the image genuinely shows it.
+
+### Credit must name the creator even for CC0 / public-domain images
+
+**The specific failure (CXR-006):** the image is CC0, and the credit read only "Wikimedia Commons — CC0 Public Domain" — but the Commons Author field names **Mikael Häggström, M.D.** The round-5 rule ("name the creator if identifiable") was assumed not to apply because CC0 requires no attribution. Attribution being *legally optional* does not make it *editorially optional*: if the creator is named on the file page, name them in `credit`. This applies to CC0 and US-Government public-domain images too (name the author and, per round 4, the specific agency).
+
+### Process note: avoid images with baked-in arrows or measurements for the swipe game
+
+When re-sourcing, an image that already has arrows, circles, or "0.80 cm"-style measurement overlays pointing at the lesion is a poor fit for a *swipe-to-diagnose* format — it reveals the abnormality (and its location) before the learner engages. Prefer a clean film and let the app's own SVG `annots` reveal the finding *after* the user answers. (CXR-009 ships with a faint author-drawn circle; that is tolerable, but do not actively choose such images when a clean alternative exists.)
+
+---
+
 ## Pending: contact form (revisit later)
 
 The contact page currently has a **skeleton contact form** (topic dropdown + message textarea) wired to a placeholder Formspree endpoint. The design and backend are intentionally deferred.
@@ -677,6 +715,24 @@ Start via `preview_start("thoraswipe")` in Claude Code. Serves the CXR Swipe dir
 ---
 
 ## Session log
+
+### 2026-06-11 (medical audit of 5 random cases + CXR-031 removal)
+
+**Audited CXR-006, 007, 009, 025, 031** by viewing each radiograph (downloaded + contrast-enhanced the regions in question) and cross-checking every Commons file page for diagnosis, laterality, projection, licence, and author. Two cases asserted findings the image does not show.
+
+- **CXR-006 (RML pneumonia)** — accurate; Commons confirms 67M, right middle lobe. Fix: `credit` now names the creator **Mikael Häggström** (CC0 still warrants editorial attribution).
+- **CXR-007 (left pleural effusion)** — removed the false **"mediastinal shift to the right"** claim (trachea is midline on the film; verified by cropping the upper mediastinum) and reframed it as the *absent-shift* teaching point (suspect underlying collapse / fixed mediastinum). Softened "obliterating the left hemithorax" → "large… upper zone still aerated" (it is not a whole-hemithorax white-out). Credit now names **Clinical Cases / Ves Dimov MD**. Differential converted from *causes* of effusion to *radiographic mimics* of a unilateral white-out.
+- **CXR-009 (LLL pneumonia + effusion)** — verified clean; AP correctly identified (portable markers visible), licence/author correct.
+- **CXR-025 (cavitary TB)** — accurate; cavitation annotations nudged cy:22 → cy:32 onto the densest mid-zone disease.
+- **CXR-031 (aspergilloma)** — annotation pointed at **clear, aerated right upper lobe**; the Commons/Flickr source gives **no laterality** (it was inferred). Commons has only two plain-film aspergillomas and neither is clean for a swipe-to-diagnose deck (the other has answer-revealing arrows + coned framing). **Case removed pending re-source** (user decision).
+
+**CXR-031 removal bookkeeping:** count **46 → 45** across meta description, JSON-LD `featureList`, LearningResource description, OG/Twitter tags, `<noscript>` paragraph, and the "Pneumonia & Pulmonary Infection (8→7 cases)" heading; **manifest.json** also corrected (was stale at 44). Removed the aspergilloma `<li>` from the noscript case list **and** the "Air crescent sign" entry from the radiographic-signs glossary (no remaining case teaches it). **Kept** `Aspergilloma` / `Invasive Pulmonary Aspergillosis` in `ALL_DIAGNOSES` — still useful distractors for cavitary/haemoptysis cases. **`TS_SAVE_KEY` v6 → v7** (case count changed).
+
+**CLAUDE.md:** added **"Additional rules (from audit round 7)"** — verify each annotation overlies a finding visible at its coordinates; confirm laterality from the source and never invent it; never assert mediastinal shift (or direction) without seeing it; match severity language to the pixels, not the source title; credit creators even for CC0 / public-domain images; avoid images with baked-in arrows/measurements for the swipe game.
+
+**Deploy checklist:** `index.html` synced (byte-identical); `sitemap.xml` lastmod + `dateModified` → 2026-06-11. Verified in preview — 45 cases parse, no console errors, root URL renders.
+
+**NOT yet committed/pushed** — awaiting user go-ahead (push auto-deploys to live thoraswipe.com). **Pending:** re-source a clean CC BY aspergilloma plain film (air crescent / Monod sign), then re-add the case and reverse the count/glossary changes.
 
 ### 2026-06-06 (new case + gap analysis session)
 
