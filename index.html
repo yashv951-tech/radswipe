@@ -56,7 +56,7 @@
   "screenshot": "https://thoraswipe.com/og-image.png",
   "softwareVersion": "7",
   "dateCreated": "2026-05-24",
-  "dateModified": "2026-06-11",
+  "dateModified": "2026-06-16",
   "featureList": [
     "45 real chest X-ray cases from easy to expert difficulty",
     "Swipe-based normal vs abnormal classification",
@@ -1053,10 +1053,10 @@ const CASES = [
     title:'68M — increasing dyspnoea, bilateral ankle oedema. History of HF.',
     sub:'PA chest radiograph — cardiac assessment',
     diagnosis:'Pulmonary Oedema — Acute LVF',
-    explanation:'Cardiomegaly is present with a cardiothoracic ratio > 0.5. There is notable cephalization of the pulmonary vessels and blunting of the costophrenic angles, consistent with pulmonary oedema from acute decompensated heart failure.',
-    findings:['Cardiomegaly — cardiothoracic ratio > 0.5','Cephalization of pulmonary vessels','Bilateral costophrenic angle blunting','Perihilar haziness — bat-wing distribution','Acute decompensated heart failure'],
+    explanation:'There is cephalization (upper-lobe diversion) of the pulmonary vessels, perihilar haziness in a bat-wing distribution, and blunting of both costophrenic angles from small pleural effusions — consistent with pulmonary oedema from acute decompensated heart failure. Note this is a portable AP film taken with the patient sitting: the cardiac silhouette is magnified, so the cardiothoracic ratio cannot be reliably used to assess heart size — correlate with echocardiography.',
+    findings:['Enlarged cardiac silhouette — CTR unreliable on this magnified AP/portable film','Cephalization of pulmonary vessels — upper-lobe blood diversion','Bilateral costophrenic angle blunting — small pleural effusions','Perihilar haziness — bat-wing distribution of alveolar oedema','Cardiogenic pattern — central bat-wing with effusions, unlike the peripheral pattern of ARDS'],
     annots:[
-      {type:'ellipse',cx:50,cy:62,rx:22,ry:18,color:'#ef4444',label:'Cardiomegaly'},
+      {type:'ellipse',cx:50,cy:62,rx:22,ry:18,color:'#ef4444',label:'Cardiac silhouette'},
       {type:'arrow',x1:28,y1:44,x2:28,y2:25,color:'#f59e0b',label:'Cephalization'},
       {type:'ellipse',cx:73,cy:82,rx:13,ry:7,color:'#ef4444',label:'L angle blunting'},
       {type:'ellipse',cx:26,cy:82,rx:13,ry:7,color:'#ef4444',label:'R angle blunting'},
@@ -1088,15 +1088,15 @@ const CASES = [
   {
     caseId:'CXR-003',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/a/a1/Normal_posteroanterior_%28PA%29_chest_radiograph_%28X-ray%29.jpg',
-    credit:'Wikimedia Commons — CC0 Public Domain',
+    credit:'Wikimedia Commons — CC0 Public Domain (Mikael Häggström)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:Normal_posteroanterior_(PA)_chest_radiograph_(X-ray).jpg',
     sourceLabel:'Wikimedia Commons',
-    isNormal:true, difficulty:1,
-    title:'45M — mild breathlessness climbing two flights of stairs, noticed over the past 2 months. Routine pre-operative workup for elective inguinal hernia repair. Ex-smoker (12 pack-years, stopped 8 years ago). SpO₂ 99% on air.',
+    isNormal:true, difficulty:2,
+    title:'45F — mild breathlessness climbing two flights of stairs, noticed over the past 2 months. Routine pre-operative workup for elective laparoscopic cholecystectomy. Ex-smoker (12 pack-years, stopped 8 years ago). SpO₂ 99% on air.',
     sub:'PA chest radiograph — pre-operative assessment',
     diagnosis:'Normal Chest Radiograph',
-    explanation:'The lungs are clear without focal consolidation, effusion, or pneumothorax. The cardiomediastinal silhouette is normal in size and contour. Hila and pleural spaces are unremarkable. A normal CXR does not exclude the causes of exertional dyspnoea — COPD requires spirometry, cardiac dysfunction requires ECG and echocardiography, and pulmonary embolism requires CTPA. The chest radiograph is one component of the pre-operative workup, not a diagnostic endpoint.',
-    findings:['Clear lungs bilaterally — no consolidation, effusion, or pneumothorax','Normal cardiomediastinal silhouette','Normal cardiac size (CTR < 0.5)','Unremarkable hila and pleural spaces','Normal CXR with exertional dyspnoea — CXR cannot exclude COPD, cardiac dysfunction, or PE; further investigation guided by clinical probability'],
+    explanation:'The lungs are clear without focal consolidation, effusion, or pneumothorax. The cardiomediastinal silhouette is normal in size and contour. Hila and pleural spaces are unremarkable, and the bilateral lower-zone soft-tissue densities are normal breast shadows — a variant whose inferior margins can mimic basal airspace shadowing. A normal CXR does not exclude the causes of exertional dyspnoea — COPD requires spirometry, cardiac dysfunction requires ECG and echocardiography, and pulmonary embolism requires CTPA. The chest radiograph is one component of the pre-operative workup, not a diagnostic endpoint.',
+    findings:['Clear lungs bilaterally — no consolidation, effusion, or pneumothorax','Normal cardiomediastinal silhouette','Normal cardiac size — CTR < 0.5 (validly assessable on this PA film)','Bilateral breast shadows over the lower zones — normal female soft-tissue variant whose inferior margins can mimic basal consolidation','Normal CXR with exertional dyspnoea — CXR cannot exclude COPD, cardiac dysfunction, or PE; further investigation guided by clinical probability'],
     annots:[
       {type:'ellipse',cx:26,cy:43,rx:16,ry:22,color:'#22c55e',label:'R lung — clear'},
       {type:'ellipse',cx:72,cy:43,rx:15,ry:22,color:'#22c55e',label:'L lung — clear'},
@@ -1107,7 +1107,7 @@ const CASES = [
   {
     caseId:'CXR-004',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/c/c8/Chest_Xray_PA_3-8-2010.png',
-    credit:'Wikimedia Commons — CC0 Public Domain',
+    credit:'Wikimedia Commons — CC0 Public Domain (Stillwaterising)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:Chest_Xray_PA_3-8-2010.png',
     sourceLabel:'Wikimedia Commons',
     isNormal:true, difficulty:1,
@@ -1251,7 +1251,7 @@ const CASES = [
   {
     caseId:'CXR-010',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/0/05/Unterlappenatelektase_rechts_pa.jpg',
-    credit:'Wikimedia Commons — CC BY-SA 3.0',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Hellerhoff)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:Unterlappenatelektase_rechts_pa.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:2,
@@ -1275,7 +1275,7 @@ const CASES = [
   {
     caseId:'CXR-011',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/5/59/COVID-19_Pneumonie_-_74m_Roe_Thorax_ap_-_001.jpg',
-    credit:'Wikimedia Commons — CC BY-SA 3.0',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Hellerhoff)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:COVID-19_Pneumonie_-_74m_Roe_Thorax_ap_-_001.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:2,
@@ -1301,7 +1301,7 @@ const CASES = [
   {
     caseId:'CXR-013',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/f/f1/Mediastinalshift_bei_BC.jpg',
-    credit:'Wikimedia Commons — CC BY-SA 3.0',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (Hellerhoff)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:Mediastinalshift_bei_BC.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:3,
@@ -1327,7 +1327,7 @@ const CASES = [
   {
     caseId:'CXR-014',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/8/83/Chest_X-ray_2346.jpg',
-    credit:'Wikimedia Commons — CC0 Public Domain',
+    credit:'Wikimedia Commons — CC0 Public Domain (Doctoroftcm)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:Chest_X-ray_2346.jpg',
     sourceLabel:'Wikimedia Commons',
     isNormal:true, difficulty:1,
@@ -1351,7 +1351,7 @@ const CASES = [
   {
     caseId:'CXR-015',
     imageUrl:'https://upload.wikimedia.org/wikipedia/commons/c/cd/Rx_de_t%C3%B3rax_PA_normal.JPG',
-    credit:'Wikimedia Commons — CC BY-SA 3.0',
+    credit:'Wikimedia Commons — CC BY-SA 3.0 (SCiardullo)',
     sourceUrl:'https://commons.wikimedia.org/wiki/File:Rx_de_t%C3%B3rax_PA_normal.JPG',
     sourceLabel:'Wikimedia Commons',
     isNormal:true, difficulty:1,
@@ -1626,7 +1626,7 @@ const CASES = [
     diagnosis:'Right Pleural Mesothelioma',
     explanation:'Circumferential irregular pleural thickening encases the right lung with associated right lung volume reduction — the classic "frozen hemithorax" of advanced pleural mesothelioma. Crucially, ipsilateral volume loss (rather than contralateral mediastinal shift) helps distinguish mesothelioma from a large malignant pleural effusion, which pushes the mediastinum away. Asbestos exposure carries a 30–40-year latency before mesothelioma presentation, most commonly in men with occupational exposure (shipbuilding, construction, insulation). CT and pleural biopsy (video-assisted thoracoscopic surgery preferred) are required for tissue diagnosis.',
     findings:[
-      'Circumferential irregular pleural thickening encasing the right lung (patient\'s right = viewer\'s left)',
+      'Circumferential irregular pleural thickening encasing the right lung',
       'Right lung volume reduction — ipsilateral, reflecting tumour encasement rather than effusion',
       'No frank free pleural effusion, unlike typical malignant pleural disease',
       'Unilateral distribution with pleural rind — highly characteristic pattern of mesothelioma',
