@@ -124,7 +124,7 @@
     </select>
     <label class="toggle"><input type="checkbox" id="tflag"> Flagged only</label>
     <label class="toggle"><input type="checkbox" id="tannot" checked> Annotations</label>
-    <button id="connect" class="primary">Connect file to edit</button>
+    <button id="connect" class="primary">Connect folder to edit</button>
     <button id="reload">Reload</button>
   </div>
 </header>
@@ -163,7 +163,7 @@
       <span class="hint">ellipse: {"type":"ellipse","cx":50,"cy":60,"rx":14,"ry":10,"color":"#ef4444","label":"…"} · arrow: {"type":"arrow","x1":30,"y1":40,"x2":38,"y2":50,"color":"#f59e0b","label":"…"} · coords are % (0–100). Colours: #ef4444 red=pathology, #f59e0b amber=sign, #22c55e green=normal, #60a5fa blue=landmark.</span>
     </div>
     <div class="sheet-actions">
-      <span class="danger">Writes directly to the connected file. Review with <code>git diff</code> before pushing.</span>
+      <span class="danger">Save writes <code>cxr-swipe-v7.html</code> + syncs <code>index.html</code> + bumps dates. Review with <code>git diff</code>, then say “push”.</span>
       <div style="display:flex;gap:8px;align-items:center">
         <span id="savemsg" class="savemsg"></span>
         <button id="e-cancel">Cancel</button>
@@ -176,8 +176,9 @@
 <script>
 "use strict";
 /* ---------- state ---------- */
-let fileHandle=null;       // FileSystemFileHandle when connected (edit mode)
-let fileText="";           // full source text of the connected/fetched file
+let dirHandle=null;        // project folder handle (edit mode)
+let v7Handle=null, indexHandle=null, sitemapHandle=null;
+let fileText="";           // full source text of cxr-swipe-v7.html (or fetched homepage)
 let bracketStart=-1;       // index of '[' after "const CASES = ["
 let cases=[];              // parsed case objects (order-aligned with spans)
 let spans=[];              // [{start,end}] of each case object, relative to arrayText
@@ -296,7 +297,7 @@ function cardHTML(c,i){
       <ol class="find">${findings}</ol>
       <div class="meta">
         <span class="credit">${esc(c.credit)} · <a href="${esc(c.sourceUrl)}" target="_blank" rel="noreferrer">source ↗</a></span>
-        <span class="cardbtns"><button class="edit" data-i="${i}" ${fileHandle?"":"disabled title='Connect file to enable editing'"}>Edit</button></span>
+        <span class="cardbtns"><button class="edit" data-i="${i}" ${v7Handle?"":"disabled title='Connect folder to enable editing'"}>Edit</button></span>
       </div>
     </div>
   </div>`;
@@ -336,32 +337,43 @@ async function fetchLive(){
     const t=await r.text();
     loadFromText(t);
     $("#src").innerHTML="source: <b>live /index.html</b> (read-only)";
-    $("#srcnote").textContent="Read-only view of the deployed site. Click “Connect file to edit” and pick cxr-swipe-v7.html to enable inline editing that writes back to disk.";
+    $("#srcnote").textContent="Read-only view of the deployed site. Click “Connect folder to edit” and pick the “CXR Swipe” project folder to enable inline editing that writes back to disk and keeps index.html/sitemap in sync.";
   }catch(e){
     $("#src").innerHTML="source: <b>none</b>";
-    $("#srcnote").innerHTML="Couldn’t fetch the live site ("+esc(e.message)+"). Use “Connect file to edit” to load <code>cxr-swipe-v7.html</code> from disk.";
+    $("#srcnote").innerHTML="Couldn’t fetch the live site ("+esc(e.message)+"). Use “Connect folder to edit” and pick the “CXR Swipe” project folder.";
   }
 }
-async function connectFile(){
-  if(!window.showOpenFilePicker){
+async function getHandle(dir,name){ try{ return await dir.getFileHandle(name); }catch(e){ return null; } }
+async function connectDir(){
+  if(!window.showDirectoryPicker){
     alert("This browser doesn’t support the File System Access API (needs Chrome or Edge over https/localhost). The read-only view still works.");
     return;
   }
   try{
-    const [h]=await window.showOpenFilePicker({
-      types:[{description:"HTML",accept:{"text/html":[".html"]}}]
-    });
-    const perm=await h.requestPermission({mode:"readwrite"});
+    const d=await window.showDirectoryPicker({mode:"readwrite"});
+    const perm=await d.requestPermission({mode:"readwrite"});
     if(perm!=="granted"){ alert("Read-write permission denied."); return; }
-    const f=await h.getFile();
-    const t=await f.text();
+    const v7=await getHandle(d,"cxr-swipe-v7.html");
+    if(!v7){ alert("Couldn’t find cxr-swipe-v7.html in that folder. Pick the “CXR Swipe” project folder."); return; }
+    dirHandle=d; v7Handle=v7;
+    indexHandle=await getHandle(d,"index.html");
+    sitemapHandle=await getHandle(d,"sitemap.xml");
+    const t=await (await v7.getFile()).text();
     loadFromText(t);
-    fileHandle=h;
-    $("#src").innerHTML="source: <b>"+esc(h.name)+"</b> · editing enabled ✏️";
-    $("#srcnote").innerHTML="Editing <code>"+esc(h.name)+"</code> directly. After saving, remember the deploy checklist: <code>cp cxr-swipe-v7.html index.html</code>, bump sitemap/dateModified, then commit &amp; push.";
+    const extras=[indexHandle?"index.html":null, sitemapHandle?"sitemap.xml":null].filter(Boolean);
+    $("#src").innerHTML="source: <b>cxr-swipe-v7.html</b> · editing enabled ✏️";
+    $("#srcnote").innerHTML="Editing the project folder. <b>Save</b> writes the edit to <code>cxr-swipe-v7.html</code>, syncs "
+      +(indexHandle?"<code>index.html</code>":"<b>index.html (not found — won’t sync)</b>")
+      +" and bumps the dates in "
+      +(sitemapHandle?"<code>sitemap.xml</code>":"<b>sitemap.xml (not found)</b>")
+      +". Then review with <code>git diff</code> and say “push”.";
     render();
-  }catch(e){ if(e.name!=="AbortError") alert("Could not open file: "+e.message); }
+  }catch(e){ if(e.name!=="AbortError") alert("Could not open folder: "+e.message); }
 }
+async function writeFile(handle,text){ const w=await handle.createWritable(); await w.write(text); await w.close(); }
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function bumpDateModified(text,d){ return text.replace(/("dateModified":\s*")\d{4}-\d{2}-\d{2}(")/, "$1"+d+"$2"); }
+function bumpSitemap(text,d){ return text.replace(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g, "<lastmod>"+d+"</lastmod>"); }
 
 /* ---------- serialize one case back to repo style ---------- */
 function jsStr(s){return "'"+String(s==null?"":s).replace(/\\/g,"\\\\").replace(/'/g,"\\'")+"'";}
@@ -420,7 +432,7 @@ function setMsg(t,k){const m=$("#savemsg");m.textContent=t;m.className="savemsg 
 
 async function saveEdit(){
   if(editIdx<0) return;
-  if(!fileHandle){ setMsg("No file connected.","bad"); return; }
+  if(!v7Handle){ setMsg("No folder connected.","bad"); return; }
   let annots;
   try{ annots=JSON.parse($("#e-annot").value||"[]"); if(!Array.isArray(annots)) throw new Error("not an array"); }
   catch(e){ setMsg("Annotations JSON invalid: "+e.message,"bad"); return; }
@@ -440,25 +452,32 @@ async function saveEdit(){
     findings:$("#e-find").value.split("\n").map(s=>s.trim()).filter(Boolean),
     annots:annots
   };
-  // splice the serialized object back into the full file text
+  // 1) splice the serialized case back into the source text (uses current offsets)
   const sp=spans[editIdx];
   const absStart=bracketStart+sp.start, absEnd=bracketStart+sp.end;
-  const newText=fileText.slice(0,absStart)+serCase(updated)+fileText.slice(absEnd+1);
-  // safety: re-parse before writing
+  let newV7=fileText.slice(0,absStart)+serCase(updated)+fileText.slice(absEnd+1);
+  // 2) bump dateModified to today (offset-independent regex)
+  const d=todayISO();
+  newV7=bumpDateModified(newV7,d);
+  // safety: re-parse before writing anything
   try{
-    const {arrayText}=extractArray(newText);
-    const reparsed=parseArray(arrayText);
-    if(reparsed.length!==cases.length) throw new Error("case count changed unexpectedly");
-  }catch(e){ setMsg("Aborted — re-parse failed: "+e.message,"bad"); return; }
+    const {arrayText}=extractArray(newV7);
+    if(parseArray(arrayText).length!==cases.length) throw new Error("case count changed unexpectedly");
+  }catch(e){ setMsg("Aborted — re-parse failed, nothing written: "+e.message,"bad"); return; }
+  // 3) write master, sync index.html, bump sitemap — publish-ready
+  const wrote=["cxr-swipe-v7.html"];
   try{
-    const w=await fileHandle.createWritable();
-    await w.write(newText);
-    await w.close();
+    await writeFile(v7Handle,newV7);
+    if(indexHandle){ await writeFile(indexHandle,newV7); wrote.push("index.html"); }
+    if(sitemapHandle){
+      const sm=bumpSitemap(await (await sitemapHandle.getFile()).text(),d);
+      await writeFile(sitemapHandle,sm); wrote.push("sitemap.xml");
+    }
   }catch(e){ setMsg("Write failed: "+e.message,"bad"); return; }
-  // reload from the freshly written text to re-align spans
-  loadFromText(newText);
-  setMsg("Saved ✓","ok");
-  setTimeout(closeEdit,500);
+  loadFromText(newV7);   // re-align spans from freshly written text
+  setMsg("Saved → "+wrote.join(", ")+" · publish-ready ("+d+")","ok");
+  $("#srcnote").innerHTML="✅ Wrote <code>"+wrote.join("</code>, <code>")+"</code> and set dates to <b>"+d+"</b>. Files are publish-ready — review with <code>git diff</code>, then say “push”.";
+  setTimeout(closeEdit,900);
 }
 
 /* ---------- wire up ---------- */
@@ -466,8 +485,8 @@ async function saveEdit(){
   $(s).addEventListener("input",render);
   $(s).addEventListener("change",render);
 });
-$("#connect").onclick=connectFile;
-$("#reload").onclick=()=>{ if(fileHandle){ fileHandle.getFile().then(f=>f.text()).then(loadFromText); } else { fetchLive(); } };
+$("#connect").onclick=connectDir;
+$("#reload").onclick=()=>{ if(v7Handle){ v7Handle.getFile().then(f=>f.text()).then(loadFromText); } else { fetchLive(); } };
 $("#e-cancel").onclick=closeEdit;
 $("#e-save").onclick=saveEdit;
 $("#modal").addEventListener("click",e=>{ if(e.target.id==="modal") closeEdit(); });
