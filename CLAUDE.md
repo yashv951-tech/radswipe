@@ -716,6 +716,19 @@ Start via `preview_start("thoraswipe")` in Claude Code. Serves the CXR Swipe dir
 
 ## Session log
 
+### 2026-06-16 (committed pending accuracy/credit fixes)
+
+**Committed and pushed previously-uncommitted working changes** (15 edits across 9 cases; case count unchanged at 45):
+
+- **CXR-001 (Pulmonary Oedema)** — reframed from PA "cardiomegaly / CTR > 0.5" to **portable AP**: CTR unreliable on the magnified silhouette, added echo correlation, added a cardiogenic-vs-ARDS distinguishing finding. Annotation label "Cardiomegaly" → "Cardiac silhouette".
+- **CXR-003 (Normal)** — patient **45M → 45F** (hernia repair → laparoscopic cholecystectomy), **difficulty 1 → 2**, teaching point reframed around **breast shadows** mimicking basal consolidation. Credit now names **Mikael Häggström**.
+- **Credit creator names added** (audit round-5 rule): CXR-004 (Stillwaterising), CXR-010/011/013 (Hellerhoff), CXR-014 (Doctoroftcm), CXR-015 (SCiardullo).
+- **Mesothelioma case** — removed UI note `"(patient's right = viewer's left)"` from a finding (no implementation notes in findings).
+
+**Deploy checklist:** `index.html` synced (byte-identical), `sitemap.xml` lastmod + `dateModified` → 2026-06-16. No `TS_SAVE_KEY` bump (count unchanged). Committed `36f883d`, pushed to origin/main — Vercel auto-deploys.
+
+**Note:** preview server (`preview_start("thoraswipe")`) failed this session — sandboxed Python `http.server` returns `PermissionError: Operation not permitted`. Verified instead by static check (45 caseIds intact, edited lines quote-clean). Untracked files left alone: `.claude/`, `CXR-Review-039-043.docx`, `cases-by-pathology.md`, `logo-showcase.html`, and a `~$` Office temp lock file.
+
 ### 2026-06-11 (medical audit of 5 random cases + CXR-031 removal)
 
 **Audited CXR-006, 007, 009, 025, 031** by viewing each radiograph (downloaded + contrast-enhanced the regions in question) and cross-checking every Commons file page for diagnosis, laterality, projection, licence, and author. Two cases asserted findings the image does not show.
