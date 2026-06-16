@@ -740,6 +740,12 @@ Start via `preview_start("thoraswipe")` in Claude Code. Serves the CXR Swipe dir
 
 **Fixed CSP breakage:** both `review.html` and `library.html` originally parsed the `CASES` array with `new Function(...)`, which the site CSP blocks (no `'unsafe-eval'`) — the deployed pages errored with *"Evaluating a string as JavaScript violates… 'unsafe-eval'"*. Replaced eval with a hand-written literal parser (`parseArray`/`parseLiteral`) that skips `//`/`/* */` comments and trailing commas; verified in Node to deep-equal the old eval output for all 45 cases. See the CSP gotcha note in the dashboard section.
 
+**Current state (end of 2026-06-16 sessions):**
+- Total cases: **45**; `TS_SAVE_KEY`: `ts_progress_v7` (unchanged — no cases added/removed this session).
+- New routes/files: `review.html` → **`/review`** (admin, editing) and `library.html` → **`/library`** (shareable, read-only); both `noindex`, unlinked, not in sitemap. Neither is part of the `index.html` deploy sync.
+- `dateModified` / `sitemap.xml` lastmod: **2026-06-16**. `index.html` in sync with `cxr-swipe-v7.html`.
+- All work committed and pushed to `origin/main`; Vercel auto-deployed.
+
 ### 2026-06-16 (admin case-review dashboard)
 
 **Added `review.html`** — standalone unlisted admin tool (deployed `/review`, `noindex`) to review/audit all cases at once. See the "Admin case-review dashboard" section above for full behaviour. Key points: reads live `CASES` via `fetch('/')` (no data duplication); File System Access API editing; per-card lint flags encode CLAUDE.md rules; annotations drawn on each film. **Save is one-click publish-ready**: writes the edit to `cxr-swipe-v7.html`, syncs `index.html`, bumps `dateModified` + `sitemap.xml` to today (deploy-checklist steps 1–3); only `git push` remains. Editing connects to the **project folder** (not a single file) so it can reach all three files.
