@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Case Audit Log — ThoraSwipe</title>
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#121822; --panel2:#0e141d; --line:#1f2a37;
+    --txt:#e6edf3; --muted:#8b99a8; --accent:#60a5fa;
+    --green:#22c55e; --amber:#f59e0b; --red:#ef4444;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:14px;line-height:1.5}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+
+  header{position:sticky;top:0;z-index:20;background:rgba(11,15,20,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 16px}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:1100px;margin:0 auto}
+  .brand{font-weight:700;font-size:15px}
+  .brand small{color:var(--muted);font-weight:500}
+  .grow{flex:1}
+  select,input[type=text]{font:inherit;color:var(--txt);background:var(--panel);
+    border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+  input[type=text]{min-width:180px}
+
+  .wrap{max-width:1100px;margin:0 auto;padding:18px 16px 60px}
+  .intro{color:var(--muted);font-size:13px;margin:2px 0 16px;max-width:820px}
+  h2{font-size:15px;margin:26px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 8px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 16px;min-width:96px}
+  .stat .n{font-size:24px;font-weight:800;line-height:1.1}
+  .stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .stat.clean .n{color:var(--green)} .stat.fixed .n{color:var(--amber)} .stat.removed .n{color:var(--red)}
+
+  .checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+  .chk{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .chk h3{margin:0 0 8px;font-size:13px;color:var(--accent)}
+  .chk ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+  .chk li{font-size:12.5px;color:#d7e0ea}
+
+  .log{display:flex;flex-direction:column;gap:12px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px;
+    border-left:3px solid var(--line)}
+  .card.clean{border-left-color:var(--green)}
+  .card.fixed{border-left-color:var(--amber)}
+  .card.removed{border-left-color:var(--red)}
+  .chead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .cid{font-family:"SF Mono",ui-monospace,monospace;font-size:13px;font-weight:700;color:var(--accent)}
+  .cdx{font-weight:700;font-size:14px}
+  .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.03em}
+  .badge.clean{background:rgba(34,197,94,.14);color:#86efac}
+  .badge.fixed{background:rgba(245,158,11,.14);color:#fcd34d}
+  .badge.removed{background:rgba(239,68,68,.14);color:#fca5a5}
+  .when{font-size:11.5px;color:var(--muted)}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
+  @media(max-width:640px){.cols{grid-template-columns:1fr}}
+  .col h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .col ul{margin:0;padding-left:16px;display:flex;flex-direction:column;gap:5px}
+  .col li{font-size:12.5px;color:#d7e0ea}
+  .col .none{font-size:12.5px;color:var(--green)}
+
+  footer{max-width:1100px;margin:30px auto 0;padding-top:16px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:12px;line-height:1.6}
+  .empty{color:var(--muted);text-align:center;padding:40px}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <span class="brand">ThoraSwipe <small>· Case Audit Log</small></span>
+    <span class="grow"></span>
+    <input id="q" type="text" placeholder="Search id, diagnosis, text…">
+    <select id="fstatus">
+      <option value="">All outcomes</option>
+      <option value="clean">Verified clean</option>
+      <option value="fixed">Fixed</option>
+      <option value="removed">Removed</option>
+    </select>
+  </div>
+</header>
+
+<div class="wrap">
+  <p class="intro">A record of the medical audits Claude has run on the ThoraSwipe case library — which films were checked, what was verified against the actual pixels and the Commons source, and what was changed. Compiled from the audit history in <span class="mono">CLAUDE.md</span> (audit rounds 1–7 and the dated audit sessions). This page is fully self-contained — it works offline.</p>
+
+  <div class="stats" id="stats"></div>
+
+  <h2>What gets checked</h2>
+  <p class="intro" style="margin-top:-4px">The standing audit checklist, distilled from seven rounds of formal accuracy review. Every new or edited case is held against these.</p>
+  <div class="checks" id="checks"></div>
+
+  <h2>Per-case audit log</h2>
+  <div class="log" id="log"></div>
+  <div class="empty" id="empty" style="display:none"></div>
+</div>
+
+<footer>
+  <p>Outcomes: <b style="color:#86efac">clean</b> = reviewed, no change needed · <b style="color:#fcd34d">fixed</b> = corrections applied · <b style="color:#fca5a5">removed</b> = pulled pending re-source. “Verified against the pixels” means the radiograph itself was opened (and where needed contrast-enhanced / cropped), not just read off the Commons label.</p>
+</footer>
+
+<script>
+"use strict";
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+
+const CHECKS=[
+  {g:"Image & source verification", items:[
+    "Direct upload.wikimedia.org URL (no /thumb/); licence is CC BY / CC BY-SA / CC0 / public domain",
+    "Diagnosis confirmed from the Commons file page — never inferred from the filename",
+    "Laterality & lobe confirmed from the source; not invented when the source is silent",
+    "Patient demographics match the source case report",
+    "No imageUrl reused across two cases",
+    "Avoid images with baked-in arrows or measurements (they reveal the answer)",
+  ]},
+  {g:"Pixel verification — read the film, not the label", items:[
+    "Every annotation overlies a finding actually visible at its coordinates",
+    "Mediastinal / tracheal shift (presence and direction) read off the image, never assumed from the diagnosis",
+    "Severity language matches the pixels — no escalating “massive” into a whole-hemithorax white-out",
+    "Only definitively visible features are annotated; uncertain ones stay as hedged findings text",
+  ]},
+  {g:"Projection — PA vs AP", items:[
+    "The sub field specifies PA or AP",
+    "AP / portable films: cardiac silhouette magnified (CTR unreliable), mediastinum wider, scapulae overlie the lungs — caveat added to the explanation",
+    "ICU / ED / resus films treated as AP; James Heilman “…M.jpg” files are AP",
+  ]},
+  {g:"Clinical & differential accuracy", items:[
+    "No “pathognomonic” for any plain-film finding",
+    "The diagnosis never appears in its own differential",
+    "Differential items are genuine radiographic mimics — not causes; each matches the exact pattern (shift, lobe, density)",
+    "Opportunistic infections (e.g. PCP) qualified by immune status",
+    "Investigations reflect current guidelines (e.g. EBUS-TBNA first-line for hilar / mediastinal nodes)",
+    "Test limitations stated (IGRA anergy in miliary TB; serum ACE non-specific for sarcoidosis)",
+    "ICU cases: every visible tube / line accounted for (ETT, CVC, NG/OG, drains, pacing wires, Swan-Ganz)",
+  ]},
+  {g:"Writing conventions", items:[
+    "British English throughout (oedema, haemoptysis, anaemia, dyspnoea)",
+    "Cardiothoracic ratio as a decimal (CTR > 0.5), not a percentage",
+    "Anatomical specificity to the lobe or zone",
+    "Credit names the creator if identifiable — even for CC0 / public domain; the specific agency (NCI, not NIH); paper authors for case-report images",
+    "No duplicate findings; teaching caveats match the case’s own patient",
+    "No UI / implementation notes in the findings text",
+  ]},
+];
+
+const AUDITS=[
+  {id:"CXR-001", dx:"Pulmonary Oedema — Acute LVF", status:"fixed", when:"2026-06-16",
+    checked:["Projection — the film is portable AP, not PA","CTR validity on a magnified AP silhouette","Annotation label accuracy"],
+    changes:["Reframed PA → AP: CTR unreliable on the magnified silhouette; added echocardiography correlation","Added a cardiogenic-vs-ARDS distinguishing finding","Annotation relabelled “Cardiomegaly” → “Cardiac silhouette”"]},
+  {id:"CXR-003", dx:"Normal Chest Radiograph", status:"fixed", when:"2026-06-16",
+    checked:["Difficulty against the normal-variant rule","Credit author on the Commons file page"],
+    changes:["Patient 45M → 45F; pre-op context updated","Difficulty 1 → 2 (breast-shadow variant can mimic basal consolidation)","Teaching point reframed around breast shadows","Credit now names the creator (Mikael Häggström)"]},
+  {id:"CXR-004", dx:"Normal Chest Radiograph", status:"fixed", when:"2026-06-16",
+    checked:["Credit author on the Commons file page"],
+    changes:["Credit now names the creator (Stillwaterising)"]},
+  {id:"CXR-006", dx:"Right Middle Lobe Pneumonia", status:"fixed", when:"2026-06-11",
+    checked:["Diagnosis, laterality & lobe — viewed the radiograph (67M, RML confirmed)","Projection","Licence & author"],
+    changes:["Credit now names the creator Mikael Häggström (CC0 still warrants editorial attribution)"]},
+  {id:"CXR-007", dx:"Massive Left Pleural Effusion", status:"fixed", when:"2026-06-11",
+    checked:["Mediastinal / tracheal shift — cropped the upper mediastinum: trachea is midline","Severity language against the actual film","Credit author","Differential validity"],
+    changes:["Removed the false “mediastinal shift to the right”; reframed as the absent-shift teaching point (suspect underlying collapse / fixed mediastinum)","Softened “obliterating the left hemithorax” → “large… upper zone still aerated”","Credit → Clinical Cases / Ves Dimov MD","Differential converted from causes of effusion → radiographic mimics of a unilateral white-out"]},
+  {id:"CXR-008", dx:"Right Lower Lobe Pneumonia", status:"fixed", when:"Audit round 4",
+    checked:["Projection field present in sub"],
+    changes:["Projection added — was “Chest radiograph —” with PA/AP omitted"]},
+  {id:"CXR-009", dx:"Left Lower Lobe Pneumonia with Pleural Effusion", status:"fixed", when:"2026-06-11 (+ round 4)",
+    checked:["Projection — AP confirmed from portable markers","Licence & author","Overall accuracy"],
+    changes:["Round 4: projection added (was missing PA/AP)","2026-06-11: otherwise verified clean (ships with a faint author-drawn circle — tolerable)"]},
+  {id:"CXR-010", dx:"Right Lower Lobe Atelectasis", status:"fixed", when:"2026-06-16",
+    checked:["Credit author (Hellerhoff naming pattern)"],
+    changes:["Credit now names the creator (Hellerhoff)"]},
+  {id:"CXR-011", dx:"COVID-19 Bilateral Pneumonia", status:"fixed", when:"2026-06-16",
+    checked:["Credit author (Hellerhoff naming pattern)"],
+    changes:["Credit now names the creator (Hellerhoff)"]},
+  {id:"CXR-013", dx:"Right Lung Collapse — Bronchial Carcinoma", status:"fixed", when:"2026-06-16 (+ round 4)",
+    checked:["Projection field present in sub","Credit author"],
+    changes:["Round 4: projection added (was missing PA/AP)","2026-06-16: credit now names the creator (Hellerhoff)"]},
+  {id:"CXR-014", dx:"Normal Chest Radiograph", status:"fixed", when:"2026-06-16",
+    checked:["Credit author"],
+    changes:["Credit now names the creator (Doctoroftcm)"]},
+  {id:"CXR-015", dx:"Normal Chest Radiograph", status:"fixed", when:"2026-06-16",
+    checked:["Credit author"],
+    changes:["Credit now names the creator (SCiardullo)"]},
+  {id:"CXR-025", dx:"Active Cavitary Tuberculosis", status:"fixed", when:"2026-06-11",
+    checked:["Diagnosis accuracy","Annotation positions against the densest disease"],
+    changes:["Cavitation annotations nudged cy 22 → 32 onto the densest mid-zone disease"]},
+  {id:"CXR-026", dx:"Right Pleural Mesothelioma", status:"fixed", when:"2026-06-16",
+    checked:["Findings text for UI / implementation notes"],
+    changes:["Removed the UI note “(patient’s right = viewer’s left)” from a finding"]},
+  {id:"CXR-031", dx:"Aspergilloma", status:"removed", when:"2026-06-11",
+    checked:["Annotation against the pixels — the labelled region is clear, aerated lung","Laterality from the source — Commons / Flickr give none"],
+    changes:["Case removed pending re-source: annotation pointed at normal lung and the source states no laterality. Kept in the distractor pool."]},
+  {id:"CXR-039", dx:"Pneumocystis jirovecii Pneumonia (PCP)", status:"clean", when:"2026-06-02",
+    checked:["Diagnosis, demographics, projection, source"],
+    changes:[]},
+  {id:"CXR-040", dx:"Right Pancoast Tumour — Superior Sulcus Carcinoma", status:"clean", when:"2026-06-02",
+    checked:["Commons confirms 47F, right lung, NSCLC, smoker"],
+    changes:[]},
+  {id:"CXR-041", dx:"Complicated Silicosis — Progressive Massive Fibrosis", status:"fixed", when:"2026-06-02",
+    checked:["Language (“pathognomonic”)","Differential validity against the radiographic pattern"],
+    changes:["Finding 3: removed “pathognomonic” (eggshell calcification also occurs in sarcoidosis & post-radiation lymphoma) → “highly characteristic of silicosis & coal worker’s pneumoconiosis”","Finding 5: replaced sarcoidosis Stage IV (not a true radiographic mimic of PMF) with chronic berylliosis"]},
+  {id:"CXR-042", dx:"Superior Vena Cava Syndrome — Right Lung Carcinoma", status:"clean", when:"2026-06-02",
+    checked:["Diagnosis, source, overall accuracy"],
+    changes:[]},
+  {id:"CXR-043", dx:"Acute Respiratory Distress Syndrome (ARDS)", status:"fixed", when:"2026-06-02",
+    checked:["ICU lines-and-tubes — every visible tube accounted for"],
+    changes:["Finding 3: added the OG tube (visible per Commons description) alongside the ET tube; added the expected OG-tip position below the left hemidiaphragm"]},
+];
+
+function renderStats(){
+  const c={clean:0,fixed:0,removed:0};
+  AUDITS.forEach(a=>c[a.status]++);
+  document.getElementById("stats").innerHTML=
+    `<div class="stat"><div class="n">${AUDITS.length}</div><div class="l">Cases audited</div></div>`+
+    `<div class="stat clean"><div class="n">${c.clean}</div><div class="l">Verified clean</div></div>`+
+    `<div class="stat fixed"><div class="n">${c.fixed}</div><div class="l">Fixed</div></div>`+
+    `<div class="stat removed"><div class="n">${c.removed}</div><div class="l">Removed</div></div>`;
+}
+function renderChecks(){
+  document.getElementById("checks").innerHTML=CHECKS.map(c=>
+    `<div class="chk"><h3>${esc(c.g)}</h3><ul>${c.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`
+  ).join("");
+}
+function cardHTML(a){
+  const checked=a.checked.map(x=>`<li>${esc(x)}</li>`).join("");
+  const changes=a.changes.length
+    ? `<ul>${a.changes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`
+    : `<div class="none">No changes — verified clean ✓</div>`;
+  return `<div class="card ${a.status}">
+    <div class="chead">
+      <span class="cid">${esc(a.id)}</span>
+      <span class="cdx">${esc(a.dx)}</span>
+      <span class="badge ${a.status}">${a.status}</span>
+      <span class="grow"></span>
+      <span class="when">${esc(a.when)}</span>
+    </div>
+    <div class="cols">
+      <div class="col"><h4>Checked</h4><ul>${checked}</ul></div>
+      <div class="col"><h4>${a.changes.length?"Changed":"Outcome"}</h4>${changes}</div>
+    </div>
+  </div>`;
+}
+function renderLog(){
+  const q=document.getElementById("q").value.trim().toLowerCase();
+  const fs=document.getElementById("fstatus").value;
+  let shown=0, html="";
+  AUDITS.forEach(a=>{
+    if(fs && a.status!==fs) return;
+    if(q){
+      const hay=[a.id,a.dx,a.when,a.checked.join(" "),a.changes.join(" ")].join(" ").toLowerCase();
+      if(!hay.includes(q)) return;
+    }
+    html+=cardHTML(a); shown++;
+  });
+  document.getElementById("log").innerHTML=html;
+  const e=document.getElementById("empty");
+  e.style.display=shown?"none":"block";
+  if(!shown) e.textContent="No audit entries match your filters.";
+}
+document.getElementById("q").addEventListener("input",renderLog);
+document.getElementById("fstatus").addEventListener("change",renderLog);
+renderStats(); renderChecks(); renderLog();
+</script>
+</body>
+</html>

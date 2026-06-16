@@ -712,6 +712,10 @@ A full SEO audit was run on 2026-06-06. Items below are unfixed as of that date.
 
 `library.html` (deployed `/library`, `noindex`) is the **public, view-only** version of the review dashboard — meant to be shared by link. Same card rendering and annotations as `/review`, plus search/difficulty/normal filters and an annotations on/off toggle (hide to self-test). **No editing surface at all** (no folder connect, no serializer, no lint flags). Reads live `CASES` via `fetch('/')`. Includes a "Try the quiz" link back to the app and an educational-use disclaimer footer.
 
+## Case audit log (`audit.html`)
+
+`audit.html` (deployed `/audit`, `noindex`) is a **fully offline, self-contained** record of the medical audits Claude has run on the case library — it has **no `fetch`** and bakes its data inline, so it opens straight from disk (`file://`). It is **not** generated from `CASES`; its content is compiled by hand from the audit history in this file (audit rounds 1–7 + the dated audit sessions). Three parts: summary stats (cases audited / clean / fixed / removed); the standing "what gets checked" checklist distilled from the seven audit rounds; and a per-case log (id, diagnosis, outcome badge, when, what was *checked*, what was *changed*). Search + outcome filter. **When you audit more cases, update the `AUDITS` array in `audit.html`** to keep it current — it does not auto-sync.
+
 ---
 
 ## Preview server
@@ -733,6 +737,10 @@ Start via `preview_start("thoraswipe")` in Claude Code. Serves the CXR Swipe dir
 ---
 
 ## Session log
+
+### 2026-06-16 (offline case audit log)
+
+**Added `audit.html`** (`/audit`, `noindex`) — fully offline, self-contained page recording every case Claude has audited and what was checked/changed. Data compiled by hand from this file's audit history (rounds 1–7 + dated sessions); **20 cases** logged: 3 verified clean (CXR-039/040/042), 16 fixed, 1 removed (CXR-031). Includes the distilled "what gets checked" checklist. No `fetch`/`eval` — opens from disk. Update the `AUDITS` array when more cases are audited. Diagnosis labels pulled from the live source so they match exactly.
 
 ### 2026-06-16 (shareable library + CSP-safe parser fix)
 
