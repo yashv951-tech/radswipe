@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Case Review — ThoraSwipe (admin)</title>
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#121822; --panel2:#0e141d; --line:#1f2a37;
+    --txt:#e6edf3; --muted:#8b99a8; --accent:#60a5fa;
+    --green:#22c55e; --amber:#f59e0b; --red:#ef4444; --blue:#60a5fa;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:14px;line-height:1.45}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code,.mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+
+  header{position:sticky;top:0;z-index:20;background:rgba(11,15,20,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 16px}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .brand{font-weight:700;font-size:15px;margin-right:6px}
+  .brand small{color:var(--muted);font-weight:500}
+  .grow{flex:1}
+  .pill{font-size:12px;padding:3px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+  .pill b{color:var(--txt)}
+  button,select,input[type=text]{font:inherit;color:var(--txt);background:var(--panel);
+    border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+  button{cursor:pointer}
+  button:hover{border-color:#33455a}
+  button.primary{background:#16314f;border-color:#27496e;color:#dbeafe}
+  button.primary:hover{background:#1b3c61}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  input[type=text]{min-width:200px}
+  .toggle{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
+
+  .wrap{max-width:1500px;margin:0 auto;padding:16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  .imgwrap{position:relative;background:#000;line-height:0}
+  .imgwrap img{width:100%;height:auto;display:block;filter:grayscale(1) contrast(1.06)}
+  .imgwrap svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .alabel{position:absolute;transform:translate(-50%,-50%);font-size:10px;font-weight:600;
+    padding:1px 5px;border-radius:5px;white-space:nowrap;line-height:1.3;
+    background:rgba(0,0,0,.72);border:1px solid currentColor;pointer-events:none}
+  .imgwrap.hideannot svg,.imgwrap.hideannot .alabel{display:none}
+
+  .body{padding:12px 14px;display:flex;flex-direction:column;gap:9px}
+  .row1{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .cid{font-family:"SF Mono",ui-monospace,monospace;font-size:12px;font-weight:700;color:var(--accent)}
+  .tag{font-size:11px;padding:2px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
+  .tag.d1{color:#86efac;border-color:#1f5132}
+  .tag.d2{color:#fcd34d;border-color:#5a4413}
+  .tag.d3{color:#fca5a5;border-color:#5a2020}
+  .tag.norm{color:#86efac;border-color:#1f5132}
+  .tag.abn{color:#fca5a5;border-color:#5a2020}
+  .dx{font-size:16px;font-weight:700;line-height:1.25}
+  .title{color:var(--txt);font-size:13px}
+  .sub{color:var(--muted);font-size:12px}
+  .expl{color:#c4cfdb;font-size:12.5px;background:var(--panel2);border-left:2px solid var(--accent);
+    padding:7px 9px;border-radius:0 8px 8px 0}
+  ol.find{margin:0;padding-left:0;list-style:none;counter-reset:f;display:flex;flex-direction:column;gap:4px}
+  ol.find li{counter-increment:f;position:relative;padding-left:26px;font-size:12.5px;color:#d7e0ea}
+  ol.find li::before{content:counter(f,decimal-leading-zero);position:absolute;left:0;top:0;
+    font-family:"SF Mono",ui-monospace,monospace;font-size:10px;color:var(--muted)}
+  .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;
+    border-top:1px solid var(--line);padding-top:8px;margin-top:2px}
+  .credit{font-size:11px;color:var(--muted)}
+  .cardbtns{display:flex;gap:6px}
+  .cardbtns button{padding:4px 9px;font-size:12px}
+
+  .flags{display:flex;flex-direction:column;gap:3px}
+  .flag{font-size:11.5px;padding:3px 8px;border-radius:6px;display:flex;gap:6px;align-items:flex-start}
+  .flag.err{background:rgba(239,68,68,.12);color:#fca5a5}
+  .flag.warn{background:rgba(245,158,11,.12);color:#fcd34d}
+  .flag.info{background:rgba(96,165,250,.1);color:#93c5fd}
+  .flag b{font-weight:700}
+
+  .empty{color:var(--muted);text-align:center;padding:60px 20px}
+  .note{font-size:12px;color:var(--muted);margin:0 0 14px}
+
+  /* modal */
+  .modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);display:none;align-items:flex-start;justify-content:center;padding:30px 16px;overflow:auto}
+  .modal.open{display:flex}
+  .sheet{background:var(--panel);border:1px solid var(--line);border-radius:14px;width:min(720px,100%);padding:18px 20px}
+  .sheet h2{margin:0 0 4px;font-size:16px}
+  .sheet .sh-sub{color:var(--muted);font-size:12px;margin-bottom:14px}
+  .field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+  .field label{font-size:12px;color:var(--muted);font-weight:600}
+  .field input,.field select,.field textarea{font:inherit;color:var(--txt);background:var(--panel2);
+    border:1px solid var(--line);border-radius:8px;padding:7px 9px;width:100%}
+  .field textarea{resize:vertical;min-height:64px;font-size:13px}
+  .field .hint{font-size:11px;color:var(--muted)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .sheet-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:6px}
+  .savemsg{font-size:12px}
+  .savemsg.ok{color:var(--green)}
+  .savemsg.bad{color:var(--red)}
+  .danger{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <span class="brand">ThoraSwipe <small>· Case Review (admin)</small></span>
+    <span id="src" class="pill">loading…</span>
+    <span id="count" class="pill"></span>
+    <span class="grow"></span>
+    <input id="q" type="text" placeholder="Search id, diagnosis, findings…">
+    <select id="fnorm">
+      <option value="">All</option>
+      <option value="abn">Abnormal</option>
+      <option value="norm">Normal</option>
+    </select>
+    <select id="fdiff">
+      <option value="">Any difficulty</option>
+      <option value="1">Easy (1)</option>
+      <option value="2">Medium (2)</option>
+      <option value="3">Hard (3)</option>
+    </select>
+    <label class="toggle"><input type="checkbox" id="tflag"> Flagged only</label>
+    <label class="toggle"><input type="checkbox" id="tannot" checked> Annotations</label>
+    <button id="connect" class="primary">Connect file to edit</button>
+    <button id="reload">Reload</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <p class="note" id="srcnote"></p>
+  <div id="grid" class="grid"></div>
+  <div id="empty" class="empty" style="display:none"></div>
+</div>
+
+<!-- edit modal -->
+<div class="modal" id="modal">
+  <div class="sheet">
+    <h2 id="m-title">Edit case</h2>
+    <div class="sh-sub" id="m-sub"></div>
+    <div class="two">
+      <div class="field"><label>Difficulty</label>
+        <select id="e-diff"><option value="1">1 — Easy</option><option value="2">2 — Medium</option><option value="3">3 — Hard</option></select>
+      </div>
+      <div class="field"><label>Normal film?</label>
+        <select id="e-norm"><option value="false">Abnormal</option><option value="true">Normal</option></select>
+      </div>
+    </div>
+    <div class="field"><label>Diagnosis</label><input id="e-dx" type="text"></div>
+    <div class="field"><label>Title (vignette)</label><textarea id="e-title"></textarea></div>
+    <div class="field"><label>Sub (projection — must start with "PA"/"AP chest radiograph —")</label><input id="e-sub" type="text"></div>
+    <div class="field"><label>Explanation</label><textarea id="e-expl" style="min-height:100px"></textarea></div>
+    <div class="field"><label>Findings — one per line (aim for 5)</label><textarea id="e-find" style="min-height:120px"></textarea></div>
+    <div class="field"><label>Credit</label><input id="e-credit" type="text"></div>
+    <div class="two">
+      <div class="field"><label>Image URL</label><input id="e-img" type="text"></div>
+      <div class="field"><label>Source URL</label><input id="e-srcurl" type="text"></div>
+    </div>
+    <div class="field"><label>Annotations (JSON array)</label>
+      <textarea id="e-annot" style="min-height:120px" class="mono"></textarea>
+      <span class="hint">ellipse: {"type":"ellipse","cx":50,"cy":60,"rx":14,"ry":10,"color":"#ef4444","label":"…"} · arrow: {"type":"arrow","x1":30,"y1":40,"x2":38,"y2":50,"color":"#f59e0b","label":"…"} · coords are % (0–100). Colours: #ef4444 red=pathology, #f59e0b amber=sign, #22c55e green=normal, #60a5fa blue=landmark.</span>
+    </div>
+    <div class="sheet-actions">
+      <span class="danger">Writes directly to the connected file. Review with <code>git diff</code> before pushing.</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="savemsg" class="savemsg"></span>
+        <button id="e-cancel">Cancel</button>
+        <button id="e-save" class="primary">Save to file</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ---------- state ---------- */
+let fileHandle=null;       // FileSystemFileHandle when connected (edit mode)
+let fileText="";           // full source text of the connected/fetched file
+let bracketStart=-1;       // index of '[' after "const CASES = ["
+let cases=[];              // parsed case objects (order-aligned with spans)
+let spans=[];              // [{start,end}] of each case object, relative to arrayText
+let dupUrls=new Set();
+
+const $=s=>document.querySelector(s);
+const grid=$("#grid"), empty=$("#empty");
+
+/* ---------- parsing the CASES array out of the source ---------- */
+function extractArray(text){
+  const marker="const CASES = [";
+  const mi=text.indexOf(marker);
+  if(mi<0) throw new Error('Could not find "const CASES = [" in the file.');
+  const bs=mi+marker.length-1;           // index of '['
+  let depth=0,inStr=false,q="";
+  let j=bs;
+  for(;j<text.length;j++){
+    const ch=text[j];
+    if(inStr){ if(ch==="\\"){j++;continue;} if(ch===q)inStr=false; continue; }
+    if(ch==="'"||ch==='"'){inStr=true;q=ch;continue;}
+    if(ch==="[") depth++;
+    else if(ch==="]"){ depth--; if(depth===0) break; }
+  }
+  return {bs, ae:j, arrayText:text.slice(bs,j+1)};
+}
+// indices of each top-level {object} within arrayText (which begins with '[')
+function scanObjects(t){
+  const res=[]; let sq=0,br=0,inStr=false,q="",objStart=-1;
+  for(let i=0;i<t.length;i++){
+    const ch=t[i];
+    if(inStr){ if(ch==="\\"){i++;continue;} if(ch===q)inStr=false; continue; }
+    if(ch==="'"||ch==='"'){inStr=true;q=ch;continue;}
+    if(ch==="[") sq++;
+    else if(ch==="]") sq--;
+    else if(ch==="{"){ if(br===0&&sq===1) objStart=i; br++; }
+    else if(ch==="}"){ br--; if(br===0&&sq===1) res.push({start:objStart,end:i}); }
+  }
+  return res;
+}
+function parseArray(arrayText){
+  // values are plain literals authored in this repo; eval in a function scope
+  return (new Function("return "+arrayText))();
+}
+function loadFromText(text){
+  const {bs,arrayText}=extractArray(text);
+  const parsed=parseArray(arrayText);
+  fileText=text; bracketStart=bs; cases=parsed;
+  spans=scanObjects(arrayText);
+  if(spans.length!==cases.length)
+    throw new Error("Parsed "+cases.length+" cases but located "+spans.length+" object spans — aborting edit alignment.");
+  const seen={}; dupUrls=new Set();
+  cases.forEach(c=>{ seen[c.imageUrl]=(seen[c.imageUrl]||0)+1; });
+  Object.keys(seen).forEach(u=>{ if(seen[u]>1) dupUrls.add(u); });
+  render();
+}
+
+/* ---------- lint (from CLAUDE.md rules) ---------- */
+function lint(c){
+  const out=[];
+  const blob=[c.title,c.sub,c.diagnosis,c.explanation].concat(c.findings||[]).join("  \n  ");
+  if(/pathognomonic/i.test(blob)) out.push(["err",'uses "pathognomonic"']);
+  if(!/^(PA|AP)\b/.test((c.sub||"").trim())) out.push(["warn","sub does not start with PA/AP projection"]);
+  const fn=(c.findings||[]).length;
+  if(fn!==5) out.push(["warn","findings count "+fn+" (expected 5)"]);
+  const dx=(c.diagnosis||"").toLowerCase().trim();
+  if(dx && (c.findings||[]).some(f=>String(f).toLowerCase().includes(dx)))
+    out.push(["warn","diagnosis text appears in a finding"]);
+  if(!/\(/.test(c.credit||"")) out.push(["info","credit names no author in (…)"]);
+  if(/\b(edema|dyspnea|hemoptysis|hemothorax|anemia|hemorrhage|tumor)s?\b/i.test(blob))
+    out.push(["warn","possible US spelling"]);
+  (c.annots||[]).forEach(a=>{
+    const ns = a.type==="arrow"?[a.x1,a.y1,a.x2,a.y2]:[a.cx,a.cy,a.rx,a.ry];
+    if(ns.some(n=>typeof n!=="number"||n<0||n>100)) out.push(["warn",'annot "'+(a.label||"?")+'" coord out of 0–100']);
+  });
+  if(dupUrls.has(c.imageUrl)) out.push(["err","duplicate imageUrl across cases"]);
+  return out;
+}
+
+/* ---------- rendering ---------- */
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));}
+function annotSVG(annots){
+  let sh="", lb="";
+  (annots||[]).forEach(a=>{
+    const col=a.color||"#ef4444";
+    if(a.type==="arrow"){
+      sh+=`<line x1="${a.x1}" y1="${a.y1}" x2="${a.x2}" y2="${a.y2}" stroke="${col}" stroke-width="2" vector-effect="non-scaling-stroke" marker-end="url(#ah)"/>`;
+      lb+=`<div class="alabel" style="left:${a.x2}%;top:${a.y2}%;color:${col}">${esc(a.label)}</div>`;
+    }else{
+      sh+=`<ellipse cx="${a.cx}" cy="${a.cy}" rx="${a.rx}" ry="${a.ry}" fill="none" stroke="${col}" stroke-width="2" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"/>`;
+      lb+=`<div class="alabel" style="left:${a.cx}%;top:${Math.max(0,a.cy-a.ry)}%;color:${col}">${esc(a.label)}</div>`;
+    }
+  });
+  const svg=`<svg viewBox="0 0 100 100" preserveAspectRatio="none"><defs>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+    <path d="M0,0 L6,3.5 L0,7 Z" fill="#fff"/></marker></defs>${sh}</svg>`;
+  return svg+lb;
+}
+function cardHTML(c,i){
+  const issues=lint(c);
+  const flags=issues.map(([k,t])=>`<div class="flag ${k}"><b>${k.toUpperCase()}</b> ${esc(t)}</div>`).join("");
+  const findings=(c.findings||[]).map(f=>`<li>${esc(f)}</li>`).join("");
+  const dtag=`<span class="tag d${c.difficulty}">${["","Easy","Medium","Hard"][c.difficulty]||c.difficulty}</span>`;
+  const ntag=c.isNormal?`<span class="tag norm">Normal</span>`:`<span class="tag abn">Abnormal</span>`;
+  return `<div class="card" data-i="${i}">
+    <div class="imgwrap ${showAnnot?"":"hideannot"}">
+      <img loading="lazy" referrerpolicy="no-referrer" src="${esc(c.imageUrl)}" alt="${esc(c.diagnosis)}">
+      ${annotSVG(c.annots)}
+    </div>
+    <div class="body">
+      <div class="row1"><span class="cid">${esc(c.caseId)}</span>${ntag}${dtag}</div>
+      <div class="dx">${esc(c.diagnosis)}</div>
+      <div class="title">${esc(c.title)}</div>
+      <div class="sub">${esc(c.sub)}</div>
+      ${flags?`<div class="flags">${flags}</div>`:""}
+      <div class="expl">${esc(c.explanation)}</div>
+      <ol class="find">${findings}</ol>
+      <div class="meta">
+        <span class="credit">${esc(c.credit)} · <a href="${esc(c.sourceUrl)}" target="_blank" rel="noreferrer">source ↗</a></span>
+        <span class="cardbtns"><button class="edit" data-i="${i}" ${fileHandle?"":"disabled title='Connect file to enable editing'"}>Edit</button></span>
+      </div>
+    </div>
+  </div>`;
+}
+let showAnnot=true;
+function passFilter(c){
+  const q=$("#q").value.trim().toLowerCase();
+  const fn=$("#fnorm").value, fd=$("#fdiff").value, fl=$("#tflag").checked;
+  if(fn==="norm"&&!c.isNormal) return false;
+  if(fn==="abn"&&c.isNormal) return false;
+  if(fd && String(c.difficulty)!==fd) return false;
+  if(fl && lint(c).length===0) return false;
+  if(q){
+    const hay=[c.caseId,c.diagnosis,c.title,c.sub,c.explanation,(c.findings||[]).join(" "),c.credit].join(" ").toLowerCase();
+    if(!hay.includes(q)) return false;
+  }
+  return true;
+}
+function render(){
+  showAnnot=$("#tannot").checked;
+  let shown=0, html="";
+  cases.forEach((c,i)=>{ if(passFilter(c)){ html+=cardHTML(c,i); shown++; } });
+  grid.innerHTML=html;
+  empty.style.display=shown?"none":"block";
+  if(!shown) empty.textContent=cases.length?"No cases match the current filters.":"No cases loaded.";
+  const flagged=cases.filter(c=>lint(c).length).length;
+  $("#count").innerHTML=`<b>${shown}</b>/${cases.length} shown · <b>${flagged}</b> flagged`;
+  grid.querySelectorAll("button.edit").forEach(b=>b.onclick=()=>openEdit(+b.dataset.i));
+}
+
+/* ---------- data sources ---------- */
+async function fetchLive(){
+  $("#src").textContent="loading…";
+  try{
+    const r=await fetch("/",{cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    const t=await r.text();
+    loadFromText(t);
+    $("#src").innerHTML="source: <b>live /index.html</b> (read-only)";
+    $("#srcnote").textContent="Read-only view of the deployed site. Click “Connect file to edit” and pick cxr-swipe-v7.html to enable inline editing that writes back to disk.";
+  }catch(e){
+    $("#src").innerHTML="source: <b>none</b>";
+    $("#srcnote").innerHTML="Couldn’t fetch the live site ("+esc(e.message)+"). Use “Connect file to edit” to load <code>cxr-swipe-v7.html</code> from disk.";
+  }
+}
+async function connectFile(){
+  if(!window.showOpenFilePicker){
+    alert("This browser doesn’t support the File System Access API (needs Chrome or Edge over https/localhost). The read-only view still works.");
+    return;
+  }
+  try{
+    const [h]=await window.showOpenFilePicker({
+      types:[{description:"HTML",accept:{"text/html":[".html"]}}]
+    });
+    const perm=await h.requestPermission({mode:"readwrite"});
+    if(perm!=="granted"){ alert("Read-write permission denied."); return; }
+    const f=await h.getFile();
+    const t=await f.text();
+    loadFromText(t);
+    fileHandle=h;
+    $("#src").innerHTML="source: <b>"+esc(h.name)+"</b> · editing enabled ✏️";
+    $("#srcnote").innerHTML="Editing <code>"+esc(h.name)+"</code> directly. After saving, remember the deploy checklist: <code>cp cxr-swipe-v7.html index.html</code>, bump sitemap/dateModified, then commit &amp; push.";
+    render();
+  }catch(e){ if(e.name!=="AbortError") alert("Could not open file: "+e.message); }
+}
+
+/* ---------- serialize one case back to repo style ---------- */
+function jsStr(s){return "'"+String(s==null?"":s).replace(/\\/g,"\\\\").replace(/'/g,"\\'")+"'";}
+function serAnnot(a){
+  if(a.type==="arrow")
+    return `{type:'arrow',x1:${+a.x1},y1:${+a.y1},x2:${+a.x2},y2:${+a.y2},color:${jsStr(a.color)},label:${jsStr(a.label)}}`;
+  return `{type:'ellipse',cx:${+a.cx},cy:${+a.cy},rx:${+a.rx},ry:${+a.ry},color:${jsStr(a.color)},label:${jsStr(a.label)}}`;
+}
+function serCase(c){
+  const L=[];
+  L.push("{");
+  L.push("    caseId:"+jsStr(c.caseId)+",");
+  L.push("    imageUrl:"+jsStr(c.imageUrl)+",");
+  L.push("    credit:"+jsStr(c.credit)+",");
+  L.push("    sourceUrl:"+jsStr(c.sourceUrl)+",");
+  L.push("    sourceLabel:"+jsStr(c.sourceLabel)+",");
+  L.push("    isNormal:"+(!!c.isNormal)+", difficulty:"+(+c.difficulty)+",");
+  L.push("    title:"+jsStr(c.title)+",");
+  L.push("    sub:"+jsStr(c.sub)+",");
+  L.push("    diagnosis:"+jsStr(c.diagnosis)+",");
+  L.push("    explanation:"+jsStr(c.explanation)+",");
+  L.push("    findings:["+(c.findings||[]).map(jsStr).join(",")+"],");
+  if((c.annots||[]).length){
+    L.push("    annots:[");
+    c.annots.forEach(a=>L.push("      "+serAnnot(a)+","));
+    L.push("    ]");
+  }else{
+    L.push("    annots:[]");
+  }
+  L.push("  }");
+  return L.join("\n");
+}
+
+/* ---------- edit modal ---------- */
+let editIdx=-1;
+function openEdit(i){
+  editIdx=i; const c=cases[i];
+  $("#m-title").textContent="Edit "+c.caseId;
+  $("#m-sub").textContent=c.diagnosis;
+  $("#e-diff").value=String(c.difficulty);
+  $("#e-norm").value=String(!!c.isNormal);
+  $("#e-dx").value=c.diagnosis||"";
+  $("#e-title").value=c.title||"";
+  $("#e-sub").value=c.sub||"";
+  $("#e-expl").value=c.explanation||"";
+  $("#e-find").value=(c.findings||[]).join("\n");
+  $("#e-credit").value=c.credit||"";
+  $("#e-img").value=c.imageUrl||"";
+  $("#e-srcurl").value=c.sourceUrl||"";
+  $("#e-annot").value=JSON.stringify(c.annots||[],null,2);
+  setMsg("","");
+  $("#modal").classList.add("open");
+}
+function closeEdit(){ $("#modal").classList.remove("open"); editIdx=-1; }
+function setMsg(t,k){const m=$("#savemsg");m.textContent=t;m.className="savemsg "+(k||"");}
+
+async function saveEdit(){
+  if(editIdx<0) return;
+  if(!fileHandle){ setMsg("No file connected.","bad"); return; }
+  let annots;
+  try{ annots=JSON.parse($("#e-annot").value||"[]"); if(!Array.isArray(annots)) throw new Error("not an array"); }
+  catch(e){ setMsg("Annotations JSON invalid: "+e.message,"bad"); return; }
+  const orig=cases[editIdx];
+  const updated={
+    caseId:orig.caseId,
+    imageUrl:$("#e-img").value.trim(),
+    credit:$("#e-credit").value.trim(),
+    sourceUrl:$("#e-srcurl").value.trim(),
+    sourceLabel:orig.sourceLabel||"Wikimedia Commons",
+    isNormal:$("#e-norm").value==="true",
+    difficulty:+$("#e-diff").value,
+    title:$("#e-title").value.trim(),
+    sub:$("#e-sub").value.trim(),
+    diagnosis:$("#e-dx").value.trim(),
+    explanation:$("#e-expl").value.trim(),
+    findings:$("#e-find").value.split("\n").map(s=>s.trim()).filter(Boolean),
+    annots:annots
+  };
+  // splice the serialized object back into the full file text
+  const sp=spans[editIdx];
+  const absStart=bracketStart+sp.start, absEnd=bracketStart+sp.end;
+  const newText=fileText.slice(0,absStart)+serCase(updated)+fileText.slice(absEnd+1);
+  // safety: re-parse before writing
+  try{
+    const {arrayText}=extractArray(newText);
+    const reparsed=parseArray(arrayText);
+    if(reparsed.length!==cases.length) throw new Error("case count changed unexpectedly");
+  }catch(e){ setMsg("Aborted — re-parse failed: "+e.message,"bad"); return; }
+  try{
+    const w=await fileHandle.createWritable();
+    await w.write(newText);
+    await w.close();
+  }catch(e){ setMsg("Write failed: "+e.message,"bad"); return; }
+  // reload from the freshly written text to re-align spans
+  loadFromText(newText);
+  setMsg("Saved ✓","ok");
+  setTimeout(closeEdit,500);
+}
+
+/* ---------- wire up ---------- */
+["#q","#fnorm","#fdiff","#tflag","#tannot"].forEach(s=>{
+  $(s).addEventListener("input",render);
+  $(s).addEventListener("change",render);
+});
+$("#connect").onclick=connectFile;
+$("#reload").onclick=()=>{ if(fileHandle){ fileHandle.getFile().then(f=>f.text()).then(loadFromText); } else { fetchLive(); } };
+$("#e-cancel").onclick=closeEdit;
+$("#e-save").onclick=saveEdit;
+$("#modal").addEventListener("click",e=>{ if(e.target.id==="modal") closeEdit(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeEdit(); });
+
+fetchLive();
+</script>
+</body>
+</html>

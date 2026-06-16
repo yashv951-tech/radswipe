@@ -696,6 +696,19 @@ A full SEO audit was run on 2026-06-06. Items below are unfixed as of that date.
 
 ---
 
+## Admin case-review dashboard (`review.html`)
+
+`review.html` is a standalone, unlisted admin tool (deployed at `/review`, `noindex`) for auditing the case library. It is **not** part of the game and is **not** in the deploy-checklist `index.html` sync — it ships as its own route.
+
+- **Data source:** it does **not** duplicate `CASES`. On load it `fetch('/')`s the live homepage and extracts the `CASES` array (always in sync, read-only). It never needs editing when you add cases — it re-reads the source.
+- **Editing:** click **Connect file to edit** and pick `cxr-swipe-v7.html`. Uses the browser **File System Access API** (Chrome/Edge, https or localhost) to write edits straight back to the file on disk. The serializer reproduces the repo's single-quote style and round-trips all 45 cases byte-identically (verified); before any write it re-parses the whole file and aborts if the case count changes. Safari/Firefox lack the API → read-only.
+- **After editing via the dashboard**, you still owe the normal deploy checklist: `cp cxr-swipe-v7.html index.html`, bump `sitemap.xml`/`dateModified`, commit, push. The dashboard only edits `cxr-swipe-v7.html`.
+- **Lint flags** on each card encode CLAUDE.md rules: `pathognomonic` usage, missing PA/AP projection, findings count ≠ 5, diagnosis appearing in its own findings, credit with no named author, US spellings, annot coords outside 0–100, duplicate `imageUrl`. Use the **Flagged only** toggle to triage.
+- **Annotations** are drawn on each film (SVG overlay, percent coords) so you can eyeball whether each `annot` overlies its finding — the audit-round-7 check.
+- **Caveat:** it carries a `noindex` meta tag and is unlinked/not in the sitemap; the global `vercel.json` CSP/`X-Robots-Tag` were left unchanged (the meta tag is the authoritative noindex signal).
+
+---
+
 ## Preview server
 
 A local preview server is configured in `.claude/launch.json` (project root, not CXR Swipe subdirectory):
@@ -715,6 +728,10 @@ Start via `preview_start("thoraswipe")` in Claude Code. Serves the CXR Swipe dir
 ---
 
 ## Session log
+
+### 2026-06-16 (admin case-review dashboard)
+
+**Added `review.html`** — standalone unlisted admin tool (deployed `/review`, `noindex`) to review/audit all cases at once. See the "Admin case-review dashboard" section above for full behaviour. Key points: reads live `CASES` via `fetch('/')` (no data duplication); File System Access API editing writes back to `cxr-swipe-v7.html` on disk (Chrome/Edge); per-card lint flags encode CLAUDE.md rules; annotations drawn on each film. Serializer verified to round-trip all 45 cases byte-identical and parse/scan alignment confirmed (45/45) via Node against the real file. Browser preview unavailable this session (sandboxed preview server falls back to Python `http.server` → `PermissionError`), so verified by Node syntax-check + logic tests rather than a live screenshot. Does not touch the main app or the deploy-checklist `index.html` sync.
 
 ### 2026-06-16 (committed pending accuracy/credit fixes)
 
