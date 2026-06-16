@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Chest X-ray Case Library — ThoraSwipe</title>
+<meta name="description" content="Browse real annotated chest X-ray cases — findings, diagnosis and explanation for each film. A reference companion to the ThoraSwipe CXR quiz.">
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#121822; --panel2:#0e141d; --line:#1f2a37;
+    --txt:#e6edf3; --muted:#8b99a8; --accent:#60a5fa;
+    --green:#22c55e; --amber:#f59e0b; --red:#ef4444; --blue:#60a5fa;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:14px;line-height:1.45}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+
+  header{position:sticky;top:0;z-index:20;background:rgba(11,15,20,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 16px}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:1500px;margin:0 auto}
+  .brand{font-weight:700;font-size:15px}
+  .brand small{color:var(--muted);font-weight:500}
+  .grow{flex:1}
+  .pill{font-size:12px;padding:3px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+  .pill b{color:var(--txt)}
+  select,input[type=text]{font:inherit;color:var(--txt);background:var(--panel);
+    border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+  input[type=text]{min-width:200px}
+  .toggle{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
+  .cta{font-size:13px;padding:6px 12px;border:1px solid #27496e;background:#16314f;color:#dbeafe;border-radius:8px}
+  .cta:hover{background:#1b3c61;text-decoration:none}
+
+  .wrap{max-width:1500px;margin:0 auto;padding:16px}
+  .intro{color:var(--muted);font-size:13px;margin:2px 0 16px;max-width:780px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  .imgwrap{position:relative;background:#000;line-height:0}
+  .imgwrap img{width:100%;height:auto;display:block;filter:grayscale(1) contrast(1.06)}
+  .imgwrap svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .alabel{position:absolute;transform:translate(-50%,-50%);font-size:10px;font-weight:600;
+    padding:1px 5px;border-radius:5px;white-space:nowrap;line-height:1.3;
+    background:rgba(0,0,0,.72);border:1px solid currentColor;pointer-events:none}
+  .imgwrap.hideannot svg,.imgwrap.hideannot .alabel{display:none}
+
+  .body{padding:12px 14px;display:flex;flex-direction:column;gap:9px}
+  .row1{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .cid{font-family:"SF Mono",ui-monospace,monospace;font-size:12px;font-weight:700;color:var(--accent)}
+  .tag{font-size:11px;padding:2px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
+  .tag.d1{color:#86efac;border-color:#1f5132}
+  .tag.d2{color:#fcd34d;border-color:#5a4413}
+  .tag.d3{color:#fca5a5;border-color:#5a2020}
+  .tag.norm{color:#86efac;border-color:#1f5132}
+  .tag.abn{color:#fca5a5;border-color:#5a2020}
+  .dx{font-size:16px;font-weight:700;line-height:1.25}
+  .title{color:var(--txt);font-size:13px}
+  .sub{color:var(--muted);font-size:12px}
+  .expl{color:#c4cfdb;font-size:12.5px;background:var(--panel2);border-left:2px solid var(--accent);
+    padding:7px 9px;border-radius:0 8px 8px 0}
+  ol.find{margin:0;padding-left:0;list-style:none;counter-reset:f;display:flex;flex-direction:column;gap:4px}
+  ol.find li{counter-increment:f;position:relative;padding-left:26px;font-size:12.5px;color:#d7e0ea}
+  ol.find li::before{content:counter(f,decimal-leading-zero);position:absolute;left:0;top:0;
+    font-family:"SF Mono",ui-monospace,monospace;font-size:10px;color:var(--muted)}
+  .meta{border-top:1px solid var(--line);padding-top:8px;margin-top:2px}
+  .credit{font-size:11px;color:var(--muted)}
+
+  .empty{color:var(--muted);text-align:center;padding:60px 20px}
+  footer{max-width:1500px;margin:24px auto 40px;padding:16px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:12px;line-height:1.6}
+  footer a{color:var(--muted);text-decoration:underline}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <span class="brand">ThoraSwipe <small>· Case Library</small></span>
+    <span id="count" class="pill"></span>
+    <span class="grow"></span>
+    <input id="q" type="text" placeholder="Search diagnosis, findings…">
+    <select id="fnorm">
+      <option value="">All films</option>
+      <option value="abn">Abnormal</option>
+      <option value="norm">Normal</option>
+    </select>
+    <select id="fdiff">
+      <option value="">Any difficulty</option>
+      <option value="1">Easy</option>
+      <option value="2">Medium</option>
+      <option value="3">Hard</option>
+    </select>
+    <label class="toggle"><input type="checkbox" id="tannot" checked> Annotations</label>
+    <a class="cta" href="/" target="_blank" rel="noopener">Try the quiz ↗</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <p class="intro" id="intro">Browse the full set of real, annotated chest X-ray cases — each with its findings, diagnosis and a short explanation. Toggle <b>Annotations</b> off to test yourself, then back on to reveal the marked findings.</p>
+  <div id="grid" class="grid"></div>
+  <div id="empty" class="empty" style="display:none">Loading cases…</div>
+</div>
+
+<footer>
+  <p><b>Educational use only.</b> These cases are a learning aid and are <b>not</b> medical advice or a diagnostic tool. Always correlate with the full clinical picture and seek qualified review.</p>
+  <p>Radiographs are sourced from <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a> under their respective Creative Commons / public-domain licences; each case credits its creator and links to the source file. Part of <a href="/" target="_blank" rel="noopener">ThoraSwipe</a>.</p>
+</footer>
+
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const grid=$("#grid"), empty=$("#empty");
+let cases=[];
+let showAnnot=true;
+
+function extractArray(text){
+  const marker="const CASES = [";
+  const mi=text.indexOf(marker);
+  if(mi<0) throw new Error('CASES not found');
+  const bs=mi+marker.length-1;
+  let depth=0,inStr=false,q="",j=bs;
+  for(;j<text.length;j++){
+    const ch=text[j];
+    if(inStr){ if(ch==="\\"){j++;continue;} if(ch===q)inStr=false; continue; }
+    if(ch==="'"||ch==='"'){inStr=true;q=ch;continue;}
+    if(ch==="[") depth++;
+    else if(ch==="]"){ depth--; if(depth===0) break; }
+  }
+  return text.slice(bs,j+1);
+}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));}
+
+function annotSVG(annots){
+  let sh="", lb="";
+  (annots||[]).forEach(a=>{
+    const col=a.color||"#ef4444";
+    if(a.type==="arrow"){
+      sh+=`<line x1="${a.x1}" y1="${a.y1}" x2="${a.x2}" y2="${a.y2}" stroke="${col}" stroke-width="2" vector-effect="non-scaling-stroke" marker-end="url(#ah)"/>`;
+      lb+=`<div class="alabel" style="left:${a.x2}%;top:${a.y2}%;color:${col}">${esc(a.label)}</div>`;
+    }else{
+      sh+=`<ellipse cx="${a.cx}" cy="${a.cy}" rx="${a.rx}" ry="${a.ry}" fill="none" stroke="${col}" stroke-width="2" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"/>`;
+      lb+=`<div class="alabel" style="left:${a.cx}%;top:${Math.max(0,a.cy-a.ry)}%;color:${col}">${esc(a.label)}</div>`;
+    }
+  });
+  const svg=`<svg viewBox="0 0 100 100" preserveAspectRatio="none"><defs>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+    <path d="M0,0 L6,3.5 L0,7 Z" fill="#fff"/></marker></defs>${sh}</svg>`;
+  return svg+lb;
+}
+function cardHTML(c){
+  const findings=(c.findings||[]).map(f=>`<li>${esc(f)}</li>`).join("");
+  const dtag=`<span class="tag d${c.difficulty}">${["","Easy","Medium","Hard"][c.difficulty]||c.difficulty}</span>`;
+  const ntag=c.isNormal?`<span class="tag norm">Normal</span>`:`<span class="tag abn">Abnormal</span>`;
+  return `<div class="card">
+    <div class="imgwrap ${showAnnot?"":"hideannot"}">
+      <img loading="lazy" referrerpolicy="no-referrer" src="${esc(c.imageUrl)}" alt="${esc(c.diagnosis)}">
+      ${annotSVG(c.annots)}
+    </div>
+    <div class="body">
+      <div class="row1"><span class="cid">${esc(c.caseId)}</span>${ntag}${dtag}</div>
+      <div class="dx">${esc(c.diagnosis)}</div>
+      <div class="title">${esc(c.title)}</div>
+      <div class="sub">${esc(c.sub)}</div>
+      <div class="expl">${esc(c.explanation)}</div>
+      <ol class="find">${findings}</ol>
+      <div class="meta"><span class="credit">${esc(c.credit)} · <a href="${esc(c.sourceUrl)}" target="_blank" rel="noreferrer">source ↗</a></span></div>
+    </div>
+  </div>`;
+}
+function passFilter(c){
+  const q=$("#q").value.trim().toLowerCase();
+  const fn=$("#fnorm").value, fd=$("#fdiff").value;
+  if(fn==="norm"&&!c.isNormal) return false;
+  if(fn==="abn"&&c.isNormal) return false;
+  if(fd && String(c.difficulty)!==fd) return false;
+  if(q){
+    const hay=[c.caseId,c.diagnosis,c.title,c.sub,c.explanation,(c.findings||[]).join(" ")].join(" ").toLowerCase();
+    if(!hay.includes(q)) return false;
+  }
+  return true;
+}
+function render(){
+  showAnnot=$("#tannot").checked;
+  let shown=0, html="";
+  cases.forEach(c=>{ if(passFilter(c)){ html+=cardHTML(c); shown++; } });
+  grid.innerHTML=html;
+  empty.style.display=shown?"none":"block";
+  if(!shown) empty.textContent=cases.length?"No cases match your filters.":"Couldn’t load cases.";
+  $("#count").innerHTML=`<b>${shown}</b>/${cases.length} cases`;
+}
+["#q","#fnorm","#fdiff","#tannot"].forEach(s=>{
+  $(s).addEventListener("input",render);
+  $(s).addEventListener("change",render);
+});
+
+(async function init(){
+  try{
+    const r=await fetch("/",{cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    cases=(new Function("return "+extractArray(await r.text())))();
+    render();
+  }catch(e){
+    empty.style.display="block";
+    empty.textContent="Couldn’t load cases ("+e.message+"). Open this page from the deployed ThoraSwipe site.";
+  }
+})();
+</script>
+</body>
+</html>
