@@ -131,6 +131,47 @@ function extractArray(text){
   }
   return text.slice(bs,j+1);
 }
+// CSP-safe literal parser (the site CSP forbids eval / new Function)
+function parseLiteral(src){
+  let i=0;
+  const ws=()=>{ while(i<src.length){ const c=src[i];
+    if(c===" "||c==="\n"||c==="\r"||c==="\t"){i++;continue;}
+    if(c==="/"&&src[i+1]==="/"){ i+=2; while(i<src.length&&src[i]!=="\n")i++; continue; }
+    if(c==="/"&&src[i+1]==="*"){ i+=2; while(i<src.length&&!(src[i]==="*"&&src[i+1]==="/"))i++; i+=2; continue; }
+    break; } };
+  function val(){ ws(); const c=src[i];
+    if(c==="[")return arr(); if(c==="{")return obj();
+    if(c==="'"||c==='"')return str();
+    if(c==="t"||c==="f")return bool();
+    if(c==="n"&&src.startsWith("null",i)){i+=4;return null;}
+    return num(); }
+  function str(){ const q=src[i++]; let o="";
+    while(i<src.length){ let c=src[i++];
+      if(c==="\\"){ const n=src[i++];
+        o+= n==="n"?"\n":n==="t"?"\t":n==="r"?"\r":n==="b"?"\b":n==="f"?"\f":
+            n==="u"?String.fromCharCode(parseInt(src.substr(i,4),16)):n;
+        if(n==="u")i+=4; continue; }
+      if(c===q)break; o+=c; }
+    return o; }
+  function num(){ let s=i; while(i<src.length && /[-+0-9.eE]/.test(src[i]))i++; return Number(src.slice(s,i)); }
+  function bool(){ if(src.startsWith("true",i)){i+=4;return true;} if(src.startsWith("false",i)){i+=5;return false;} throw new Error("bad token @"+i); }
+  function key(){ ws(); const c=src[i]; if(c==="'"||c==='"')return str();
+    let s=i; while(i<src.length && /[A-Za-z0-9_$]/.test(src[i]))i++; return src.slice(s,i); }
+  function obj(){ i++; const o={}; while(i<src.length){ ws();
+      if(src[i]==="}"){i++;break;}
+      const k=key(); ws(); if(src[i]!==":")throw new Error("expected : @"+i); i++;
+      o[k]=val(); ws();
+      if(src[i]===","){i++;continue;} if(src[i]==="}"){i++;break;}
+      throw new Error("expected , or } @"+i); }
+    return o; }
+  function arr(){ i++; const a=[]; while(i<src.length){ ws();
+      if(src[i]==="]"){i++;break;}
+      a.push(val()); ws();
+      if(src[i]===","){i++;continue;} if(src[i]==="]"){i++;break;}
+      throw new Error("expected , or ] @"+i); }
+    return a; }
+  return val();
+}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));}
 
 function annotSVG(annots){
@@ -200,7 +241,7 @@ function render(){
   try{
     const r=await fetch("/",{cache:"no-store"});
     if(!r.ok) throw new Error("HTTP "+r.status);
-    cases=(new Function("return "+extractArray(await r.text())))();
+    cases=parseLiteral(extractArray(await r.text()));
     render();
   }catch(e){
     empty.style.display="block";

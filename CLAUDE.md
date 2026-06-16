@@ -706,6 +706,11 @@ A full SEO audit was run on 2026-06-06. Items below are unfixed as of that date.
 - **Lint flags** on each card encode CLAUDE.md rules: `pathognomonic` usage, missing PA/AP projection, findings count ≠ 5, diagnosis appearing in its own findings, credit with no named author, US spellings, annot coords outside 0–100, duplicate `imageUrl`. Use the **Flagged only** toggle to triage.
 - **Annotations** are drawn on each film (SVG overlay, percent coords) so you can eyeball whether each `annot` overlies its finding — the audit-round-7 check.
 - **Caveat:** it carries a `noindex` meta tag and is unlinked/not in the sitemap; the global `vercel.json` CSP/`X-Robots-Tag` were left unchanged (the meta tag is the authoritative noindex signal).
+- **CSP gotcha:** the site CSP has no `'unsafe-eval'`, so `eval`/`new Function` are blocked on the deployed site. Both `review.html` and `library.html` parse the extracted `CASES` array with a small hand-written **literal parser** (`parseArray`/`parseLiteral`) — not eval. The parser skips `//` and `/* */` comments (the `CASES` array contains `// ── MEDIUM ──` section dividers) and tolerates trailing commas; verified to deep-equal the old eval output for all 45 cases. If you ever need to parse the array in a new tool, reuse this parser — do not reach for `new Function`.
+
+## Shareable read-only case library (`library.html`)
+
+`library.html` (deployed `/library`, `noindex`) is the **public, view-only** version of the review dashboard — meant to be shared by link. Same card rendering and annotations as `/review`, plus search/difficulty/normal filters and an annotations on/off toggle (hide to self-test). **No editing surface at all** (no folder connect, no serializer, no lint flags). Reads live `CASES` via `fetch('/')`. Includes a "Try the quiz" link back to the app and an educational-use disclaimer footer.
 
 ---
 
@@ -728,6 +733,12 @@ Start via `preview_start("thoraswipe")` in Claude Code. Serves the CXR Swipe dir
 ---
 
 ## Session log
+
+### 2026-06-16 (shareable library + CSP-safe parser fix)
+
+**Added `library.html`** (`/library`, `noindex`) — public, read-only, shareable case browser. Same annotated cards/filters as `/review` minus all editing and lint internals; links back to the quiz; educational-use disclaimer.
+
+**Fixed CSP breakage:** both `review.html` and `library.html` originally parsed the `CASES` array with `new Function(...)`, which the site CSP blocks (no `'unsafe-eval'`) — the deployed pages errored with *"Evaluating a string as JavaScript violates… 'unsafe-eval'"*. Replaced eval with a hand-written literal parser (`parseArray`/`parseLiteral`) that skips `//`/`/* */` comments and trailing commas; verified in Node to deep-equal the old eval output for all 45 cases. See the CSP gotcha note in the dashboard section.
 
 ### 2026-06-16 (admin case-review dashboard)
 
