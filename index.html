@@ -56,7 +56,7 @@
   "screenshot": "https://thoraswipe.com/og-image.png",
   "softwareVersion": "7",
   "dateCreated": "2026-05-24",
-  "dateModified": "2026-06-16",
+  "dateModified": "2026-07-06",
   "featureList": [
     "45 real chest X-ray cases from easy to expert difficulty",
     "Swipe-based normal vs abnormal classification",
@@ -1051,9 +1051,9 @@ const CASES = [
     sourceLabel:'Wikimedia Commons',
     isNormal:false, difficulty:1,
     title:'68M — increasing dyspnoea, bilateral ankle oedema. History of HF.',
-    sub:'PA chest radiograph — cardiac assessment',
+    sub:'AP chest radiograph — portable, cardiac assessment',
     diagnosis:'Pulmonary Oedema — Acute LVF',
-    explanation:'There is cephalization (upper-lobe diversion) of the pulmonary vessels, perihilar haziness in a bat-wing distribution, and blunting of both costophrenic angles from small pleural effusions — consistent with pulmonary oedema from acute decompensated heart failure. Note this is a portable AP film taken with the patient sitting: the cardiac silhouette is magnified, so the cardiothoracic ratio cannot be reliably used to assess heart size — correlate with echocardiography.',
+    explanation:'There is cephalization (upper-lobe diversion) of the pulmonary vessels, perihilar haziness in a bat-wing distribution, and blunting of both costophrenic angles from small pleural effusions — consistent with pulmonary oedema from acute decompensated heart failure. This is a portable AP film taken with the patient sitting (as annotated on the image): the cardiac silhouette is magnified, so the cardiothoracic ratio cannot be reliably used to assess heart size — correlate with echocardiography.',
     findings:['Enlarged cardiac silhouette — CTR unreliable on this magnified AP/portable film','Cephalization of pulmonary vessels — upper-lobe blood diversion','Bilateral costophrenic angle blunting — small pleural effusions','Perihilar haziness — bat-wing distribution of alveolar oedema','Cardiogenic pattern — central bat-wing with effusions, unlike the peripheral pattern of ARDS'],
     annots:[
       {type:'ellipse',cx:50,cy:62,rx:22,ry:18,color:'#ef4444',label:'Cardiac silhouette'},
@@ -1187,7 +1187,7 @@ const CASES = [
     isNormal:false, difficulty:2,
     title:'58F — 2-week progressive dyspnoea, dullness to percussion and reduced breath sounds at the left base.',
     sub:'PA chest radiograph — respiratory assessment',
-    diagnosis:'Massive Left Pleural Effusion',
+    diagnosis:'Large Left Pleural Effusion',
     explanation:'There is a large homogeneous opacity over the lower and mid left hemithorax with a concave upper (meniscus) border, consistent with a large pleural effusion; the left upper zone remains aerated. The left hemidiaphragm and costophrenic angle are obscured. Importantly, the mediastinum is not shifted to the contralateral side — a large effusion that fails to push the mediastinum away from the opacity should raise suspicion of underlying lobar collapse or a fixed/infiltrated mediastinum (e.g. malignant involvement) and warrants CT. Causes of the effusion itself include malignancy, cardiac failure, empyema, and hypoalbuminaemia.',
     findings:[
       'Large homogeneous opacity — lower and mid left hemithorax opacified, upper zone still aerated',
@@ -1578,7 +1578,7 @@ const CASES = [
     diagnosis:'Left Tension Pneumothorax',
     explanation:'A left-sided pleural line is visible with absent lung markings peripheral to it, confirming pneumothorax. The slight rightward mediastinal shift indicates elevated intrapleural pressure on the left — tension physiology. In clinical practice, tension pneumothorax is a bedside diagnosis: do not delay needle decompression to obtain a CXR if the patient is haemodynamically compromised. Tall, lean young males are predisposed via apical blebs; spontaneous PTX in this demographic is the classic scenario.',
     findings:[
-      'Left-sided pleural line — visible lung edge with absent markings beyond it (patient\'s left = viewer\'s right)',
+      'Left-sided pleural line — visible lung edge with absent markings beyond it',
       'Slight rightward mediastinal shift — hallmark of tension, distinguishes from simple pneumothorax',
       'Collapsed left lung lobes — partially visible medially',
       'No rib fractures — favours spontaneous over traumatic aetiology',
@@ -2146,6 +2146,7 @@ const ALL_DIAGNOSES=[
   'Sarcoidosis — Bilateral Hilar Lymphadenopathy',
   'Pulmonary Hypertension — Bilateral Hilar Enlargement',
   'Lymphoma — Mediastinal Lymphadenopathy',
+  'Superior Vena Cava Syndrome — Right Lung Carcinoma','SVC Obstruction — Mediastinal Mass',
   'Pericardial Effusion — Water Bottle Sign',
   'Dilated Cardiomyopathy','Cardiac Tamponade',
   'Dextrocardia with Situs Inversus','Isolated Dextrocardia — No Situs Inversus',

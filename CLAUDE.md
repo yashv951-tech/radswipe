@@ -575,7 +575,33 @@ This round audited CXR-006, 007, 009, 025, 031. The recurring theme: **the case 
 
 ### Process note: avoid images with baked-in arrows or measurements for the swipe game
 
-When re-sourcing, an image that already has arrows, circles, or "0.80 cm"-style measurement overlays pointing at the lesion is a poor fit for a *swipe-to-diagnose* format — it reveals the abnormality (and its location) before the learner engages. Prefer a clean film and let the app's own SVG `annots` reveal the finding *after* the user answers. (CXR-009 ships with a faint author-drawn circle; that is tolerable, but do not actively choose such images when a clean alternative exists.)
+When re-sourcing, an image that already has arrows, circles, or "0.80 cm"-style measurement overlays pointing at the lesion is a poor fit for a *swipe-to-diagnose* format — it reveals the abnormality (and its location) before the learner engages. Prefer a clean film and let the app's own SVG `annots` reveal the finding *after* the user answers. (CXR-009 ships with a faint author-drawn circle; that is tolerable, but do not actively choose such images when a clean alternative exists. **CXR-001 has a baked-in circle *and* arrow plus a "SITTING" burn-in — flagged for re-source when a clean cardiogenic-oedema film is found.**)
+
+---
+
+## Additional rules (from audit round 8)
+
+This round audited the full 45-case library for internal consistency and re-verified two source images against their Commons pages / pixels.
+
+### The `sub` projection must match the projection the case body actually teaches
+
+**The specific failure (CXR-001):** `sub` read `'PA chest radiograph …'` while the `explanation` and `findings` both described a *"portable AP film … the cardiac silhouette is magnified, CTR cannot be reliably used."* The two directly contradicted each other. Viewing the image resolved it — the film has **"SITTING" burned into the top-right corner**, confirming a portable AP acquisition, so `sub` was the error and is now `'AP chest radiograph — portable, …'`.
+
+**The rule:** the projection word in `sub` is not decorative — it must agree with every AP/PA claim in the `explanation`, `findings`, and any CTR statement. Before committing, read the projection in `sub` and the projection implied by the body back to back; if the body invokes AP magnification caveats, `sub` must say AP (and vice-versa). Burned-in positioning labels ("SITTING", "SUPINE", "PORTABLE", "ERECT") on the image are authoritative — use them.
+
+### Diagnosis label, annotation label, and body severity must all agree
+
+**The specific failure (CXR-007):** audit round 7 softened the body from "massive / obliterating the left hemithorax" to "large … upper zone still aerated" and relabelled the annotation "Large L effusion" — but the `diagnosis` field was left as **"Massive Left Pleural Effusion."** The headline label then overstated the corrected text.
+
+**The rule:** severity is expressed in three places — `diagnosis`, `annots[].label`, and the prose. When you soften (or escalate) severity in one, sweep the other two in the same edit. A `diagnosis` string is a claim like any other and must match the pixels and the body.
+
+### Normal-CXR vital-sign limits — the one sanctioned exception (PE / acute rule-out)
+
+The normal-case checklist requires SpO₂ ≥ 98% and no tachycardia. **CXR-035 is a deliberate, permitted exception:** its whole teaching point is *"a normal CXR does not exclude pulmonary embolism,"* which requires a vignette of pleuritic pain with mild hypoxia (SpO₂ 97%) and tachycardia (HR 104) — the physiology of a real PE. A normal-film case whose lesson is *rule-out of an acute vascular/embolic cause* may carry SpO₂ 96–97% and HR up to ~105 **only when the explanation explicitly names PE (or the acute cause) as the reason the CXR is normal**. This exception does **not** license alarming vitals on routine/incidental normal cases (screening, pre-op, post-viral cough) — those still follow the SpO₂ ≥ 98%, no-tachycardia rule. `review.html` does not lint vitals, so this judgement is on the writer.
+
+### "NIH" is acceptable only when the source names no sub-agency
+
+Clarifying the round-4 rule: name the specific agency **when the Commons page identifies one**. For CXR-039 (`PCPxray.jpg`) the Commons Source/Author fields name only "National Institutes of Health" with no institute (NCI/NHLBI/etc.), so `'Public Domain (NIH / National Institutes of Health)'` is correct and was left unchanged. Do not invent a sub-agency the source does not state.
 
 ---
 
@@ -737,6 +763,23 @@ Start via `preview_start("thoraswipe")` in Claude Code. Serves the CXR Swipe dir
 ---
 
 ## Session log
+
+### 2026-07-06 (full-library consistency audit + 6 fixes)
+
+**Read all 45 cases end-to-end and audited for internal consistency; verified two source images.** Fixed six defects (case count unchanged at 45; no `TS_SAVE_KEY` bump):
+
+- **CXR-001 (Pulmonary Oedema)** — `sub` said "PA" while the body taught a portable AP film with CTR caveats. Viewed the image: it has **"SITTING" burned into the corner** → confirmed portable AP. Changed `sub` → `'AP chest radiograph — portable, cardiac assessment'` and reworded the explanation to cite the on-image annotation. (Image also has a baked-in circle+arrow — flagged for re-source in the process note.)
+- **CXR-024 (Left Tension Pneumothorax)** — removed UI note `"(patient's left = viewer's right)"` from finding 1 (no implementation notes in findings; the identical note was stripped from the mesothelioma case in June but this one was missed).
+- **CXR-007 (Left Pleural Effusion)** — `diagnosis` still read "Massive…" after round 7 softened the body to "large"; changed to **"Large Left Pleural Effusion"** so diagnosis / annotation / prose agree.
+- **CXR-042 (SVC Syndrome)** — its diagnosis was absent from `ALL_DIAGNOSES`; added `'Superior Vena Cava Syndrome — Right Lung Carcinoma'` + `'SVC Obstruction — Mediastinal Mass'` to the distractor pool.
+- **CXR-039 (PCP)** — re-checked the Commons page; it names only "National Institutes of Health" (no institute), so the `NIH` credit is correct — **left unchanged**.
+- **CXR-035 (Normal AP)** — SpO₂ 97% / HR 104 violate the normal-case vitals checklist but are pedagogically required (teaching "normal CXR does not exclude PE"). **Kept the case**; documented a sanctioned exception in CLAUDE.md instead.
+
+**CLAUDE.md:** added **"Additional rules (from audit round 8)"** — `sub` projection must match the body's AP/PA claims (burned-in positioning labels are authoritative); diagnosis + annotation + prose severity must agree; the one permitted normal-case vitals exception (PE / acute rule-out); and clarified that "NIH" is acceptable when the source names no sub-agency.
+
+**Non-defects noted (not changed, judgement left to owner):** redundant teaching pairs (CXR-006 & CXR-019 both RML-pneumonia/silhouette; CXR-003 & CXR-038 both normal breast-shadows); difficulty skew (7 easy / 21 medium / 17 hard, 10 normal); open coverage gaps (lingular pneumonia, malpositioned ETT, cannonball metastases, bronchiectasis, primary TB/Ghon, anterior mediastinal mass, deep sulcus sign, aspergilloma re-source).
+
+**Deploy checklist:** `index.html` re-synced; `dateModified` + `sitemap.xml` lastmod → 2026-07-06. No count change → no `TS_SAVE_KEY` bump. Not yet committed/pushed (awaiting go-ahead — push auto-deploys live).
 
 ### 2026-06-16 (offline case audit log)
 
